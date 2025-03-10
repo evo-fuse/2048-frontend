@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  @apply w-full h-full m-0 p-0 relative
+}
+
+#root {
+  @apply bg-gray-500
+}
+
+button {
+  cursor: none;
+}
+
+button.menu {
+  background: url('button.png') 0 0;
+}
+
+button.menu:hover {
+  background: url('button.png') 0 90px;
+}
+
+button.menu:active {
+  background: url('button.png') 0 180px;
+}
+
+button.start {
+  background: url('./assets/images/start.png') 0 0;
+}
+
+button.start:hover {
+  background: url('./assets/images/start.png') 0 132px;
+}
+
+button.start:active {
+  background: url('./assets/images/start.png') 0 265.666px;
+}
+
+button.setting {
+  background: url('./assets/images/setting.png') 0 0;
+}
+
+button.setting:hover {
+  background: url('./assets/images/setting.png') 0 133px;
+}
+
+button.setting:active {
+  background: url('./assets/images/setting.png') 0 267px;
+}
+
+button.credits {
+  background: url('./assets/images/credits.png') 0 0;
+}
+
+button.credits:hover {
+  background: url('./assets/images/credits.png') 0 133px;
+}
+
+button.credits:active {
+  background: url('./assets/images/credits.png') 0 267px;
+}
+
+button.quit {
+  background: url('./assets/images/quit.png') 0 0;
+}
+
+button.quit:hover {
+  background: url('./assets/images/quit.png') 0 133px;
+}
+
+button.quit:active {
+  background: url('./assets/images/quit.png') 0 267px;
+}
+
+button.controller {
+  background: url('./assets/images/controller.png') 0 0;
+}
+
+button.controller:hover {
+  background: url('./assets/images/controller.png') 0 132px;
+}
+
+button.controller:active {
+  background: url('./assets/images/controller.png') 0 266px;
+}
+
+button.sound {
+  background: url('./assets/images/sound.png') 0 0;
+}
+
+button.sound:hover {
+  background: url('./assets/images/sound.png') 0 132px;
+}
+
+button.sound:active {
+  background: url('./assets/images/sound.png') 0 266px;
+}
+
+button.screen {
+  background: url('./assets/images/screen.png') 0 0;
+}
+
+button.screen:hover {
+  background: url('./assets/images/screen.png') 0 132px;
+}
+
+button.screen:active {
+  background: url('./assets/images/screen.png') 0 266px;
+}
+
+button.back {
+  background: url('./assets/images/back.png') 0 0;
+}
+
+button.back:hover {
+  background: url('./assets/images/back.png') 0 132px;
+}
+
+button.back:active {
+  background: url('./assets/images/back.png') 0 266px;
+}
+
+button.back-sm {
+  background: url('./assets/images/back-sm.png') 0 0;
+}
+
+button.back-sm:hover {
+  background: url('./assets/images/back-sm.png') 0 79.75px;
+}
+
+button.back-sm:active {
+  background: url('./assets/images/back-sm.png') 0 160px;
+}
