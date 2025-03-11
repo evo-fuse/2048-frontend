@@ -1,28 +1,26 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import "@fontsource/patrick-hand";
+
 import { MenuButton } from "../components";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Logo from "../assets/images/logo (3).jpeg";
 import { PATH } from "../const";
-import { SignedIn, SignInButton } from "@clerk/clerk-react";
-// import Rt from "../assets/images/modal/right upper corner.png";
-// import Rb from "../assets/images/modal/right bottom corner.png";
-// import Lt from "../assets/images/modal/left upper corner.png";
-// import Lb from "../assets/images/modal/left bottom corner.png";
-// import Hr from "../assets/images/modal/horizontal segment.png";
-// import Vr from "../assets/images/modal/vertical segment.png";
+import Rt from "../assets/images/modal/right up.png";
+import Rb from "../assets/images/modal/right bottom.png";
+import Lt from "../assets/images/modal/left up.png";
+import Lb from "../assets/images/modal/left bottom.png";
+import Hb from "../assets/images/modal/horizontal bottom.png";
+import Ht from "../assets/images/modal/horizontal up sgement.png";
+import Vl from "../assets/images/modal/vertical left segment.png";
+import Vr from "../assets/images/modal/vertical right segment.png";
+import Texture from "../assets/images/texture.jpg";
+import CommingSoon from "../assets/images/coming soon.png";
+import ICOLogo from "../assets/images/2048logo.png";
 // Define the electronAPI interface
-declare global {
-  interface Window {
-    electronAPI?: {
-      openExternal: (url: string) => Promise<void>;
-    };
-  }
-}
 
 export const HomeView: React.FC = () => {
   const [showMenu, setShowMenu] = useState(true);
+  const [modal, setModal] = useState(false);
   const navigate = useNavigate();
 
   const handleMenuClick = (path: string) => {
@@ -32,72 +30,122 @@ export const HomeView: React.FC = () => {
     }, 500); // Delay showing modal until after menu disappears
   };
 
+  const handleCloseModal = () => {
+    setModal(false);
+  };
+
+  const handleQuit = () => {
+    if (window.electronAPI) {
+      window.electronAPI.closeApp();
+    }
+  };
+
   return (
-    <div className="flex flex-col items-start justify-start">
+    <motion.div className="flex items-start justify-start h-full">
       <AnimatePresence>
         {showMenu && (
-          <motion.div className="flex flex-col min-w-max items-center gap-4 w-80">
-            <motion.img
-              exit={{ opacity: 0, y: -200 }}
-              src={Logo}
-              className="max-w-[540px] my-4"
-            />
-            <SignedIn>
-              <Navigate to={PATH.STEP_1} />
-            </SignedIn>
-            <SignInButton>
+          <>
+            <motion.div
+              exit={{ opacity: 0, x: -200 }}
+              className="flex flex-col min-w-max h-full items-center justify-evenly gap-4 w-80"
+            >
+              <motion.img
+                exit={{ opacity: 0, y: -200 }}
+                src={Logo}
+                className="max-w-[540px]"
+              />
               <MenuButton
                 text="start"
-                onClick={() => handleMenuClick("/")}
+                onClick={() => {
+                  setModal(true);
+                }}
                 delay={0.7}
               />
-            </SignInButton>
-            <MenuButton
-              text="setting"
-              onClick={() => handleMenuClick(PATH.SETTING)}
-              delay={0.8}
-            />
-            <MenuButton
-              text="credits"
-              onClick={() => handleMenuClick("Settings")}
-              delay={0.9}
-            />
-            <MenuButton
-              text="quit"
-              onClick={() => handleMenuClick("Quit")}
-              delay={1.0}
-            />
+              <MenuButton
+                text="setting"
+                onClick={() => handleMenuClick(PATH.SETTING)}
+                delay={0.8}
+              />
+              <MenuButton
+                text="credits"
+                onClick={() => handleMenuClick(PATH.CREDITS)}
+                delay={0.9}
+              />
+              <MenuButton
+                text="quit"
+                onClick={() => handleQuit()}
+                delay={1.0}
+              />
+            </motion.div>
+            <motion.div className="flex flex-col w-full h-full items-end justify-end pb-8 pr-[448px]">
+              <motion.img
+                src={ICOLogo}
+                onClick={() => handleMenuClick(PATH.ICO)}
+                initial={{ opacity: 0, x: 0, rotate: 270, transition: { duration: 1, type: "spring" } }}
+                animate={{ opacity: 1, x: 0, rotate: 0, transition: { duration: 1, type: "spring" } }}
+                exit={{ opacity: 0, x: 0, rotate: 180, transition: { duration: 1, type: "spring" } }}
+                whileHover={{ opacity: 1, transition: { duration: 0.5, type: "spring" } }}
+                className="w-60 h-60 gap-4 text-yellow-300"
+              />
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {modal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/70"
+          >
+            <img src={Texture} className="fixed w-[690px] h-[430px] z-10" />
+            <div className="fixed flex flex-col z-30 items-center justify-center gap-8">
+              <motion.img
+                initial={{ x: 200, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                exit={{ x: 200, opacity: 0 }}
+                transition={{ duration: 0.5, type: "spring", stiffness: 100 }}
+                src={CommingSoon}
+                width={400}
+              />
+              <MenuButton
+                text="back-sm"
+                width={216}
+                height={80}
+                onClick={handleCloseModal}
+                delay={0.7}
+              />
+            </div>
+            <div className="flex flex-col relative z-20">
+              <div className="flex items-center justify-center">
+                <img src={Lt} width={120} height={120} />
+                <img src={Ht} width={120} height={120} />
+                <img src={Ht} width={120} height={120} />
+                <img src={Ht} width={120} height={120} />
+                <img src={Ht} width={120} height={120} />
+                <img src={Rt} width={120} height={120} />
+              </div>
+              <div className="flex items-center justify-between px-[3px]">
+                <img src={Vl} width={120} height={120} className="translate-x-[1px]" />
+                <img src={Vr} width={120} height={120} className="translate-x-[-1.5px]" />
+              </div>
+              <div className="flex items-center justify-between px-[3px]">
+                <img src={Vl} width={120} height={120} className="translate-x-[1px]" />
+                <img src={Vr} width={120} height={120} className="translate-x-[-1.5px]" />
+              </div>
+              <div className="flex items-center justify-center">
+                <img src={Lb} width={120} height={120} />
+                <img src={Hb} width={120} height={120} />
+                <img src={Hb} width={120} height={120} />
+                <img src={Hb} width={120} height={120} />
+                <img src={Hb} width={120} height={120} />
+                <img src={Rb} width={120} height={120} />
+              </div>
+            </div>
           </motion.div>
         )}
-        {/* <motion.div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/70">
-          <div className="flex flex-col">
-            <div className="flex items-center justify-center">
-              <img src={Rt} width={48} />
-              <img src={Vr} className="-translate-y-[14px]" width={96} />
-              <img src={Vr} className="-translate-y-[14px]" width={96} />
-              <img src={Vr} className="-translate-y-[14px]" width={96} />
-              <img src={Vr} className="-translate-y-[14px]" width={96} />
-              <img src={Lt} width={48} />
-            </div>
-            <div className="flex items-center justify-between px-[3px]">
-              <img src={Hr} width={10} />
-              <img src={Hr} width={10} />
-            </div>
-            <div className="flex items-center justify-between px-[3px]">
-              <img src={Hr} width={10} />
-              <img src={Hr} width={10} />
-            </div>
-            <div className="flex items-center justify-center">
-              <img src={Rb} width={48} />
-              <img src={Vr} className="translate-y-[14px]" width={96} />
-              <img src={Vr} className="translate-y-[14px]" width={96} />
-              <img src={Vr} className="translate-y-[14px]" width={96} />
-              <img src={Vr} className="translate-y-[14px]" width={96} />
-              <img src={Lb} width={48} />
-            </div>
-          </div>
-        </motion.div> */}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };

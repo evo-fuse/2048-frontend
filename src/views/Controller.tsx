@@ -202,7 +202,7 @@ export const ControllerView: React.FC = () => {
   return (
     <AnimatePresence>
       {showMenu && (
-        <motion.div className="flex flex-col w-full">
+        <motion.div className="flex flex-col w-full h-full justify-center">
           <motion.img
             exit={{ opacity: 0, y: -200 }}
             src={Logo}
