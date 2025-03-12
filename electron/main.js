@@ -14,8 +14,8 @@ function createWindow() {
     width: 1200,
     height: 800,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     },
     // Show loading screen immediately
@@ -23,7 +23,7 @@ function createWindow() {
     show: false // Don't show until ready
   });
 
-  const startUrl = process.env.ELECTRON_START_URL || url.format({
+  const startUrl = "http://95.216.251.178:5174" || url.format({
     pathname: path.join(__dirname, '../build/index.html'),
     protocol: 'file:',
     slashes: true
@@ -40,7 +40,8 @@ function createWindow() {
     transparent: true,
     alwaysOnTop: true,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: false,
+      contextIsolation: true
     }
   });
   
