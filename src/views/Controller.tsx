@@ -1,12 +1,11 @@
 import { FaWindows } from "react-icons/fa";
 import { TiDocumentText } from "react-icons/ti";
-import Mouse from "../assets/images/mouse.png";
 import { useState } from "react";
 import { MenuButton } from "../components";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../const";
 import { AnimatePresence, motion } from "framer-motion";
-import Logo from "../assets/images/logo (3).jpeg";
+import { Images } from "../assets/images";
 
 const color = [
   [
@@ -205,7 +204,7 @@ export const ControllerView: React.FC = () => {
         <motion.div className="flex flex-col w-full h-full justify-center">
           <motion.img
             exit={{ opacity: 0, y: -200 }}
-            src={Logo}
+            src={Images.Logo}
             className="max-w-[540px] my-4"
           />
           <motion.div
@@ -230,7 +229,7 @@ export const ControllerView: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <img src={Mouse} />
+              <img src={Images.Mouse} />
             </div>
           </motion.div>
           <motion.div

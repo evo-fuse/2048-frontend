@@ -3,8 +3,7 @@ import { MenuButton } from "../components";
 import { PATH } from "../const";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Check from "../assets/images/checked.png";
-import Uncheck from "../assets/images/unchecked.png";
+import { Images } from "../assets/images";
 
 export const ScreenView: React.FC = () => {
   const [fullScreen, setFullScreen] = useState(false);
@@ -58,11 +57,12 @@ export const ScreenView: React.FC = () => {
             </div>
             <img
               onClick={handleToggleFullScreen}
-              src={fullScreen ? Check : Uncheck}
+              src={fullScreen ? Images.Check : Images.Uncheck}
               className="w-12 h-12"
             />
           </div>
         </div>
+        <img src={Images.Logo} alt="Logo" className="mt-4" />
         <MenuButton
           text="back-sm"
           width={216}

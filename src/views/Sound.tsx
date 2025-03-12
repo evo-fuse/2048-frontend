@@ -2,14 +2,14 @@ import { AnimatePresence } from "framer-motion";
 import { MenuButton } from "../components";
 import { PATH } from "../const";
 import { useNavigate } from "react-router-dom";
-import Slide from "../assets/images/slide.png";
-import Fill from "../assets/images/filled.png";
 import { useState } from "react";
+import { Images } from "../assets/images";
 
 export const SoundView: React.FC = () => {
   const navigate = useNavigate();
   const [soundEffectVolume, setSoundEffectVolume] = useState(5);
   const [backgroundMusicVolume, setBackgroundMusicVolume] = useState(5);
+
   return (
     <AnimatePresence>
       <div className="flex flex-col w-full h-full items-center justify-center text-yellow-500 gap-4">
@@ -24,7 +24,7 @@ export const SoundView: React.FC = () => {
             <div className="flex items-center justify-center">
               {Array.from({ length: 10 }).map((_, index) => (
                 <img
-                  src={index < soundEffectVolume ? Fill : Slide}
+                  src={index < soundEffectVolume ? Images.Fill : Images.Slide}
                   key={`sound-${index}`}
                   width={40}
                   onClick={() => setSoundEffectVolume(index + 1)}
@@ -42,7 +42,7 @@ export const SoundView: React.FC = () => {
             <div className="flex items-center justify-center">
               {Array.from({ length: 10 }).map((_, index) => (
                 <img
-                  src={index < backgroundMusicVolume ? Fill : Slide}
+                  src={index < backgroundMusicVolume ? Images.Fill : Images.Slide}
                   key={`background-${index}`}
                   width={40}
                   onClick={() => setBackgroundMusicVolume(index + 1)}
@@ -50,16 +50,13 @@ export const SoundView: React.FC = () => {
               ))}
             </div>
           </div>
+          <img src={Images.Logo} alt="Logo" className="mt-4" />
+          <MenuButton
+            text="Back"
+            onClick={() => navigate(PATH.HOME)}
+            delay={0.7}
+          />
         </div>
-        <MenuButton
-          text="back-sm"
-          width={216}
-          height={80}
-          onClick={() => {
-            navigate(PATH.SETTING);
-          }}
-          delay={0.7}
-        />
       </div>
     </AnimatePresence>
   );

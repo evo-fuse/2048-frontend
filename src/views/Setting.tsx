@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MenuButton } from "../components";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../const";
-import Logo from "../assets/images/logo (3).jpeg";
+import { Images } from "../assets/images";
 
 // Define the electronAPI interface
 
@@ -23,7 +23,7 @@ export const SettingView: React.FC = () => {
       <AnimatePresence>
         {showMenu && (
           <motion.div className="flex flex-col min-w-max h-full items-center justify-evenly gap-4 w-80">
-            <motion.img exit={{ opacity: 0, y: -200 }} src={Logo} className="max-w-[540px]" />
+            <motion.img exit={{ opacity: 0, y: -200 }} src={Images.Logo} className="max-w-[540px]" />
             <MenuButton
               text="controller"
               onClick={() => handleMenuClick(PATH.CONTROLLER)}

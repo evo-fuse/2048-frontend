@@ -13,6 +13,9 @@ import {
 } from "./pages";
 import { PATH } from "./const";
 import { CustomCursor } from "./components";
+import { useEffect, useState } from "react";
+import { Images } from "./assets/images";
+
 // Define the electronAPI interface
 
 declare global {
@@ -30,6 +33,31 @@ declare global {
 }
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+    let loadedImages = 0;
+
+    const handleImageLoad = () => {
+      loadedImages += 1;
+      if (loadedImages === Object.keys(Images).length) {
+        setLoading(false);
+      }
+    };
+
+    Object.values(Images).forEach((src) => {
+      const img = new Image();
+      img.src = src;
+      img.onload = handleImageLoad;
+      img.onerror = handleImageLoad;
+    });
+  }, []);
+
+  if (loading) {
+    return <div className="loading">Loading...</div>;
+  }
+
   return (
     <>
       <CustomCursor />

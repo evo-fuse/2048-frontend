@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Cursor from "../assets/images/cursor1.jpg";
+import { Images } from "../assets/images";
 
 export const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -33,7 +33,7 @@ export const CustomCursor = () => {
       }}
     >
       <img
-        src={Cursor}
+        src={Images.Cursor}
         alt="cursor"
         className={`min-w-16 min-h-16 max-w-16 max-h-16`}
       />
