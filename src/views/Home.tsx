@@ -23,8 +23,8 @@ export const HomeView: React.FC = () => {
   };
 
   const handleQuit = () => {
-    if (window.electronAPI) {
-      window.electronAPI.closeApp();
+    if (window.electron) {
+      window.electron.closeApp();
     }
   };
 

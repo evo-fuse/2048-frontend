@@ -10,13 +10,13 @@ export const ScreenView: React.FC = () => {
   const navigate = useNavigate();
   const [isExiting, setIsExiting] = useState(false);
   useEffect(() => {
-    window.electronAPI?.getFullScreen().then((isFullScreen) => {
+    window.electron?.getFullScreen().then((isFullScreen) => {
       console.log("isFullScreen", isFullScreen);
       setFullScreen(isFullScreen);
     });
   }, []);
   const handleToggleFullScreen = () => {
-    window.electronAPI?.toggleFullScreen();
+    window.electron?.toggleFullScreen();
     setFullScreen(!fullScreen);
   };
   const handleBack = () => {
