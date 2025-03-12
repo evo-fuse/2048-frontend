@@ -25,13 +25,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
 console.log('Preload script executed, electronAPI exposed');
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM content loaded in preload script');
+  // This ensures all resources are loaded before showing the main window
   const replaceText = (selector, text) => {
     const element = document.getElementById(selector)
     if (element) element.innerText = text
   }
 
-  for (const type of ['chrome', 'node', 'electron']) {
-    replaceText(`${type}-version`, process.versions[type])
+  for (const dependency of ['chrome', 'node', 'electron']) {
+    replaceText(`${dependency}-version`, process.versions[dependency])
   }
 }) 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Your app description" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>Your App</title>
+    <style>
+      /* Inline styles for initial loading state */
+      #root-loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #2e2c29;
+        color: #f3c950;
+        font-family: sans-serif;
+      }
+      .hidden {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    
+    <!-- Loading indicator that shows before React mounts -->
+    <div id="root-loading">
+      <h2>Preparing application...</h2>
+    </div>
+    
+    <div id="root"></div>
+    
+    <script>
+      // Hide the loading screen once React has mounted
+      window.addEventListener('DOMContentLoaded', () => {
+        const rootElement = document.getElementById('root');
+        const observer = new MutationObserver((mutations) => {
+          if (rootElement.children.length > 0) {
+            document.getElementById('root-loading').classList.add('hidden');
+            observer.disconnect();
+          }
+        });
+        
+        observer.observe(rootElement, { childList: true });
+        
+        // Fallback in case React doesn't mount within 5 seconds
+        setTimeout(() => {
+          document.getElementById('root-loading').classList.add('hidden');
+          observer.disconnect();
+        }, 5000);
+      });
+    </script>
+  </body>
+</html> 

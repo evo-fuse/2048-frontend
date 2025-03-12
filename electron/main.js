@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
+const url = require('url');
 
 let mainWindow;
 
@@ -10,39 +11,59 @@ function createWindow() {
   
   // Create the browser window
   mainWindow = new BrowserWindow({
-    width: 1600,
-    height: 960,
-    resizable: false,
+    width: 1200,
+    height: 800,
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js'),
-      sandbox: false // Try disabling sandbox for testing
+      nodeIntegration: true,
+      contextIsolation: false,
+      preload: path.join(__dirname, 'preload.js')
     },
+    // Show loading screen immediately
+    backgroundColor: '#2e2c29', // Dark background color
+    show: false // Don't show until ready
   });
 
-  // Load the app
-  const appUrl = isDev
-    ? 'http://localhost:5173' // Vite dev server URL
-    : `file://${path.join(__dirname, '../dist/index.html')}`;
+  const startUrl = process.env.ELECTRON_START_URL || url.format({
+    pathname: path.join(__dirname, '../build/index.html'),
+    protocol: 'file:',
+    slashes: true
+  });
   
-  console.log('Loading URL:', appUrl);
-  mainWindow.loadURL(appUrl);
-
-  // Open DevTools if in development mode
-  if (isDev) {
-    mainWindow.webContents.openDevTools();
-  }
+  console.log('Loading URL:', startUrl);
+  mainWindow.loadURL(startUrl);
+  
+  // Create a loading screen
+  let loadingScreen = new BrowserWindow({
+    width: 400,
+    height: 300,
+    frame: false,
+    transparent: true,
+    alwaysOnTop: true,
+    webPreferences: {
+      nodeIntegration: true
+    }
+  });
+  
+  loadingScreen.loadFile(path.join(__dirname, 'loading.html'));
+  loadingScreen.center();
+  
+  // Once the main window is ready, show it and close the loading screen
+  mainWindow.once('ready-to-show', () => {
+    setTimeout(() => {
+      mainWindow.show();
+      if (loadingScreen) {
+        loadingScreen.close();
+        loadingScreen = null;
+      }
+    }, 500); // Small delay to ensure everything is rendered
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
 }
 
-app.whenReady().then(() => {
-  console.log('Electron app is ready');
-  createWindow();
-});
+app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

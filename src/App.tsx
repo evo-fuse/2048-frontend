@@ -13,7 +13,7 @@ import {
 } from "./pages";
 import { PATH } from "./const";
 import { CustomCursor } from "./components";
-import { useEffect, useState } from "react";
+import { useEffect, useState, createContext } from "react";
 import { Images } from "./assets/images";
 
 // Define the electronAPI interface
@@ -32,48 +32,84 @@ declare global {
   }
 }
 
+// Create a context to track loaded images
+export const ImageLoadContext = createContext<{
+  loadedImages: Record<string, boolean>;
+  imageCache: Record<string, HTMLImageElement>;
+}>({
+  loadedImages: {},
+  imageCache: {},
+});
+
 function App() {
   const [loading, setLoading] = useState(true);
-
+  const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
+  const [imageCache, setImageCache] = useState<Record<string, HTMLImageElement>>({});
+  
   useEffect(() => {
-
-    let loadedImages = 0;
-
-    const handleImageLoad = () => {
-      loadedImages += 1;
-      if (loadedImages === Object.keys(Images).length) {
-        setLoading(false);
-      }
-    };
-
-    Object.values(Images).forEach((src) => {
+    const newImageCache: Record<string, HTMLImageElement> = {};
+    let loadedCount = 0;
+    const totalImages = Object.keys(Images).length;
+    
+    // Set a timeout to show content even if images are still loading
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+    }, 3000); // 3 seconds max loading time
+    
+    Object.entries(Images).forEach(([key, src]) => {
       const img = new Image();
       img.src = src;
-      img.onload = handleImageLoad;
-      img.onerror = handleImageLoad;
+      
+      img.onload = () => {
+        loadedCount++;
+        newImageCache[key] = img;
+        setLoadedImages(prev => ({ ...prev, [key]: true }));
+        
+        if (loadedCount === totalImages) {
+          clearTimeout(timeoutId);
+          setLoading(false);
+        }
+      };
+      
+      img.onerror = () => {
+        loadedCount++;
+        console.error(`Failed to load image: ${key}`);
+        setLoadedImages(prev => ({ ...prev, [key]: false }));
+        
+        if (loadedCount === totalImages) {
+          clearTimeout(timeoutId);
+          setLoading(false);
+        }
+      };
     });
+    
+    setImageCache(newImageCache);
+    
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
-
   return (
-    <>
+    <ImageLoadContext.Provider value={{ loadedImages, imageCache }}>
       <CustomCursor />
-      <BrowserRouter>
-        <Routes>
-          <Route path={PATH.HOME} element={<HomePage />} />
-          <Route path={PATH.SETTING} element={<SettingPage />} />
-          <Route path={PATH.CONTROLLER} element={<ControllerPage />} />
-          <Route path={PATH.STEP_1} element={<StepOnePage />} />
-          <Route path={PATH.SCREEN} element={<ScreenPage />} />
-          <Route path={PATH.SOUND} element={<SoundPage />} />
-          <Route path={PATH.ICO} element={<IcoPage />} />
-          <Route path={PATH.CREDITS} element={<CreditsPage />} />
-        </Routes>
-      </BrowserRouter>
-    </>
+      {loading ? (
+        <div className="loading">Loading...</div>
+      ) : (
+        <BrowserRouter>
+          <Routes>
+            <Route path={PATH.HOME} element={<HomePage />} />
+            <Route path={PATH.SETTING} element={<SettingPage />} />
+            <Route path={PATH.CONTROLLER} element={<ControllerPage />} />
+            <Route path={PATH.STEP_1} element={<StepOnePage />} />
+            <Route path={PATH.SCREEN} element={<ScreenPage />} />
+            <Route path={PATH.SOUND} element={<SoundPage />} />
+            <Route path={PATH.ICO} element={<IcoPage />} />
+            <Route path={PATH.CREDITS} element={<CreditsPage />} />
+          </Routes>
+        </BrowserRouter>
+      )}
+    </ImageLoadContext.Provider>
   );
 }
 
