@@ -23,7 +23,7 @@ function createWindow() {
     show: false // Don't show until ready
   });
 
-  const startUrl = "http://95.216.251.178:5174" || url.format({
+  const startUrl = "http://localhost:5173" || url.format({
     pathname: path.join(__dirname, '../build/index.html'),
     protocol: 'file:',
     slashes: true
@@ -34,8 +34,8 @@ function createWindow() {
   
   // Create a loading screen
   let loadingScreen = new BrowserWindow({
-    width: 400,
-    height: 300,
+    width: 1600,
+    height: 900,
     frame: false,
     transparent: true,
     alwaysOnTop: true,

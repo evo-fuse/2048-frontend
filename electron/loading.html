@@ -1,52 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>Loading...</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Loading...</title>
+  </head>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background-color: transparent;
+      width: 100vw;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      color: #f3c950;
-      overflow: hidden;
     }
-    
-    .loader-container {
-      text-align: center;
+    .logo {
+      width: 50%;
     }
-    
-    .loader {
-      border: 5px solid rgba(243, 201, 80, 0.3);
-      border-radius: 50%;
-      border-top: 5px solid #f3c950;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    h2 {
-      font-family: 'Cinzel Decorative', cursive;
+    * {
       margin: 0;
-      font-size: 24px;
+      padding: 0;
+      box-sizing: border-box;
     }
   </style>
-</head>
-<body>
-  <div class="loader-container">
-    <div class="loader"></div>
-    <h2>Loading...</h2>
-  </div>
-</body>
-</html> 
+  <body>
+    <img src="./logo.png" alt="logo" class="logo" />
+  </body>
+</html>

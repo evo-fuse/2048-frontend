@@ -9,11 +9,11 @@ import {
   ScreenPage,
   SoundPage,
   IcoPage,
-  CreditsPage
+  CreditsPage,
 } from "./pages";
 import { PATH } from "./const";
 import { CustomCursor } from "./components";
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, useMemo, useRef } from "react";
 import { Images } from "./assets/images";
 
 // Define the electronAPI interface
@@ -44,47 +44,49 @@ export const ImageLoadContext = createContext<{
 function App() {
   const [loading, setLoading] = useState(true);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
-  const [imageCache, setImageCache] = useState<Record<string, HTMLImageElement>>({});
-  
+  const totalImages = useMemo(() => Object.keys(Images).length, []);
+  const loadedCount = useRef<number>(0);
+  const [imageCache, setImageCache] = useState<
+    Record<string, HTMLImageElement>
+  >({});
+
   useEffect(() => {
     const newImageCache: Record<string, HTMLImageElement> = {};
-    let loadedCount = 0;
-    const totalImages = Object.keys(Images).length;
-    
+
     // Set a timeout to show content even if images are still loading
     const timeoutId = setTimeout(() => {
       setLoading(false);
     }, 3000); // 3 seconds max loading time
-    
+
     Object.entries(Images).forEach(([key, src]) => {
       const img = new Image();
       img.src = src;
-      
+
       img.onload = () => {
-        loadedCount++;
+        loadedCount.current++;
         newImageCache[key] = img;
-        setLoadedImages(prev => ({ ...prev, [key]: true }));
-        
-        if (loadedCount === totalImages) {
+        setLoadedImages((prev) => ({ ...prev, [key]: true }));
+
+        if (loadedCount.current === totalImages) {
           clearTimeout(timeoutId);
           setLoading(false);
         }
       };
-      
+
       img.onerror = () => {
-        loadedCount++;
+        loadedCount.current++;
         console.error(`Failed to load image: ${key}`);
-        setLoadedImages(prev => ({ ...prev, [key]: false }));
-        
-        if (loadedCount === totalImages) {
+        setLoadedImages((prev) => ({ ...prev, [key]: false }));
+
+        if (loadedCount.current === totalImages) {
           clearTimeout(timeoutId);
           setLoading(false);
         }
       };
     });
-    
+
     setImageCache(newImageCache);
-    
+
     return () => {
       clearTimeout(timeoutId);
     };
@@ -94,7 +96,13 @@ function App() {
     <ImageLoadContext.Provider value={{ loadedImages, imageCache }}>
       <CustomCursor />
       {loading ? (
-        <div className="loading">Loading...</div>
+        <div
+          className="w-full h-full flex flex-col items-start justify-end text-3xl font-bold overflow-hidden p-8 gap-4"
+          style={{ fontFamily: "Patrick Hand" }}
+        >
+          Loading...
+          <hr className="border border-black transition-all" style={{width: `${100 * totalImages / loadedCount.current}%`}} />
+        </div>
       ) : (
         <BrowserRouter>
           <Routes>
