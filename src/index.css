@@ -22,6 +22,10 @@ span {
   font-family: "Patrick Hand", cursive;
 }
 
+div {
+  font-family: "Patrick Hand", cursive;
+}
+
 button.menu {
   background: url('button.png') 0 0;
 }

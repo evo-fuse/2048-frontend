@@ -13,7 +13,7 @@ export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
         className="fixed top-0 left-0 w-screen h-full object-cover"
         alt="Fantasy Background"
       />
-      <div className="absolute top-0 left-0 w-full h-full bg-black/50" />
+      <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm" />
       <div className="relative z-10 w-full h-full flex justify-start items-center mt-0">
         <Navbar />
         {children}

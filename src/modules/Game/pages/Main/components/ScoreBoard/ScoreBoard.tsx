@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import Box from '../Box';
 import Text from '../Text';
 import StyledScore from './StyledScore';
@@ -27,6 +27,8 @@ const ScoreBoard: FC<ScoreBoardProps> = ({ total, title }) => {
       position="relative"
       justifycontent="center"
       boxsizing="border-box"
+      variant="inner"
+      distance={2}
     >
       <Text
         fontSize={12}

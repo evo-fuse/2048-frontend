@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled, { css } from "styled-components";
 
 export interface StyledButtonProps {
   disable?: boolean;
@@ -26,6 +26,15 @@ const StyledButton = styled.button<StyledButtonProps>`
   color: ${({ theme: { palette } }) => palette.foreground};
   opacity: ${({ disable }) => disable && 0.7};
   cursor: none;
+  ${({ disable }) =>
+    !disable &&
+    css`
+      &:hover {
+        background: ${({ theme: { palette } }) => palette.primary};
+        transform: scale(1.05);
+      }
+    `}
+  transition: all 0.3s ease;
 `;
 
 export default StyledButton;

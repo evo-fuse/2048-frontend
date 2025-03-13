@@ -4,7 +4,6 @@ import Box from '../components/Box';
 import Control from '../components/Control/Control';
 import GameBoard from '../components/GameBoard';
 import ScoreBoard from '../components/ScoreBoard';
-import Switch from '../components/Switch';
 import Text from '../components/Text';
 import useGameBoard from '../hooks/useGameBoard';
 import useGameScore from '../hooks/useGameScore';
@@ -38,7 +37,7 @@ export const MainView: FC = () => {
     cols: MIN_SCALE,
   });
 
-  const [{ name: themeName, value: themeValue }, setTheme] = useTheme(
+  const [{ name: themeName, value: themeValue }] = useTheme(
     config.theme,
   );
 
@@ -88,7 +87,7 @@ export const MainView: FC = () => {
         justifycontent="center"
         inlinesize="100%"
         blocksize="100%"
-        alignitems="start"
+        alignitems="center"
         borderradius={0}
       >
         <Box
@@ -96,15 +95,6 @@ export const MainView: FC = () => {
           flexdirection="column"
           inlinesize={`${GRID_SIZE}px`}
         >
-          <Box marginblockstart="s6" inlinesize="100%" justifycontent="end">
-            <Switch
-              title="dark mode"
-              checked={themeName === 'dark'}
-              activeValue="dark"
-              inactiveValue="default"
-              onChange={setTheme}
-            />
-          </Box>
           <Box
             inlinesize="100%"
             justifycontent="space-between"
@@ -112,7 +102,7 @@ export const MainView: FC = () => {
           >
             <Box>
               <Text fontSize={64} fontWeight="bold" color="primary">
-                2048
+                DWAT 2048
               </Text>
             </Box>
             <Box justifycontent="center">
@@ -141,14 +131,6 @@ export const MainView: FC = () => {
             onMergePending={onMergePending}
             onCloseNotification={onCloseNotification}
           />
-          <Box marginblock="s4" justifycontent="center" flexdirection="column">
-            <Text fontSize={16} as="p" color="primary">
-              ✨ Join tiles with the same value to get 2048
-            </Text>
-            <Text fontSize={16} as="p" color="primary">
-              🕹️ Play with arrow keys or swipe
-            </Text>
-          </Box>
         </Box>
       </Box>
     </ThemeProvider>

@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components';
-import { SpacingValues } from '../../themes/constants';
-import { Color, Spacing } from '../../themes/types';
+import styled, { css } from "styled-components";
+import { SpacingValues } from "../../themes/constants";
+import { Color, Spacing } from "../../themes/types";
 
 export type Length = string | 0;
 export type BoxSpacing = Spacing | 0;
@@ -12,8 +12,8 @@ export type BoxSpacing = Spacing | 0;
  * end -> right in inline, bottom in block
  */
 export interface StyledBoxProps {
-  position?: 'relative' | 'absolute' | 'fixed' | 'static' | 'sticky';
-  boxsizing?: 'border-box' | 'content-box';
+  position?: "relative" | "absolute" | "fixed" | "static" | "sticky";
+  boxsizing?: "border-box" | "content-box";
   top?: BoxSpacing;
   left?: BoxSpacing;
   right?: BoxSpacing;
@@ -38,17 +38,19 @@ export interface StyledBoxProps {
   minblocksize?: Length;
   maxinlinesize?: Length;
   maxblocksize?: Length;
-  flexdirection?: 'row' | 'column'; // omit other properties
+  flexdirection?: "row" | "column"; // omit other properties
   justifycontent?:
-    | 'start'
-    | 'end'
-    | 'center'
-    | 'space-between'
-    | 'space-evenly'
-    | 'space-around';
-  alignitems?: 'center' | 'start' | 'end' | 'stretch';
+    | "start"
+    | "end"
+    | "center"
+    | "space-between"
+    | "space-evenly"
+    | "space-around";
+  alignitems?: "center" | "start" | "end" | "stretch";
   background?: Color;
   borderradius?: Length;
+  variant?: "outer" | "inner";
+  distance?: number;
 }
 
 const getBoxSizeStyles = ({
@@ -105,21 +107,33 @@ const getBoxSizeStyles = ({
 
 const StyledBox = styled.div<StyledBoxProps>`
   display: flex;
-  flex-direction: ${({ flexdirection = 'row' }) => flexdirection};
+  flex-direction: ${({ flexdirection = "row" }) => flexdirection};
   align-items: center;
   justify-content: ${({ justifycontent }) => {
-    if (justifycontent === 'start' || justifycontent === 'end') {
+    if (justifycontent === "start" || justifycontent === "end") {
       return `flex-${justifycontent}`;
     }
     return justifycontent;
   }};
   align-items: ${({ alignitems }) => alignitems};
-  background-color: ${({ theme: { palette }, background = 'background' }) =>
+  background-color: ${({ theme: { palette }, background = "transparent" }) =>
     palette[background]};
   border-radius: ${({ theme, borderradius }) =>
     borderradius ?? theme.borderradius};
   color: ${({ theme: { palette } }) => palette.foreground};
   ${getBoxSizeStyles}
+  ${({ variant, distance = 5 }) =>
+    variant === "outer" &&
+    css`
+      box-shadow: inset ${distance}px ${distance}px 5px rgba(255, 255, 255, 1),
+        inset -${distance}px -${distance}px 5px rgba(0, 0, 0, 0.8);
+    `}
+  ${({ variant, distance = 5 }) =>
+    variant === "inner" &&
+    css`
+      box-shadow: inset -${distance}px -${distance}px 5px rgba(255, 255, 255, 1),
+        inset ${distance}px ${distance}px 5px rgba(0, 0, 0, 0.8);
+    `}
 `;
 
 export default StyledBox;
