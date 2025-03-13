@@ -16,6 +16,7 @@ import Slide from "./images/slide.png";
 import Fill from "./images/filled.png";
 import Mouse from "./images/mouse.png";
 import Cursor from "./images/cursor1.jpg";
+import Bg from "./images/background.jpg";
 
 export const Images = {
   Logo,
@@ -36,4 +37,5 @@ export const Images = {
   Fill,
   Mouse,
   Cursor,
+  Bg,
 };

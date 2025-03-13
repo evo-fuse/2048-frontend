@@ -14,6 +14,14 @@ button {
   cursor: none;
 }
 
+* {
+  cursor: none;
+}
+
+span {
+  font-family: "Patrick Hand", cursive;
+}
+
 button.menu {
   background: url('button.png') 0 0;
 }

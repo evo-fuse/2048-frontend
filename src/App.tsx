@@ -2,15 +2,12 @@ import "@fontsource/patrick-hand";
 import "@fontsource/cinzel-decorative";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  ControllerPage,
   HomePage,
   SettingPage,
-  StepOnePage,
-  ScreenPage,
-  SoundPage,
   IcoPage,
   CreditsPage,
-} from "./pages";
+  GamePage,
+} from "./modules";
 import { PATH } from "./const";
 import { CustomCursor } from "./components";
 import { useEffect, useState, createContext, useMemo, useRef } from "react";
@@ -96,24 +93,21 @@ function App() {
     <ImageLoadContext.Provider value={{ loadedImages, imageCache }}>
       <CustomCursor />
       {loading ? (
-        <div
-          className="w-full h-full flex flex-col items-start justify-end text-3xl font-bold overflow-hidden p-8 gap-4"
-          style={{ fontFamily: "Patrick Hand" }}
-        >
-          Loading...
-          <hr className="border border-black transition-all" style={{width: `${100 * totalImages / loadedCount.current}%`}} />
+        <div className="w-full h-full flex flex-col items-start justify-end overflow-hidden gap-4">
+          <span className="text-3xl font-bold pl-8">Loading...</span>
+          <div
+            className="border-t border-t-black transition-all pb-8"
+            style={{ width: `${(1600 * totalImages) / loadedCount.current}px` }}
+          />
         </div>
       ) : (
         <BrowserRouter>
           <Routes>
             <Route path={PATH.HOME} element={<HomePage />} />
-            <Route path={PATH.SETTING} element={<SettingPage />} />
-            <Route path={PATH.CONTROLLER} element={<ControllerPage />} />
-            <Route path={PATH.STEP_1} element={<StepOnePage />} />
-            <Route path={PATH.SCREEN} element={<ScreenPage />} />
-            <Route path={PATH.SOUND} element={<SoundPage />} />
+            <Route path={PATH.SETTING + PATH.ASTERISK} element={<SettingPage />} />
             <Route path={PATH.ICO} element={<IcoPage />} />
             <Route path={PATH.CREDITS} element={<CreditsPage />} />
+            <Route path={PATH.GAME + PATH.ASTERISK} element={<GamePage />} />
           </Routes>
         </BrowserRouter>
       )}

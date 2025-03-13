@@ -11,15 +11,16 @@ function createWindow() {
   
   // Create the browser window
   mainWindow = new BrowserWindow({
-    width: 1600,
-    height: 900,
+    width: 1616,
+    height: 965,
+    resizable: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js')
     },
     // Show loading screen immediately
-    backgroundColor: '#2e2c29', // Dark background color
+    backgroundColor: '#6B7280', // Dark background color
     show: false // Don't show until ready
   });
 

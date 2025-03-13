@@ -1,8 +1,14 @@
 export const HOME = "/";
 export const SETTING = "/setting";
 export const CONTROLLER = "/controller";
-export const STEP_1 = "/step-1";
 export const SCREEN = "/screen";
 export const SOUND = "/sound";
 export const ICO = "/ico";
 export const CREDITS = "/credits";
+export const GAME = "/game";
+export const PROFILE = "/game/profile";
+export const WALLET = "/game/wallet";
+export const SHOP = "/game/shop";
+export const THEME = "/game/theme";
+export const ASTERISK = "/*";
+export const SIGN_OUT = "/sign-out";

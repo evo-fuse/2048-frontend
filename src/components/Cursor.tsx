@@ -16,7 +16,7 @@ export const CustomCursor = () => {
 
     return () => {
       // Reset cursor style when component unmounts
-      document.body.style.cursor = "default";
+      document.body.style.cursor = "none";
       window.removeEventListener("mousemove", updatePosition);
     };
   }, []);
