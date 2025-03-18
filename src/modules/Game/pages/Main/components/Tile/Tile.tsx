@@ -5,6 +5,8 @@ import StyledTileValue from './StyledTileValue';
 export interface TileProps extends StyledTileProps {
   isnew?: boolean;
   ismerging?: boolean;
+  onTransitionEnd?: (event: React.TransitionEvent) => void;
+  onAnimationEnd?: (event: React.AnimationEvent) => void;
 }
 
 const Tile: FC<TileProps> = ({
@@ -15,9 +17,23 @@ const Tile: FC<TileProps> = ({
   height,
   isnew = false,
   ismerging = false,
+  onTransitionEnd,
+  onAnimationEnd
 }) => (
-  <StyledTile value={value} x={x} y={y} width={width} height={height}>
-    <StyledTileValue value={value} isnew={isnew} ismerging={ismerging}>
+  <StyledTile 
+    value={value} 
+    x={x} 
+    y={y} 
+    width={width} 
+    height={height}
+    onTransitionEnd={onTransitionEnd}
+  >
+    <StyledTileValue 
+      value={value} 
+      isnew={isnew} 
+      ismerging={ismerging}
+      onAnimationEnd={onAnimationEnd}
+    >
       {value}
     </StyledTileValue>
   </StyledTile>

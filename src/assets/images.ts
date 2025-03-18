@@ -17,6 +17,21 @@ import Fill from "./images/filled.png";
 import Mouse from "./images/mouse.png";
 import Cursor from "./images/cursor1.jpg";
 import Bg from "./images/background.jpg";
+import WalletLogo from "./images/wallet_logo.png";
+import ETH from "./images/token/eth.png";
+import BNB from "./images/token/bnb.png";
+import AVA from "./images/token/ava.png";
+import ARB from "./images/token/arb.png";
+import POL from "./images/token/pol.png";
+import FUSE from "./images/token/fuse.png";
+import USDC from "./images/token/usdc.png";
+import USDT from "./images/token/usdt.png";
+import WalletBg from "./images/wallet landing.png";
+import CREAT_WALLET from "./images/Create a new wallet.png";
+import IMPORT_WALLET from "./images/import an existing wallet.png";
+import GET_STARTED from "./images/get started.png";
+import NEXT from "./images/next.png";
+import CONFIRM from "./images/confirm.png";
 
 export const Images = {
   Logo,
@@ -38,4 +53,19 @@ export const Images = {
   Mouse,
   Cursor,
   Bg,
+  WalletLogo,
+  ARB,
+  AVA,
+  BNB,
+  ETH,
+  FUSE,
+  POL,
+  USDC,
+  USDT,
+  WalletBg,
+  CREAT_WALLET,
+  IMPORT_WALLET,
+  GET_STARTED,
+  NEXT,
+  CONFIRM,
 };

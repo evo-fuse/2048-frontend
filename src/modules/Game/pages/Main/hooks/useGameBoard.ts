@@ -33,6 +33,7 @@ export type GameBoardParams = {
   cols: number;
   gameState: GameState;
   addScore: (score: number) => void;
+  initialTiles: Tile[];
 };
 
 const createNewTile = (r: number, c: number): Tile => {
@@ -223,12 +224,15 @@ const resetGameBoard = (rows: number, cols: number) => {
   };
 };
 
-const useGameBoard = ({ rows, cols, gameState, addScore }: GameBoardParams) => {
+const useGameBoard = ({ rows, cols, gameState, addScore, initialTiles }: GameBoardParams) => {
   const gridMapRef = useLazyRef(() => {
     const grid = create2DArray<Cell>(rows, cols);
-    const tiles = createInitialTiles(grid);
+    const tiles = initialTiles.length > 0 ? [...initialTiles] : createInitialTiles(grid);
+    console.log("tiles", tiles.length);
     tiles.forEach((tile) => {
+      console.log("tile", tile);
       grid[tile.r][tile.c] = tile;
+      console.log("grid", grid[tile.r][tile.c]);
     });
 
     return { grid, tiles };
@@ -237,9 +241,12 @@ const useGameBoard = ({ rows, cols, gameState, addScore }: GameBoardParams) => {
   const [tiles, setTiles] = useState<Tile[]>(gridMapRef.current.tiles);
   const pendingStackRef = useRef<number[]>([]);
   const pauseRef = useRef(gameState.pause);
+  console.log("pendingStackRef.current", pendingStackRef.current);
+
 
   const onMove = useCallback(
     (dir: Vector) => {
+      console.log(pendingStackRef.current);
       if (pendingStackRef.current.length === 0 && !pauseRef.current) {
         const {
           tiles: newTiles,

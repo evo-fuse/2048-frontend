@@ -1,4 +1,4 @@
-import { UserButton, useUser } from "@clerk/clerk-react";
+import { useUser, useClerk } from "@clerk/clerk-react";
 import { Images } from "../../../assets/images";
 import {
   IoDocumentTextOutline,
@@ -65,22 +65,41 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
       }`}
       onClick={navigate}
     >
-      <Icon size={28} className="text-white" />
-      <span className="text-white text-2xl font-bold">{label}</span>
+      <Icon size={24} className="text-white" />
+      <span className="text-white text-xl font-bold">{label}</span>
     </div>
   );
 };
 
 export const Navbar: React.FC = () => {
   const { user } = useUser();
+  const { signOut } = useClerk();
   const navigate = useNavigate();
+
+  const handleNavigation = (path: string, label: string) => {
+    if (label === "Sign Out") {
+      signOut(() => {
+        localStorage.removeItem("token");
+        navigate(PATH.HOME);
+      });
+    } else {
+      navigate(path);
+    }
+  };
+
   return (
-    <div className="w-64 h-full bg-gray-600/50 backdrop-blur-md flex flex-col items-center justify-start py-8 gap-4">
+    <div className="min-w-64 h-full bg-gray-600/50 backdrop-blur-md flex flex-col items-center justify-start py-8 gap-4">
       <img src={Images.Logo} alt="Logo" className="w-64" />
       <div className="flex flex-col w-full">
         <div className="w-full flex items-center justify-start gap-4 px-8 py-2">
-          <UserButton />
-          <span className="text-white text-2xl font-bold">
+          {user?.imageUrl && (
+            <img
+              src={user.imageUrl}
+              alt="User avatar"
+              className="w-7 h-7 rounded-full"
+            />
+          )}
+          <span className="text-white text-xl font-bold">
             {user?.firstName} {user?.lastName}
           </span>
         </div>
@@ -89,8 +108,8 @@ export const Navbar: React.FC = () => {
             key={label}
             Icon={Icon}
             label={label}
-            navigate={() => navigate(path)}
-            checked={path === window.location.pathname}
+            navigate={() => handleNavigation(path, label)}
+            checked={label !== "Sign Out" && path === window.location.pathname}
           />
         ))}
       </div>

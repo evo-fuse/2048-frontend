@@ -1,13 +1,21 @@
 import { Route, Routes } from "react-router-dom";
-import { MainPage } from "./pages";
+import { MainPage, ProfilePage, LoadingPage, WalletPage, ShopPage } from "./pages";
 import { PATH } from "../../const";
-import { ProfilePage } from "./pages/Profile";
+import { GameProvider } from "./context/GameContext";
+import { PrivateRoute } from "../../components/PrivateRoute";
 
 export const GamePage = () => {
   return (
-    <Routes>
-      <Route path={PATH.HOME} element={<MainPage />} />
-      <Route path={PATH.PROFILE} element={<ProfilePage />} />
-    </Routes>
+    <GameProvider>
+      <Routes>
+        <Route path={PATH.LOADING} element={<LoadingPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route path={PATH.HOME} element={<MainPage />} />
+          <Route path={PATH.PROFILE} element={<ProfilePage />} />
+          <Route path={PATH.WALLET} element={<WalletPage />} />
+          <Route path={PATH.SHOP} element={<ShopPage />} />
+        </Route>
+      </Routes>
+    </GameProvider>
   );
 };

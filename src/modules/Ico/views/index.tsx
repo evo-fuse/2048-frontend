@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PATH } from "../../../const";
 import { Images } from "../../../assets/images";
 import { useAuth, useClerk } from "@clerk/clerk-react";
@@ -51,12 +51,12 @@ export const IcoView: React.FC = () => {
 
   const { openSignIn } = useClerk();
   const { isSignedIn } = useAuth();
-  
-  useEffect(() => {
-    if (isSignedIn) {
-      navigate(PATH.GAME);
-    }
-  }, [isSignedIn, navigate]);
+
+  const handleSignIn = () => {
+    openSignIn({
+      redirectUrl: window.location.origin + PATH.GAME + PATH.LOADING,
+    });
+  };
 
   return (
     <AnimatePresence>
@@ -87,9 +87,9 @@ export const IcoView: React.FC = () => {
               {...motionProps}
               onClick={() => {
                 if (isSignedIn) {
-                  navigate(PATH.GAME);
+                  navigate(PATH.GAME + PATH.LOADING);
                 } else {
-                  openSignIn();
+                  handleSignIn();
                 }
               }}
             >

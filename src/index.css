@@ -19,12 +19,31 @@ button {
 }
 
 span {
-  font-family: "Patrick Hand", cursive;
+  font-family: "Sans-serif", cursive;
 }
 
 div {
-  font-family: "Patrick Hand", cursive;
+  font-family: "Sans-serif", cursive;
 }
+
+/* Hide cursor on scrollbar */
+ ::-webkit-scrollbar {
+  width: 2px;
+  background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+/*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+::-webkit-scrollbar {
+  cursor: default;
+} */
 
 button.menu {
   background: url('button.png') 0 0;
@@ -144,4 +163,88 @@ button.back-sm:hover {
 
 button.back-sm:active {
   background: url('./assets/images/back-sm.png') 0 160px;
+}
+
+button.create-new-wallet {
+  background: url('./assets/images/Create a new wallet.png') 0 0;
+}
+
+button.create-new-wallet:hover {
+  background: url('./assets/images/Create a new wallet.png') 0 71px;
+}
+
+button.create-new-wallet:active {
+  background: url('./assets/images/Create a new wallet.png') 0 141.5px;
+}
+
+button.create-new-wallet:disabled {
+  opacity: 0.5;
+}
+
+button.create-new-wallet:disabled:hover,
+button.create-new-wallet:disabled:active {
+  background: url('./assets/images/Create a new wallet.png') 0 0;
+}
+
+button.import-existing-wallet {
+  background: url('./assets/images/import an existing wallet.png') 0 0;
+}
+
+button.import-existing-wallet:hover {
+  background: url('./assets/images/import an existing wallet.png') 0 71px;
+}
+
+button.import-existing-wallet:active {
+  background: url('./assets/images/import an existing wallet.png') 0 141.5px;
+}
+
+button.import-existing-wallet:disabled {
+  opacity: 0.5;
+}
+
+button.import-existing-wallet:disabled:hover,
+button.import-existing-wallet:disabled:active {
+  background: url('./assets/images/import an existing wallet.png') 0 0;
+}
+
+button.next {
+  background: url('./assets/images/next.png') 0 0;
+}
+
+button.next:hover {
+  background: url('./assets/images/next.png') 0 71px;
+}
+
+button.next:active {
+  background: url('./assets/images/next.png') 0 141.5px;
+}
+
+button.next:disabled {
+  opacity: 0.5;
+}
+
+button.next:disabled:hover,
+button.next:disabled:active {
+  background: url('./assets/images/next.png') 0 0;
+}
+
+button.confirm {
+  background: url('./assets/images/confirm.png') 0 0;
+}
+
+button.confirm:hover {
+  background: url('./assets/images/confirm.png') 0 71px;
+}
+
+button.confirm:active {
+  background: url('./assets/images/confirm.png') 0 141.5px;
+}
+
+button.confirm:disabled {
+  opacity: 0.5;
+}
+
+button.confirm:disabled:hover,
+button.confirm:disabled:active {
+  background: url('./assets/images/confirm.png') 0 0;
 }

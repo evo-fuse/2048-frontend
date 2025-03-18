@@ -1,7 +1,4 @@
-export const ProfilePage: React.FC = () => {
-  return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold">Profile</h1>
-    </div>
-  );
-};
+import { withBaseGameLayout } from "../../layout/BaseGameLayout";
+import { ProfileView } from "./views";
+
+export const ProfilePage: React.FC = withBaseGameLayout(() => <ProfileView />);

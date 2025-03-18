@@ -1,7 +1,7 @@
 import { Color } from '../themes/types';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
-let _tileIndex = 0;
+let _tileIndex: number = JSON.parse(localStorage.getItem("index") || "0") || 0;
 
 // eslint-disable-next-line no-plusplus
 export const nextTileIndex = () => _tileIndex++;
