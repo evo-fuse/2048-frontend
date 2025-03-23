@@ -34,6 +34,7 @@
     "react-router-dom": "^7.2.0",
     "react-toastify": "^11.0.5",
     "styled-components": "^6.1.15",
+    "styled-normalize": "^8.1.1",
     "three": "^0.174.0",
     "web3": "^4.16.0"
   },
