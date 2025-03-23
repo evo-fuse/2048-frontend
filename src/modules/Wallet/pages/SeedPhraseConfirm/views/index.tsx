@@ -3,14 +3,16 @@ import { FaArrowLeft } from "react-icons/fa";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { PasswordInput } from "../../components";
+import { PasswordInput } from "../../../../../components";
 import { useWalletCreationContext } from "../../../context";
 import { PATH } from "../../../../../const";
 import { Images } from "../../../../../assets/images";
 import { useAuthContext } from "../../../../../context";
+import { usePassword } from "../../../../../hooks";
 
 export const SeedPhraseConfirmView: React.FC = () => {
-  const { seedPhrase, handleCreateWallet } = useWalletCreationContext();
+  const { handleCreateWallet } = useAuthContext();
+  const { seedPhrase } = useWalletCreationContext();
   const { user } = useAuthContext();
   const seedArray = useMemo(() => seedPhrase.split(" "), []);
   const navigate = useNavigate();
@@ -28,10 +30,8 @@ export const SeedPhraseConfirmView: React.FC = () => {
   const handleBack = () => {
     navigate(PATH.WALLET_CREATION + PATH.SEED_CREATION);
   };
-  const [pwd, setPwd] = useState({
-    password: { value: "", error: "" },
-    cPassword: { value: "", error: "" },
-  });
+  const { pwd, handlePasswordChange, handleConfirmPasswordChange } =
+    usePassword();
 
   return (
     <div className="w-full h-full relative flex flex-col items-center justify-center">
@@ -62,7 +62,11 @@ export const SeedPhraseConfirmView: React.FC = () => {
         <div className="text-4xl text-white font-bold text-center flex items-center justify-center gap-2 relative z-20">
           Confirm Secret Recovery Phrase
         </div>
-        <img src={Images.WalletLogo} alt="wallet" className="w-56 relative z-20" />
+        <img
+          src={Images.WalletLogo}
+          alt="wallet"
+          className="w-56 relative z-20"
+        />
         <div className="w-full grid grid-cols-4 gap-2 relative z-20">
           {seedArray.map((seed, idx) => (
             <input
@@ -94,39 +98,13 @@ export const SeedPhraseConfirmView: React.FC = () => {
                 label="Password"
                 value={pwd.password.value}
                 error={pwd.password.error}
-                onChange={(e) => {
-                  const curValue = e.target.value;
-                  setPwd({
-                    ...pwd,
-                    password: {
-                      value: curValue,
-                      error:
-                        curValue.length === 0
-                          ? ""
-                          : curValue.length < 8
-                          ? "Password length should be longer than 8."
-                          : "",
-                    },
-                  });
-                }}
+                onChange={handlePasswordChange}
               />
               <PasswordInput
                 label="Confirm Password"
                 value={pwd.cPassword.value}
                 error={pwd.cPassword.error}
-                onChange={(e) => {
-                  const curValue = e.target.value;
-                  setPwd({
-                    ...pwd,
-                    cPassword: {
-                      value: curValue,
-                      error:
-                        curValue === pwd.password.value
-                          ? ""
-                          : "Password doesn't match",
-                    },
-                  });
-                }}
+                onChange={handleConfirmPasswordChange}
               />
             </motion.div>
           )}
@@ -150,8 +128,7 @@ export const SeedPhraseConfirmView: React.FC = () => {
             )
           }
           className="confirm relative z-20 h-[71px] w-[352px] cursor-none"
-        >
-        </button>
+        ></button>
       </motion.div>
     </div>
   );

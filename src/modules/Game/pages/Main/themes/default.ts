@@ -24,7 +24,7 @@ export const defaultPalette: Palette = {
 };
 
 const theme: Theme = {
-  borderradius: '3px',
+  borderradius: '14px',
   palette: defaultPalette,
 };
 

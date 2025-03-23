@@ -4,8 +4,7 @@ import { useOpen } from "../../../../../hooks";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import { AnimatePresence, motion } from "framer-motion";
-import { PasswordInput } from "../../components";
-import { useWalletCreationContext } from "../../../context";
+import { PasswordInput } from "../../../../../components";
 import { useAuthContext } from "../../../../../context";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../../../const";
@@ -32,8 +31,7 @@ export const ImportExistingWalletView: React.FC = () => {
     password: { value: "", error: "" },
     cPassword: { value: "", error: "" },
   });
-  const { user } = useAuthContext();
-  const { handleCreateWallet } = useWalletCreationContext();
+  const { user, handleCreateWallet } = useAuthContext();
   useEffect(() => {
     setIsValid(ethers.Mnemonic.isValidMnemonic(seed.join(" ")));
   }, [seed]);

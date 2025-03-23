@@ -50,3 +50,15 @@ export type Theme = {
   8192: TileImg;
   owned: boolean;
 };
+
+export type GameItem = {
+    id: 'hammer' | 'powerup' | 'upgrade';
+    icon: string;
+    quantity: number;
+}
+
+export enum WalletItem {
+  Import = 'Import Wallet',
+  ShowPrivateKey = 'Show Private Key',
+  ShowSeed = 'Show Seed Phrase',
+}

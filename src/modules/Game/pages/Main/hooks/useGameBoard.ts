@@ -11,6 +11,7 @@ import {
 import { Vector } from '../utils/types';
 import type { GameState } from './useGameState';
 import useLazyRef from './useLazyRef';
+import { useGameContext } from '../../../context';
 
 export interface Location {
   r: number;
@@ -225,14 +226,12 @@ const resetGameBoard = (rows: number, cols: number) => {
 };
 
 const useGameBoard = ({ rows, cols, gameState, addScore, initialTiles }: GameBoardParams) => {
+  const { powerup } = useGameContext();
   const gridMapRef = useLazyRef(() => {
     const grid = create2DArray<Cell>(rows, cols);
     const tiles = initialTiles.length > 0 ? [...initialTiles] : createInitialTiles(grid);
-    console.log("tiles", tiles.length);
     tiles.forEach((tile) => {
-      console.log("tile", tile);
       grid[tile.r][tile.c] = tile;
-      console.log("grid", grid[tile.r][tile.c]);
     });
 
     return { grid, tiles };
@@ -241,12 +240,10 @@ const useGameBoard = ({ rows, cols, gameState, addScore, initialTiles }: GameBoa
   const [tiles, setTiles] = useState<Tile[]>(gridMapRef.current.tiles);
   const pendingStackRef = useRef<number[]>([]);
   const pauseRef = useRef(gameState.pause);
-  console.log("pendingStackRef.current", pendingStackRef.current);
 
 
   const onMove = useCallback(
     (dir: Vector) => {
-      console.log(pendingStackRef.current);
       if (pendingStackRef.current.length === 0 && !pauseRef.current) {
         const {
           tiles: newTiles,
@@ -265,6 +262,58 @@ const useGameBoard = ({ rows, cols, gameState, addScore, initialTiles }: GameBoa
     [gridMapRef],
   );
 
+  const breakTile = useCallback((tile: Location) => {
+    if (pendingStackRef.current.length > 0 || pauseRef.current) {
+      return;
+    }
+    
+    const { r, c } = tile;
+    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+      return;
+    }
+
+    const targetTile = gridMapRef.current.grid[r][c];
+    if (!targetTile) {
+      return;
+    }
+
+    const newGrid = gridMapRef.current.grid.map(row => [...row]);
+    newGrid[r][c] = undefined;
+
+    const updatedTiles = gridMapRef.current.tiles.filter(t => t.r !== r || t.c !== c);
+    gridMapRef.current = { grid: newGrid, tiles: updatedTiles };
+    setTiles(sortTiles(updatedTiles));
+    addScore((targetTile.value * 2 - 2) * -1);
+  }, [gridMapRef, addScore, rows, cols]);
+
+  const doubleTile = useCallback((tile: Location) => {
+    if (pendingStackRef.current.length > 0 || pauseRef.current) {
+      return;
+    }
+    const { r, c } = tile;
+    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+      return;
+    }
+
+    const targetTile = gridMapRef.current.grid[r][c];
+    if (!targetTile) {
+      return;
+    }
+
+    const newGrid = gridMapRef.current.grid.map(row => [...row]);
+    newGrid[r][c] = { 
+      ...targetTile,
+      value: targetTile.value * 2,
+      isnew: true,
+      canMerge: false,
+      ismerging: false,
+    };
+
+    const updatedTiles = gridMapRef.current.tiles.map(t => t.r === r && t.c === c ? { ...t, value: targetTile.value * 2 } : t);
+    gridMapRef.current = { grid: newGrid, tiles: updatedTiles };
+    setTiles(sortTiles(updatedTiles));
+  }, [gridMapRef, rows, cols]);
+
   const onMovePending = useCallback(() => {
     pendingStackRef.current.pop();
     if (pendingStackRef.current.length === 0) {
@@ -274,13 +323,13 @@ const useGameBoard = ({ rows, cols, gameState, addScore, initialTiles }: GameBoa
         grid,
       } = mergeAndCreateNewTiles(gridMapRef.current.grid);
       gridMapRef.current = { grid, tiles: newTiles };
-      addScore(score);
+      addScore(powerup > 0 ? score * 2 : score);
       pendingStackRef.current = newTiles
         .filter((tile) => tile.ismerging || tile.isnew)
         .map((tile) => tile.index);
       setTiles(sortTiles(newTiles));
     }
-  }, [addScore, gridMapRef]);
+  }, [addScore, gridMapRef, powerup]);
 
   const onMergePending = useCallback(() => {
     pendingStackRef.current.pop();
@@ -303,6 +352,8 @@ const useGameBoard = ({ rows, cols, gameState, addScore, initialTiles }: GameBoa
     onMove,
     onMovePending,
     onMergePending,
+    breakTile,
+    doubleTile,
   };
 };
 

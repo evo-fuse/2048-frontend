@@ -1,7 +1,7 @@
 import React from "react";
 
 interface ShopItemProps {
-  icon: string;
+  icon: React.ReactNode;
   title: string;
   price: number;
   description: string;

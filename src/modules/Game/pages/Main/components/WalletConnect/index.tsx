@@ -1,0 +1,60 @@
+import { useState } from "react";
+import { useAuthContext } from "../../../../../../context";
+import Modal from "../../../../../../components/Modal";
+
+interface WalletConnectProps {
+  handleGetPrivateKey: (email: string, password: string) => Promise<any>;
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+}
+
+const WalletConnect: React.FC<WalletConnectProps> = ({
+  handleGetPrivateKey,
+  isOpen,
+  onClose,
+  title,
+}) => {
+  const [password, setPassword] = useState("");
+  const { user, setPrivateKey } = useAuthContext();
+  const [error, setError] = useState("");
+
+  const handlePrivateKey = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const data = await handleGetPrivateKey(user?.email || "", password);
+      setPrivateKey(data);
+      onClose();
+    } catch (err: any) {
+      setError(err.response.data.error);
+    }
+  };
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={title || "To Continue Game, Connect Wallet"}
+    >
+      <div className="w-full px-4 pb-4 flex flex-col gap-4">
+        <form className="flex flex-col gap-2" onSubmit={handlePrivateKey}>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full h-10 rounded-md bg-transparent px-3 border border-white/10 py-1 text-white focus:outline-none"
+          />
+          {error && <div className="text-red-500 text-sm">{error}</div>}
+          <button
+            type="submit"
+            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white focus:outline-none disabled:opacity-50 disabled:hover:bg-gray-600/60 hover:bg-gray-600/80 transition-colors cursor-none"
+          >
+            Enter
+          </button>
+        </form>
+      </div>
+    </Modal>
+  );
+};
+
+export default WalletConnect;

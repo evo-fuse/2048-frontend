@@ -1,4 +1,5 @@
 import React from "react";
+import { FaSpinner } from "react-icons/fa";
 
 interface GridUpgradeItemProps {
   icon: React.ReactNode;
@@ -10,6 +11,7 @@ interface GridUpgradeItemProps {
   userBalance: number;
   gridRows: number;
   gridCols: number;
+  loading: boolean;
 }
 
 export const GridUpgradeItem: React.FC<GridUpgradeItemProps> = ({
@@ -22,6 +24,7 @@ export const GridUpgradeItem: React.FC<GridUpgradeItemProps> = ({
   userBalance,
   gridRows,
   gridCols,
+  loading,
 }) => {
   const canAfford = userBalance >= price;
 
@@ -31,7 +34,7 @@ export const GridUpgradeItem: React.FC<GridUpgradeItemProps> = ({
         <div className="flex items-center gap-2">
           <h4 className="text-xl font-bold text-white">{title}</h4>
         </div>
-        <div className="text-white font-bold">{price} DWA</div>
+        <div className="text-white font-bold">{price} DWAT</div>
       </div>
 
       <div className="flex items-center gap-4">
@@ -66,17 +69,21 @@ export const GridUpgradeItem: React.FC<GridUpgradeItemProps> = ({
       <div className="flex items-center justify-end">
         <button
           className={`${
-            canAfford
-              ? "bg-white/20 hover:bg-white/30"
-              : "bg-gray-700"
+            canAfford ? "bg-white/20 hover:bg-white/30" : "bg-white/30 opacity-50"
           } 
-            text-white rounded px-6 py-2 transition-colors font-bold`}
+            text-white rounded px-6 py-2 transition-colors font-bold cursor-none`}
           onClick={onUpgrade}
           disabled={!canAfford}
         >
-          Upgrade
+          {loading ? (
+            <div className="flex items-center gap-2">
+              <FaSpinner className="animate-spin" /> Loading...
+            </div>
+          ) : (
+            "Upgrade"
+          )}
         </button>
       </div>
     </div>
   );
-}; 
+};

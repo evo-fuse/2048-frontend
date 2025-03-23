@@ -4,3 +4,6 @@ export * from "./MenuButton";
 export * from "./PrivateRoute";
 export * from "./Select";
 export * from "./Tab";
+export * from "./Modal";
+export * from "./PasswordInput";
+export * from "./Ribbon";

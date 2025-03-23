@@ -1,18 +1,14 @@
 import React, { FC, RefObject, useEffect, useRef, useState } from "react";
 import useArrowKeyPress from "../../hooks/useArrowKeyPress";
-import type { Tile } from "../../hooks/useGameBoard";
-import type { GameStatus } from "../../hooks/useGameState";
+import type { Location, Tile } from "../../hooks/useGameBoard";
 import useSwipe from "../../hooks/useSwipe";
 import { calcLocation, calcTileSize } from "../../utils/common";
 import { Vector } from "../../utils/types";
-import Box from "../Box";
 import Grid from "../Grid";
-import Notification from "../Notification";
 import TileComponent from "../Tile";
 
 export interface GameBoardProps {
   tiles?: Tile[];
-  gameStatus: GameStatus;
   rows: number;
   cols: number;
   boardSize: number;
@@ -20,12 +16,12 @@ export interface GameBoardProps {
   onMove: (dir: Vector) => void;
   onMovePending: () => void;
   onMergePending: () => void;
-  onCloseNotification: (currentStatus: GameStatus) => void;
+  breakTile: (tile: Location) => void;
+  doubleTile: (tile: Location) => void;
 }
 
 const GameBoard: FC<GameBoardProps> = ({
   tiles,
-  gameStatus,
   rows,
   cols,
   boardSize,
@@ -33,7 +29,8 @@ const GameBoard: FC<GameBoardProps> = ({
   onMove,
   onMovePending,
   onMergePending,
-  onCloseNotification,
+  breakTile,
+  doubleTile,
 }) => {
   const [{ width: tileWidth, height: tileHeight }, setTileSize] = useState(() =>
     calcTileSize(boardSize, rows, cols, spacing)
@@ -47,7 +44,7 @@ const GameBoard: FC<GameBoardProps> = ({
   }, [boardSize, cols, rows, spacing]);
 
   return (
-    <Box position="relative" ref={boardRef}>
+    <div className="relative" ref={boardRef}>
       <Grid
         width={boardSize}
         height={boardSize}
@@ -55,13 +52,8 @@ const GameBoard: FC<GameBoardProps> = ({
         cols={cols}
         spacing={spacing}
       />
-      <Box
-        position="absolute"
-        top={0}
-        left={0}
-        background="transparent"
-        blocksize="100%"
-        inlinesize="100%"
+      <div
+        className="absolute top-0 left-0 bg-transparent w-full h-full"
         onTransitionEnd={onMovePending}
         onAnimationEnd={onMergePending}
       >
@@ -75,16 +67,12 @@ const GameBoard: FC<GameBoardProps> = ({
             value={value}
             isnew={isnew}
             ismerging={ismerging}
+            breakTile={breakTile}
+            doubleTile={doubleTile}
           />
         ))}
-      </Box>
-      {(gameStatus === "win" || gameStatus === "lost") && (
-        <Notification
-          win={gameStatus === "win"}
-          onClose={() => onCloseNotification(gameStatus)}
-        />
-      )}
-    </Box>
+      </div>
+    </div>
   );
 };
 

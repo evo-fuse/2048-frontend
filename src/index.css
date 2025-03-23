@@ -248,3 +248,87 @@ button.confirm:disabled:hover,
 button.confirm:disabled:active {
   background: url('./assets/images/confirm.png') 0 0;
 }
+
+button.show-seed {
+  background: url('./assets/images/show seed phrase.png') 0 0;
+}
+
+button.show-seed:hover {
+  background: url('./assets/images/show seed phrase.png') 0 77px;
+}
+
+button.show-seed:active {
+  background: url('./assets/images/show seed phrase.png') 0 153px;
+}
+
+button.show-seed:disabled {
+  opacity: 0.5;
+}
+
+button.show-seed:disabled:hover,
+button.show-seed:disabled:active {
+  background: url('./assets/images/show seed phrase.png') 0 0;
+}
+
+button.show-private-key {
+  background: url('./assets/images/show private.png') 0 0;
+}
+
+button.show-private-key:hover {
+  background: url('./assets/images/show private.png') 0 77px;
+}
+
+button.show-private-key:active {
+  background: url('./assets/images/show private.png') 0 153px;
+}
+
+button.show-private-key:disabled {
+  opacity: 0.5;
+}
+
+button.show-private-key:disabled:hover,
+button.show-private-key:disabled:active {
+  background: url('./assets/images/show private.png') 0 0;
+}
+
+button.import-wallet {
+  background: url('./assets/images/import wallet.png') 0 0;
+}
+
+button.import-wallet:hover {
+  background: url('./assets/images/import wallet.png') 0 77px;
+}
+
+button.import-wallet:active {
+  background: url('./assets/images/import wallet.png') 0 153px;
+}
+
+button.import-wallet:disabled {
+  opacity: 0.5;
+}
+
+button.import-wallet:disabled:hover,
+button.import-wallet:disabled:active {
+  background: url('./assets/images/import wallet.png') 0 0;
+}
+
+button.get-started {
+  background: url('./assets/images/get started.png') 0 0;
+}
+
+button.get-started:hover {
+  background: url('./assets/images/get started.png') 0 133px;
+}
+
+button.get-started:active {
+  background: url('./assets/images/get started.png') 0 267px;
+}
+
+button.get-started:disabled {
+  opacity: 0.5;
+}
+
+button.get-started:disabled:hover,
+button.get-started:disabled:active {
+  background: url('./assets/images/get started.png') 0 0;
+}

@@ -1,6 +1,6 @@
 interface PasswordInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
-    label: string;
+    label?: string;
     error?: string;
   }
 

@@ -71,11 +71,9 @@ export const BNB: TToken = {
   icon: <img src={Images.BNB} className='w-8 h-8 rounded-full' />,
   name: 'bnb',
   balance: async (address: string) => {
-    console.log(address);
     const response = await axios.get(
       `${BASEURL.BNB}?module=account&action=balance&apikey=${API_KEY.BNB}&address=${address}`,
     );
-    console.log(response.data.result);
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
 };
@@ -106,7 +104,7 @@ export const PUSDT: TToken = {
   name: 'pusdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.POL}?module=account&action=balance&apikey=${API_KEY.POL}&contractaddress=${CONTRACT_ADDRESS.PUSDT}&address=${address}`,
+      `${BASEURL.POL}?module=account&action=tokenbalance&apikey=${API_KEY.POL}&contractaddress=${CONTRACT_ADDRESS.PUSDT}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -126,7 +124,7 @@ export const BUSDT: TToken = {
   name: 'busdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.BNB}?module=account&action=balance&apikey=${API_KEY.BNB}&contractaddress=${CONTRACT_ADDRESS.BUSDT}&address=${address}`,
+      `${BASEURL.BNB}?module=account&action=tokenbalance&apikey=${API_KEY.BNB}&contractaddress=${CONTRACT_ADDRESS.BUSDT}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -146,7 +144,7 @@ export const EUSDT: TToken = {
   name: 'eusdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ETH}?module=account&action=balance&apikey=${API_KEY.ETH}&contractaddress=${CONTRACT_ADDRESS.EUSDT}&address=${address}`,
+      `${BASEURL.ETH}?module=account&action=tokenbalance&apikey=${API_KEY.ETH}&contractaddress=${CONTRACT_ADDRESS.EUSDT}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -166,7 +164,7 @@ export const PUSDC: TToken = {
   name: 'pusdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.POL}?module=account&action=balance&apikey=${API_KEY.POL}&contractaddress=${CONTRACT_ADDRESS.PUSDC}&address=${address}`,
+      `${BASEURL.POL}?module=account&action=tokenbalance&apikey=${API_KEY.POL}&contractaddress=${CONTRACT_ADDRESS.PUSDC}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -186,7 +184,7 @@ export const BUSDC: TToken = {
   name: 'busdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.BNB}?module=account&action=balance&apikey=${API_KEY.BNB}&contractaddress=${CONTRACT_ADDRESS.BUSDC}&address=${address}`,
+      `${BASEURL.BNB}?module=account&action=tokenbalance&apikey=${API_KEY.BNB}&contractaddress=${CONTRACT_ADDRESS.BUSDC}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -206,7 +204,7 @@ export const EUSDC: TToken = {
   name: 'eusdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ETH}?module=account&action=balance&apikey=${API_KEY.ETH}&contractaddress=${CONTRACT_ADDRESS.EUSDC}&address=${address}`,
+      `${BASEURL.ETH}?module=account&action=tokenbalance&apikey=${API_KEY.ETH}&contractaddress=${CONTRACT_ADDRESS.EUSDC}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -226,7 +224,7 @@ export const AUSDT: TToken = {
   name: 'ausdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ARB}?module=account&action=balance&apikey=${API_KEY.ARB}&contractaddress=${CONTRACT_ADDRESS.AUSDT}&address=${address}`,
+      `${BASEURL.ARB}?module=account&action=tokenbalance&apikey=${API_KEY.ARB}&contractaddress=${CONTRACT_ADDRESS.AUSDT}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -246,7 +244,7 @@ export const AUSDC: TToken = {
   name: 'eusdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ARB}?module=account&action=balance&apikey=${API_KEY.ARB}&contractaddress=${CONTRACT_ADDRESS.AUSDC}&address=${address}`,
+      `${BASEURL.ARB}?module=account&action=tokenbalance&apikey=${API_KEY.ARB}&contractaddress=${CONTRACT_ADDRESS.AUSDC}&address=${address}`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },

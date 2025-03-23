@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PATH } from "../../../const";
-import { Images } from "../../../assets/images";
 import { useAuth, useClerk } from "@clerk/clerk-react";
 // CSS for 3D golden metallic text
 const goldMetallicStyle = {
@@ -17,13 +16,6 @@ const goldMetallicStyle = {
   filter: "drop-shadow(0 2px 2px rgba(0, 0, 0, 0.5))",
   fontWeight: "bold",
   letterSpacing: "2px",
-};
-
-const buttonStyle = {
-  backgroundImage: `url(${Images.Texture})`,
-  backgroundSize: "cover",
-  backgroundPosition: "top",
-  backgroundRepeat: "no-repeat",
 };
 
 export const IcoView: React.FC = () => {
@@ -82,8 +74,8 @@ export const IcoView: React.FC = () => {
           </motion.div>
           <div className="flex flex-col items-center gap-4">
             <motion.button
-              className="w-64 bg-gray-900 text-yellow-300 font-bold text-3xl px-4 py-2 rounded-md hover:bg-gray-700 transition-colors duration-300"
-              style={{ fontFamily: "Patrick Hand", ...buttonStyle }}
+              className="get-started w-[360px] h-[133px]"
+              style={{ fontFamily: "Patrick Hand" }}
               {...motionProps}
               onClick={() => {
                 if (isSignedIn) {
@@ -93,19 +85,17 @@ export const IcoView: React.FC = () => {
                 }
               }}
             >
-              <span style={{ fontFamily: "Patrick Hand" }}>Get Started</span>
             </motion.button>
             <motion.button
               onClick={handleClick}
-              className="w-64 bg-gray-900 text-yellow-300 font-bold text-3xl px-4 py-2 rounded-md hover:bg-gray-700 transition-colors duration-300"
-              style={{ fontFamily: "Patrick Hand", ...buttonStyle }}
+              className="back w-[360px] h-[133px]"
+              style={{ fontFamily: "Patrick Hand" }}
               {...motionProps}
               animate={{
                 ...motionProps.animate,
                 transition: { ...motionProps.animate.transition, delay: 0.2 },
               }}
             >
-              <span style={{ fontFamily: "Patrick Hand" }}>Back</span>
             </motion.button>
             <motion.div
               className="mt-8 text-3xl text-yellow-300"

@@ -11,7 +11,6 @@ export const ScreenView: React.FC = () => {
   const [isExiting, setIsExiting] = useState(false);
   useEffect(() => {
     window.electron?.getFullScreen().then((isFullScreen) => {
-      console.log("isFullScreen", isFullScreen);
       setFullScreen(isFullScreen);
     });
   }, []);

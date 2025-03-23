@@ -28,10 +28,18 @@ import USDC from "./images/token/usdc.png";
 import USDT from "./images/token/usdt.png";
 import WalletBg from "./images/wallet landing.png";
 import CREAT_WALLET from "./images/Create a new wallet.png";
-import IMPORT_WALLET from "./images/import an existing wallet.png";
+import IMPORT_AN_WALLET from "./images/import an existing wallet.png";
 import GET_STARTED from "./images/get started.png";
 import NEXT from "./images/next.png";
 import CONFIRM from "./images/confirm.png";
+import IMPORT_WALLET from "./images/import wallet.png";
+import SHOW_SEED from "./images/show seed phrase.png";
+import SHOW_PRIVATE_KEY from "./images/show private.png";
+import DWAT_2048 from "./images/dwat2048.png";
+import HAMMER from "./images/Hammer.png";
+import UPGRADE from "./images/Upgrade.png";
+import POWER_UP from "./images/Powerup.png";
+import TICK from "./images/tick.png";
 
 export const Images = {
   Logo,
@@ -64,8 +72,16 @@ export const Images = {
   USDT,
   WalletBg,
   CREAT_WALLET,
-  IMPORT_WALLET,
+  IMPORT_AN_WALLET,
   GET_STARTED,
   NEXT,
   CONFIRM,
+  SHOW_SEED,
+  SHOW_PRIVATE_KEY,
+  IMPORT_WALLET,
+  DWAT_2048,
+  HAMMER,
+  UPGRADE,
+  POWER_UP,
+  TICK,
 };

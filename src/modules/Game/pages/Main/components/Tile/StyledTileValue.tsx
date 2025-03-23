@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { pop, expand } from '../../utils/animation';
 import { getTileColor } from '../../utils/common';
-
 export interface StyledTileValueProps {
   isnew: boolean;
   ismerging: boolean;
@@ -16,7 +15,7 @@ const StyledTileValue = styled.div<StyledTileValueProps>`
   text-align: center;
   flex-direction: column;
   justify-content: center;
-  border-radius: ${({ theme }) => theme.borderradius};
+  border-radius: 12px;
   background-color: ${({ theme: { palette }, value }) =>
     palette[getTileColor(value)]};
   animation-name: ${({ ismerging, isnew }) =>
@@ -26,8 +25,6 @@ const StyledTileValue = styled.div<StyledTileValueProps>`
   color: ${({ theme: { palette }, value }) =>
     value > 4 ? palette.foreground : palette.primary};
   user-select: none;
-  box-shadow: inset 5px 5px 8px rgba(255, 255, 255, 1),
-              inset -5px -5px 8px rgba(0, 0, 0, 0.8);
   position: relative;
   
   &::before {
@@ -38,7 +35,6 @@ const StyledTileValue = styled.div<StyledTileValueProps>`
     right: 0;
     bottom: 0;
     border-radius: inherit;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
     z-index: -1;
   }
 `;

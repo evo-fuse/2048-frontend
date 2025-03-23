@@ -1,7 +1,7 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import Box from '../Box';
-import Text from '../Text';
-import StyledScore from './StyledScore';
+import { FC, useEffect, useRef, useState } from "react";
+import Text from "../Text";
+import StyledScore from "./StyledScore";
+import { useGameContext } from "../../../../context/GameContext";
 
 export interface ScoreBoardProps {
   title: string;
@@ -9,6 +9,7 @@ export interface ScoreBoardProps {
 }
 
 const ScoreBoard: FC<ScoreBoardProps> = ({ total, title }) => {
+  const { powerup } = useGameContext();
   const totalRef = useRef(total);
   const [score, setScore] = useState(() => total - totalRef.current);
 
@@ -18,23 +19,12 @@ const ScoreBoard: FC<ScoreBoardProps> = ({ total, title }) => {
   }, [total]);
 
   return (
-    <Box
-      margininline="s2"
-      paddingblock="s3"
-      inlinesize="92px"
-      background="secondary"
-      flexdirection="column"
-      position="relative"
-      justifycontent="center"
-      boxsizing="border-box"
-      variant="inner"
-      distance={2}
-    >
+    <div className={`${powerup > 0 ? "bg-orange-400/80": "bg-black/40"} relative border border-white/20 rounded-lg p-2 box-border flex flex-col items-center justify-center w-[92px] mx-2`}>
       <Text
         fontSize={12}
         texttransform="uppercase"
         fontWeight="bold"
-        color="tertiary"
+        color={powerup > 0 ? "white" : "tertiary"}
       >
         {title}
       </Text>
@@ -44,12 +34,16 @@ const ScoreBoard: FC<ScoreBoardProps> = ({ total, title }) => {
       {score > 0 && (
         // Assign a different key to let React render the animation from beginning
         <StyledScore key={total}>
-          <Text fontSize={18} fontWeight="bold" color="primary">
-            +{score}
+          <Text
+            fontSize={powerup > 0 ? 32 : 18}
+            fontWeight="bold"
+            color="white"
+          >
+            {score > 0 ? `+${score}` : score}
           </Text>
         </StyledScore>
       )}
-    </Box>
+    </div>
   );
 };
 

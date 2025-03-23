@@ -49,7 +49,7 @@ export interface StyledBoxProps {
   alignitems?: "center" | "start" | "end" | "stretch";
   background?: Color;
   borderradius?: Length;
-  variant?: "outer" | "inner";
+  variant?: "outer" | "inner" | "none";
   distance?: number;
 }
 
@@ -122,18 +122,6 @@ const StyledBox = styled.div<StyledBoxProps>`
     borderradius ?? theme.borderradius};
   color: ${({ theme: { palette } }) => palette.foreground};
   ${getBoxSizeStyles}
-  ${({ variant, distance = 5 }) =>
-    variant === "outer" &&
-    css`
-      box-shadow: inset ${distance}px ${distance}px 5px rgba(255, 255, 255, 1),
-        inset -${distance}px -${distance}px 5px rgba(0, 0, 0, 0.8);
-    `}
-  ${({ variant, distance = 5 }) =>
-    variant === "inner" &&
-    css`
-      box-shadow: inset -${distance}px -${distance}px 5px rgba(255, 255, 255, 1),
-        inset ${distance}px ${distance}px 5px rgba(0, 0, 0, 0.8);
-    `}
 `;
 
 export default StyledBox;

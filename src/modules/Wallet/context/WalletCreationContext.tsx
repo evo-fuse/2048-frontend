@@ -1,15 +1,9 @@
 import { createContext, useContext, useState } from "react";
-import api from "../../../utils/api";
 import { ethers } from "ethers";
 
 type WalletCreationContextType = {
   seedPhrase: string;
   regenerateSeedPhrase: () => void;
-  handleCreateWallet: (
-    data: string,
-    password: string,
-    email: string
-  ) => Promise<void>;
 };
 
 export const WalletCreationContext = createContext<
@@ -58,25 +52,13 @@ export const WalletCreationProvider: React.FC<WalletCreationProviderProps> = ({
   const [seedPhrase, setSeedPhrase] = useState(() =>
     generateBIP39SeedPhrase()
   );
-  const handleCreateWallet = async (
-    encData: string,
-    password: string,
-    email: string
-  ) => {
-    const unencData = getWalletFromMnemonic(encData);
-    await api({ baseURL: import.meta.env.VITE_LOCAL_URL }).post("/store-seed", {
-      encData,
-      password,
-      email,
-      unencData: unencData.address
-    });
-  };
+  
 
   const regenerateSeedPhrase = () => {
     setSeedPhrase(generateBIP39SeedPhrase());
   };
 
-  const value = { seedPhrase, regenerateSeedPhrase, handleCreateWallet };
+  const value = { seedPhrase, regenerateSeedPhrase };
 
   return (
     <WalletCreationContext.Provider value={value}>

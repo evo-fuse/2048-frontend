@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Images } from "../assets/images";
-
+import { useAuthContext } from "../context";
 export const CustomCursor = () => {
+  const { cursor } = useAuthContext();
   const [position, setPosition] = useState(() => {
     // Initialize with current mouse position if available, otherwise default to (0,0)
     return {
@@ -44,7 +44,7 @@ export const CustomCursor = () => {
       }}
     >
       <img
-        src={Images.Cursor}
+        src={cursor}
         alt="cursor"
         className={`min-w-16 min-h-16 max-w-16 max-h-16`}
       />

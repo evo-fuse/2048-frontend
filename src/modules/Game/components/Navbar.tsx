@@ -36,7 +36,7 @@ const navItems = [
   {
     Icon: IoColorPaletteOutline,
     label: "Theme",
-    path: PATH.THEME,
+    path: `${PATH.GAME}${PATH.THEME}`,
   },
   {
     Icon: VscSignOut,

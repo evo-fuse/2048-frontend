@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
-import { MAX_SCALE, MIN_SCALE } from '../../utils/constants';
-import Box from '../Box';
-import Button from '../Button';
-import Text from '../Text';
+import React, { FC } from "react";
+import { MAX_SCALE, MIN_SCALE } from "../../utils/constants";
+import Box from "../Box";
+import Text from "../Text";
+import { useAuthContext } from "../../../../../../context";
+import { ControlButton } from "./ControlButton";
 
 export interface ControlProps {
   rows: number;
@@ -18,68 +19,66 @@ const Control: FC<ControlProps> = ({
   onReset,
   onChangeRow,
   onChangeCol,
-}) => (
-  <Box inlinesize="100%" justifycontent="space-between">
-    <Button onClick={onReset}>
-      <Text fontSize={16} texttransform="capitalize">
-        new game
-      </Text>
-    </Button>
-    <Box>
-      <Box margininlineend="s6" flexdirection="column">
-        <Text texttransform="uppercase" fontSize={13} color="primary">
-          rows
+}) => {
+  const { user } = useAuthContext();
+  return (
+    <Box inlinesize="100%" justifycontent="space-between">
+      <button
+        className="bg-gray-800/40 hover:bg-gray-300/20 transition border border-white/10 rounded-lg p-2"
+        onClick={onReset}
+      >
+        <Text fontSize={16} texttransform="capitalize">
+          new game
         </Text>
-        <Box padding="s2">
-          <Button
-            mini
-            onClick={() => onChangeRow(-1)}
-            disable={rows === MIN_SCALE}
-          >
-            -
-          </Button>
-          <Box margininline="s3">
-            <Text fontSize={16} color="primary">
-              {rows}
-            </Text>
+      </button>
+      <Box>
+        <Box margininlineend="s6" flexdirection="column">
+          <Text texttransform="uppercase" fontSize={13} color="white">
+            rows
+          </Text>
+          <Box padding="s2">
+            <ControlButton
+              value="-"
+              onClick={() => onChangeRow(-1)}
+              disabled={rows === MIN_SCALE}
+            />
+            <Box margininline="s3">
+              <Text fontSize={16} color="white">
+                {rows}
+              </Text>
+            </Box>
+            <ControlButton
+              value="+"
+              onClick={() => onChangeRow(1)}
+              disabled={rows === MAX_SCALE || rows === user?.rows}
+            />
           </Box>
-          <Button
-            mini
-            onClick={() => onChangeRow(1)}
-            disable={rows === MAX_SCALE}
-          >
-            +
-          </Button>
         </Box>
-      </Box>
-      <Box flexdirection="column">
-        <Text texttransform="uppercase" fontSize={13} color="primary">
-          cols
-        </Text>
-        <Box padding="s2">
-          <Button
-            mini
-            onClick={() => onChangeCol(-1)}
-            disable={cols === MIN_SCALE}
-          >
-            -
-          </Button>
-          <Box margininline="s3">
-            <Text fontSize={16} color="primary">
-              {cols}
-            </Text>
+        <Box flexdirection="column">
+          <Text texttransform="uppercase" fontSize={13} color="white">
+            cols
+          </Text>
+          <Box padding="s2">
+            <ControlButton
+              value="-"
+              onClick={() => onChangeCol(-1)}
+              disabled={cols === MIN_SCALE}
+            />
+            <Box margininline="s3">
+              <Text fontSize={16} color="white">
+                {cols}
+              </Text>
+            </Box>
+            <ControlButton
+              value="+"
+              onClick={() => onChangeCol(1)}
+              disabled={cols === MAX_SCALE || cols === user?.cols}
+            />
           </Box>
-          <Button
-            mini
-            onClick={() => onChangeCol(1)}
-            disable={cols === MAX_SCALE}
-          >
-            +
-          </Button>
         </Box>
       </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 export default React.memo(Control);

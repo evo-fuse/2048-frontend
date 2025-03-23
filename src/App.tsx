@@ -13,6 +13,8 @@ import { PATH } from "./const";
 import { CustomCursor } from "./components";
 import { AuthProvider } from "./context";
 import { ImageLoadProvider, useImageLoad } from "./context";
+import { Web3Provider } from "./context/Web3Context";
+import { ToastContainer } from "react-toastify";
 
 // Define the electronAPI interface
 declare global {
@@ -32,7 +34,7 @@ declare global {
 // Loading component to show while images are loading
 const LoadingScreen = () => {
   const { loadedCount, totalImages } = useImageLoad();
-  
+
   return (
     <div className="w-full h-full flex flex-col items-start justify-end overflow-hidden gap-4">
       <span className="text-3xl font-bold pl-8">Loading...</span>
@@ -47,14 +49,14 @@ const LoadingScreen = () => {
 // Main application content
 const AppContent = () => {
   const { loading } = useImageLoad();
-  
+
   return (
-    <>
-      <CustomCursor />
-      {loading ? (
-        <LoadingScreen />
-      ) : (
-        <AuthProvider>
+    <AuthProvider>
+      <Web3Provider>
+        <CustomCursor />
+        {loading ? (
+          <LoadingScreen />
+        ) : (
           <BrowserRouter>
             <Routes>
               <Route path={PATH.HOME} element={<HomePage />} />
@@ -71,9 +73,16 @@ const AppContent = () => {
               />
             </Routes>
           </BrowserRouter>
-        </AuthProvider>
-      )}
-    </>
+        )}
+        <ToastContainer
+          autoClose={150000}
+          theme="dark"
+          position="bottom-right"
+          toastStyle={{ backgroundColor: "#00000066", color: "#fff", cursor: "none" }}
+          closeOnClick
+        />
+      </Web3Provider>
+    </AuthProvider>
   );
 };
 

@@ -1,7 +1,7 @@
-import React, { FC, useMemo } from 'react';
-import { createIndexArray } from '../../utils/common';
-import StyledCell from './StyledCell';
-import StyledGrid, { StyledGridProps } from './StyledGrid';
+import React, { FC, useMemo } from "react";
+import { createIndexArray } from "../../utils/common";
+import StyledCell from "./StyledCell";
+import { StyledGridProps } from "./StyledGrid";
 
 export type GridProps = StyledGridProps;
 
@@ -12,15 +12,20 @@ const Grid: FC<GridProps> = ({ width, height, rows, cols, spacing }) => {
   }, [rows, cols]);
 
   return (
-    <StyledGrid
-      width={width}
-      height={height}
-      rows={rows}
-      cols={cols}
-      spacing={spacing}
+    <div
+      className="bg-black/20 border-8 border-transparent"
+      style={{
+        width: width,
+        height: height,
+        gridTemplateRows: `repeat(${rows}, 1fr)`,
+        gridTemplateColumns: `repeat(${cols}, 1fr)`,
+        gridGap: `${spacing}px`,
+        display: "grid",
+        borderRadius: "14px",
+      }}
     >
       {Cells}
-    </StyledGrid>
+    </div>
   );
 };
 
