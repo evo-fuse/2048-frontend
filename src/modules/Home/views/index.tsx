@@ -66,15 +66,19 @@ export const HomeView: React.FC = () => {
               />
             </motion.div>
             <motion.div className="flex flex-col w-full h-full items-end justify-end pb-8 pr-[448px]">
-              <motion.img
-                src={Images.ICOLogo} // Use Images constant
+              <motion.div
                 onClick={() => handleMenuClick(PATH.ICO)}
-                initial={{ opacity: 0, x: 0, rotate: 270, transition: { duration: 1, type: "spring" } }}
-                animate={{ opacity: 0.8, x: 0, rotate: 0, transition: { duration: 1, type: "spring" } }}
-                exit={{ opacity: 0, x: 0, rotate: 180, transition: { duration: 1, type: "spring" } }}
-                whileHover={{ opacity: 1, scale: 1.05, transition: { duration: 0.5, type: "spring" } }}
-                className="w-60 h-60 gap-4 text-yellow-300"
-              />
+                whileHover={{ scale: 1.05, transition: { duration: 0.5, type: "spring" } }}
+                className="w-60 h-60 flex items-center justify-center relative z-10"
+              >
+                <motion.img
+                  src={Images.ICOLogo}
+                  initial={{ opacity: 0, x: 0, rotate: 270, transition: { duration: 1, type: "spring" } }}
+                  animate={{ opacity: 0.8, x: 0, rotate: 0, transition: { duration: 1, type: "spring" } }}
+                  exit={{ opacity: 0, x: 0, rotate: 180, transition: { duration: 1, type: "spring" } }}
+                  className="w-full h-full text-yellow-300"
+                />
+              </motion.div>
             </motion.div>
           </>
         )}

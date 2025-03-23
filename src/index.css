@@ -16,6 +16,10 @@ button {
 
 * {
   cursor: none;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
 }
 
 span {
@@ -331,4 +335,24 @@ button.get-started:disabled {
 button.get-started:disabled:hover,
 button.get-started:disabled:active {
   background: url('./assets/images/get started.png') 0 0;
+}
+
+/* Prevent image dragging */
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+/* Allow selection in specific input elements if needed */
+input[type="text"],
+input[type="password"],
+textarea {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
 }
