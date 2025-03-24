@@ -61,12 +61,12 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
   return (
     <div
       className={`w-full flex items-center justify-start gap-4 px-8 py-2 transition-colors ${
-        checked ? "bg-gray-600/50" : "hover:bg-gray-600/50"
+        checked ? "bg-[#FB923C]/10" : "hover:bg-gray-600/50"
       }`}
       onClick={navigate}
     >
-      <Icon size={24} className="text-white" />
-      <span className="text-white text-xl font-bold">{label}</span>
+      <Icon size={24} className={`${checked ? "text-[#FB923C]" : "text-white"}`} />
+      <span className={`${checked ? "text-[#FB923C]" : "text-white"} text-xl font-bold`}>{label}</span>
     </div>
   );
 };

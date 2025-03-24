@@ -6,6 +6,7 @@ import { useWeb3Context } from "../../../../../context/Web3Context";
 import { GridTabPanel } from "./GridTabPanel";
 import { ItemsTabPanel } from "./ItemsTabPanel";
 import { ThemesTabPanel } from "./ThemesTabPanel";
+import { Images } from "../../../../../assets/images";
 
 export const ShopView: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState("Grid");
@@ -47,7 +48,7 @@ export const ShopView: React.FC = () => {
         <div className="flex justify-between items-center px-4 py-2 bg-gray-800/50 border-b border-white/10">
           <h2 className="text-xl font-bold text-white">Shop</h2>
           <div className="flex items-center gap-2">
-            <span>💰</span>
+            <img src={Images.DWAT} className="w-6 h-6 rounded-full" />
             <span className="text-white font-bold">{userBalance} DWAT</span>
           </div>
         </div>

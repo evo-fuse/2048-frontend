@@ -160,7 +160,7 @@ export const WalletView: React.FC = () => {
             className="w-full flex items-center justify-between bg-gray-800/60 p-4 rounded-lg border border-white/10 shadow-md relative z-10"
           >
             <div className="flex items-center gap-3">
-              {tokenList[mainNet].native.icon}
+              <img src={Images.DWAT} className="w-8 h-8 rounded-full" />
               <span className="text-white text-lg">
                 DWAT
               </span>

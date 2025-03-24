@@ -75,10 +75,11 @@ const AppContent = () => {
           </BrowserRouter>
         )}
         <ToastContainer
-          autoClose={150000}
+          autoClose={4500}
           theme="dark"
           position="bottom-right"
-          toastStyle={{ backgroundColor: "#00000066", color: "#fff", cursor: "none" }}
+          icon={false}
+          toastStyle={{ backgroundColor: "#00000066", color: "#fff", cursor: "none", width: "360px" }}
           closeOnClick
         />
       </Web3Provider>

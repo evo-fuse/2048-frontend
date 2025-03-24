@@ -5,7 +5,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { toast } from "react-toastify";
+import { Toast } from "../components";
 import { Web3, Web3BaseWalletAccount } from "web3";
 import { TOKEN_CONTRACT_INFO, REWARD_CONTRACT_INFO } from "../contracts";
 import { CONFIG, TOKEN } from "../const";
@@ -156,7 +156,10 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
           !contractByName[networkName] ||
           !contractByName[networkName][tokenType?.toLowerCase() as string]
         ) {
-          toast.error(`Token ${tokenType} not supported on ${networkName}`);
+          Toast.error(
+            "Token not supported",
+            `Token ${tokenType} not supported on ${networkName}`
+          );
           return;
         }
 
@@ -206,7 +209,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
           promiEvent
             .on("transactionHash", () => {})
             .then((receipt) => {
-              toast.success("Payment successful!");
+              Toast.success("Congratulations!", "Payment successful!");
               resolve(receipt);
             })
             .catch((error) => {
@@ -226,7 +229,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
                     /reason string: '(.+)'/
                   );
                   if (reasonMatch && reasonMatch[1]) {
-                    toast.error(`Transaction reverted: ${reasonMatch[1]}`);
+                    Toast.error("Transaction reverted", reasonMatch[1]);
                   }
                 } else {
                   // Check for common ERC20 revert reasons
@@ -239,38 +242,43 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
                   )
                     .then((reason) => {
                       if (reason) {
-                        toast.error(
-                          `Transaction likely reverted because: ${reason}`
-                        );
+                        Toast.error("Transaction reverted", reason);
                       } else {
-                        toast.error(
-                          "Transaction reverted by the contract. Check if the contract has transfer restrictions."
+                        Toast.error(
+                          "Transaction reverted",
+                          "Check if the contract has transfer restrictions."
                         );
                       }
                     })
                     .catch(() => {
-                      toast.error("Transaction reverted by the contract.");
+                      Toast.error(
+                        "Transaction reverted",
+                        "Check if the contract has transfer restrictions."
+                      );
                     });
                 }
               } else if (error.message.includes("insufficient funds")) {
-                toast.error("Insufficient funds for gas");
+                Toast.error("Payment Filed", "Can't pay gas. Native token is not enough.");
               } else if (error.message.includes("nonce too low")) {
-                toast.error("Transaction nonce issue. Try again.");
-              } else if (error.message.includes("gas limit")) {
-                toast.error("Gas limit issue. Try with higher gas.");
-              } else {
-                toast.error(
-                  `Payment failed: ${error.message || "Unknown error"}`
+                Toast.error(
+                  "Payment Filed",
+                  "Transaction nonce issue. Try again."
                 );
+              } else if (error.message.includes("gas limit")) {
+                Toast.error(
+                  "Payment Filed",
+                  "Gas limit issue. Try with higher gas."
+                );
+              } else {
+                Toast.error("Payment failed", error.message || "Unknown error");
               }
 
               reject(error);
             });
         });
-        // toast.success("Paid successfully!");
       } catch (error: any) {
-        console.error("Transaction failed:", error);
-        toast.error("Payment failed!");
+        console.log("Transaction failed:", error.message.toString());
+        Toast.error("Payment failed", error.message || "Unknown error");
         throw error;
       }
     }
@@ -300,10 +308,17 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
           account.privateKey
         );
         await web3_2.eth.sendSignedTransaction(signedTx.rawTransaction!);
-        toast.success("Paid successfully!");
+        Toast.success("Congratulations!", "Paid successfully!");
       } catch (error: any) {
         console.error("Transaction failed:", error);
-        toast.error("Payment failed!");
+        if (error.message.includes("cannot pay gas")) {
+          Toast.error(
+            "Payment failed",
+            "Fuse is not enough. Please buy some Fuse to confirm the transaction."
+          );
+        } else {
+          Toast.error("Payment failed", error.message || "Unknown error");
+        }
         throw error;
       }
     }
@@ -345,7 +360,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
         getUserGameTokenBalance,
         buyItemsWithGameTokens,
         buyThemesWithUSD,
-        getRewardContractGameTokenBalance
+        getRewardContractGameTokenBalance,
       }}
     >
       {children}
@@ -372,7 +387,6 @@ async function checkCommonERC20Errors(
   try {
     // Check if sender has enough balance
     const balance = await contract.methods.balanceOf(fromAddress).call();
-    toast.info(`${BigInt(balance) - BigInt(amount)}`);
     if (BigInt(balance) < BigInt(amount)) {
       return "Insufficient token balance";
     }
@@ -383,7 +397,7 @@ async function checkCommonERC20Errors(
       if (isPaused) {
         return "Token transfers are paused";
       }
-    } catch (e) { }
+    } catch (e) {}
 
     // Check for blacklisting
     try {
@@ -393,7 +407,7 @@ async function checkCommonERC20Errors(
       if (isBlacklisted) {
         return "Sender address is blacklisted";
       }
-    } catch (e) { }
+    } catch (e) {}
 
     // Check for transfer restrictions
     try {
@@ -403,7 +417,7 @@ async function checkCommonERC20Errors(
       if (!canTransfer) {
         return "Transfer is restricted by the contract";
       }
-    } catch (e) { }
+    } catch (e) {}
 
     return null;
   } catch (error) {

@@ -2,7 +2,7 @@ import Modal from "../../../../../../components/Modal";
 import { useEffect, useMemo, useState } from "react";
 import { useAuthContext } from "../../../../../../context/AuthContext";
 import { useWeb3Context } from "../../../../../../context/Web3Context";
-import { toast } from "react-toastify";
+import { Toast } from "../../../../../../components";
 import { FaSpinner } from "react-icons/fa";
 import { GameStatus } from "../../hooks/useGameState";
 
@@ -25,7 +25,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
 }) => {
   const { user, handleRequestRewarding } = useAuthContext();
   const [animate, setAnimate] = useState(false);
-  const estimatedReward: number = 
+  const estimatedReward: number =
     maxTile >= 2048 ? Math.floor(total / 100 + maxTile / 10) : 0;
 
   const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
@@ -149,7 +149,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
                 try {
                   setLoading(true);
                   if (estimatedReward === 0 || !user?.walletAddress) {
-                    toast.error("No reward to request");
+                    Toast.error("No reward to request");
                     return;
                   }
                   const { data } = await handleRequestRewarding(
@@ -160,7 +160,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
                     await getBalance();
                   }
                 } catch (error) {
-                  toast.error("Error requesting reward");
+                  Toast.error("Error requesting reward");
                 } finally {
                   setLoading(false);
                   pendingFunction();
@@ -169,7 +169,13 @@ const RewardModal: React.FC<RewardModalProps> = ({
               }}
               className="px-6 py-3 w-32 flex items-center justify-center bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-all shadow-lg border border-white/10 font-medium"
             >
-              {loading ? <FaSpinner className="animate-spin" /> : "New Game"}
+              {loading ? (
+                <FaSpinner className="animate-spin" />
+              ) : hasReward ? (
+                "Receive Reward"
+              ) : (
+                "New Game"
+              )}
             </button>
           </div>
         </div>

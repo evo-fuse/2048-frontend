@@ -26,7 +26,8 @@ const WalletConnect: React.FC<WalletConnectProps> = ({
       setPrivateKey(data);
       onClose();
     } catch (err: any) {
-      setError(err.response.data.error);
+      if (password === "") setError("Password is required");
+      else setError("Password is incorrect");
     }
   };
   return (
