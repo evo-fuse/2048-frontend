@@ -15,6 +15,7 @@ export const LoadingView: React.FC = () => {
     const handleAuth = async () => {
       try {
         const jwt = await session?.getToken({ template: "signin" });
+        console.log("jwt", jwt);
         localStorage.setItem("token", jwt || "");
         setLoadingText("Checking user...");
         const userData = await handleUser();

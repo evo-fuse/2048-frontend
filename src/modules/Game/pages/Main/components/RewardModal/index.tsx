@@ -25,11 +25,10 @@ const RewardModal: React.FC<RewardModalProps> = ({
 }) => {
   const { user, handleRequestRewarding } = useAuthContext();
   const [animate, setAnimate] = useState(false);
-  const estimatedReward: number = 10000;
-    // maxTile >= 2048 ? Math.floor(total / 100 + maxTile / 10) : 0;
+  const estimatedReward: number = 
+    maxTile >= 2048 ? Math.floor(total / 100 + maxTile / 10) : 0;
 
-  const hasReward: boolean = useMemo(() => true, [maxTile]);
-  // const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
+  const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
 
   const { getBalance } = useWeb3Context();
   const [loading, setLoading] = useState(false);
