@@ -12,10 +12,12 @@ export const CheckBox: React.FC<CheckBoxProps> = ({
   size,
 }) => {
   return (
-    <img
-      src={isOpen ? Images.Check : Images.Uncheck}
-      onClick={onToggle}
-      width={size}
-    />
+    <div onClick={onToggle} className="cursor-none">
+      <img
+        src={isOpen ? Images.Check : Images.Uncheck}
+        alt="check"
+        width={size}
+      />
+    </div>
   );
 };
