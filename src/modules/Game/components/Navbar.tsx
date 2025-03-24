@@ -88,7 +88,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="min-w-64 h-full bg-gray-600/50 backdrop-blur-md flex flex-col items-center justify-start py-8 gap-4">
+    <div className="min-w-72 h-full bg-gray-600/50 backdrop-blur-md flex flex-col items-center justify-start py-8 gap-4">
       <img src={Images.Logo} alt="Logo" className="w-64" />
       <div className="flex flex-col w-full">
         <div className="w-full flex items-center justify-start gap-4 px-8 py-2">
