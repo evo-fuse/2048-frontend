@@ -49,18 +49,6 @@ div {
   cursor: default;
 } */
 
-button.menu {
-  background: url('button.png') 0 0;
-}
-
-button.menu:hover {
-  background: url('button.png') 0 90px;
-}
-
-button.menu:active {
-  background: url('button.png') 0 180px;
-}
-
 button.start {
   background: url('./assets/images/start.png') 0 0;
 }

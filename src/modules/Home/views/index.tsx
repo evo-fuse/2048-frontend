@@ -89,7 +89,7 @@ export const HomeView: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/70"
+            className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/70 z-30"
           >
             <img src={Images.Texture} className="fixed w-[690px] h-[430px] z-10" />
             <div className="fixed flex flex-col z-30 items-center justify-center gap-8">

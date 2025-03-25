@@ -1,92 +1,194 @@
-const { app, BrowserWindow, ipcMain } = require('electron');
-const path = require('path');
-const isDev = require('electron-is-dev');
-const url = require('url');
+const { app, BrowserWindow, ipcMain, dialog } = require("electron");
+const path = require("path");
+const kill = require("tree-kill");
+const { execFile } = require("child_process");
+const fs = require("fs");
 
+let node;
 let mainWindow;
 
-function createWindow() {
-  console.log('Creating browser window');
-  console.log('Preload path:', path.join(__dirname, 'preload.js'));
-  
-  // Create the browser window
-  mainWindow = new BrowserWindow({
-    width: 1616,
-    height: 965,
-    resizable: false,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      preload: path.join(__dirname, 'preload.js')
-    },
-    // Show loading screen immediately
-    backgroundColor: '#6B7280', // Dark background color
-    show: false // Don't show until ready
-  });
+function runNode() {
+  return new Promise((resolve, reject) => {
+    // Determine the correct path for local.exe based on whether we're in development or production
+    let exePath;
 
-  const startUrl = "http://localhost:5173" || url.format({
-    pathname: path.join(__dirname, '../build/index.html'),
-    protocol: 'file:',
-    slashes: true
-  });
-  
-  console.log('Loading URL:', startUrl);
-  mainWindow.loadURL(startUrl);
-  
-  // Create a loading screen
-  let loadingScreen = new BrowserWindow({
-    width: 1600,
-    height: 900,
-    frame: false,
-    transparent: true,
-    alwaysOnTop: true,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true
+    if (app.isPackaged) {
+      // In production, look in the resources directory
+      exePath = path.join(process.resourcesPath, "local.exe");
+    } else {
+      // In development, look in the project root
+      exePath = path.join(__dirname, "..", "local.exe");
     }
-  });
-  
-  loadingScreen.loadFile(path.join(__dirname, 'loading.html'));
-  loadingScreen.center();
-  
-  // Once the main window is ready, show it and close the loading screen
-  mainWindow.once('ready-to-show', () => {
-    setTimeout(() => {
-      mainWindow.show();
-      if (loadingScreen) {
-        loadingScreen.close();
-        loadingScreen = null;
-      }
-    }, 500); // Small delay to ensure everything is rendered
-  });
 
-  mainWindow.on('closed', () => {
-    mainWindow = null;
+    // Check if the file exists
+    if (!fs.existsSync(exePath)) {
+      console.error(`Error: local.exe not found at ${exePath}`);
+      dialog.showErrorBox(
+        "Application Error",
+        `Required file local.exe not found at ${exePath}`
+      );
+      reject(new Error(`local.exe not found at ${exePath}`));
+      return;
+    }
+
+    console.log(`Starting local.exe from: ${exePath}`);
+
+    node = execFile(
+      exePath,
+      [],
+      {
+        windowsHide: true,
+        shell: true,
+      },
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error("Error running local.exe:", error);
+          reject(error);
+        }
+        if (stdout) console.log("local.exe stdout:", stdout);
+        if (stderr) console.error("local.exe stderr:", stderr);
+      }
+    );
+
+    setTimeout(function () {
+      resolve();
+    }, 1000);
   });
 }
 
-app.on('ready', createWindow);
+function killNode() {
+  if (node && node.pid) {
+    try {
+      kill(node.pid);
+    } catch (err) {
+      console.error("Error killing node process:", err);
+    }
+  }
+}
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
+function createWindow() {
+  console.log("Starting application...");
+
+  runNode()
+    .then(() => {
+      console.log("Creating browser window");
+      console.log("Preload path:", path.join(__dirname, "preload.js"));
+
+      // Create the browser window
+      mainWindow = new BrowserWindow({
+        width: 1616,
+        height: 965,
+        resizable: false,
+        webPreferences: {
+          nodeIntegration: false,
+          contextIsolation: true,
+          preload: path.join(__dirname, "preload.js"),
+        },
+        backgroundColor: "#6B7280",
+        show: false,
+      });
+
+      const startUrl = "https://app.kingoverroad.org";
+
+      console.log("Loading URL:", startUrl);
+      mainWindow.loadURL(startUrl);
+
+      // Create a loading screen
+      let loadingScreen = new BrowserWindow({
+        width: 1600,
+        height: 900,
+        frame: false,
+        transparent: true,
+        alwaysOnTop: true,
+        webPreferences: {
+          nodeIntegration: false,
+          contextIsolation: true,
+        },
+      });
+
+      loadingScreen.loadFile(path.join(__dirname, "loading.html"));
+      loadingScreen.center();
+
+      // Once the main window is ready, show it and close the loading screen
+      mainWindow.once("ready-to-show", () => {
+        setTimeout(() => {
+          mainWindow.show();
+          if (loadingScreen) {
+            loadingScreen.close();
+            loadingScreen = null;
+          }
+        }, 500);
+      });
+
+      mainWindow.on("closed", () => {
+        mainWindow = null;
+      });
+
+      // For debugging
+      mainWindow.webContents.on(
+        "did-fail-load",
+        (event, errorCode, errorDescription) => {
+          console.error("Failed to load:", errorCode, errorDescription);
+          dialog.showErrorBox(
+            "Loading Error",
+            `Failed to load the application: ${errorDescription}`
+          );
+        }
+      );
+
+      mainWindow.webContents.session.setCertificateVerifyProc(
+        (request, callback) => {
+          try {
+            // Make sure requestUrl exists before trying to parse it
+            callback(0); // Accept certificate
+          } catch (error) {
+            console.error("Error in certificate verification:", error);
+            // If URL parsing fails, use default verification
+            callback(-3);
+          }
+        }
+      );
+    })
+    .catch((err) => {
+      console.error("Failed to start application:", err);
+      dialog.showErrorBox(
+        "Application Error",
+        `Failed to start the application: ${err.message}`
+      );
+      app.quit();
+    });
+}
+
+app.on("ready", createWindow);
+
+app.on("window-all-closed", () => {
+  killNode();
+  if (process.platform !== "darwin") {
     app.quit();
   }
 });
 
-app.on('activate', () => {
+app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
   }
 });
 
-ipcMain.on('close-app', () => {
+app.on("quit", () => {
+  killNode();
+});
+
+ipcMain.on("close-app", () => {
+  killNode();
   app.quit();
 });
 
-ipcMain.on('toggle-full-screen', () => {
-  mainWindow.setFullScreen(!mainWindow.isFullScreen());
+ipcMain.on("toggle-full-screen", () => {
+  if (mainWindow) {
+    mainWindow.setFullScreen(!mainWindow.isFullScreen());
+  }
 });
 
-ipcMain.handle('get-full-screen', () => {
-  return mainWindow.isFullScreen();
+ipcMain.handle("get-full-screen", () => {
+  return mainWindow ? mainWindow.isFullScreen() : false;
 });
