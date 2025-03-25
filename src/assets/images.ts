@@ -40,6 +40,7 @@ import HAMMER from "./images/Hammer.png";
 import UPGRADE from "./images/Upgrade.png";
 import POWER_UP from "./images/Powerup.png";
 import TICK from "./images/tick.png";
+import DWAT from "./images/token_logo.png";
 
 export const Images = {
   Logo,
@@ -84,4 +85,5 @@ export const Images = {
   UPGRADE,
   POWER_UP,
   TICK,
+  DWAT,
 };
