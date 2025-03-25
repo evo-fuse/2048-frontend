@@ -6,9 +6,8 @@ import { Images } from "../../../assets/images";
 
 // List of contributors
 const CONTRIBUTORS = [
-  { role: "Product Manager", name: "Joseph Roque" },
-  { role: "Lead Developer", name: "Jane Smith" },
-  { role: "UI/UX Designer", name: "Alex Johnson" },
+  { role: "Product Manager", name: "Brad Smith" },
+  { role: "UI/UX Designer", name: "Thanh Vu" },
   { role: "Backend Engineer", name: "Michael Chen" },
   { role: "Frontend Developer", name: "Sarah Williams" },
   { role: "QA Engineer", name: "David Rodriguez" },
@@ -22,7 +21,7 @@ const CONTRIBUTORS = [
   { role: "Marketing", name: "Noah Anderson" },
   { role: "Community Manager", name: "Isabella Moore" },
   { role: "Producer", name: "William Jackson" },
-  { role: "UI/UX Designer", name: "Thanh Vu" },
+  { role: "Creative Director", name: "Elena Rodriguez" },
 ];
 
 // CSS for 3D golden metallic text
