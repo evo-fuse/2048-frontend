@@ -41,7 +41,6 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
         body: (
           <ShowPrivateKey
             handleGetPrivateKey={handleGetPrivateKey}
-            email={user?.email || ""}
             onClose={onClose}
           />
         ),
@@ -51,7 +50,6 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
         body: (
           <ShowSeed
             handleGetSeed={handleGetSeed}
-            email={user?.email || ""}
             onClose={onClose}
           />
         ),

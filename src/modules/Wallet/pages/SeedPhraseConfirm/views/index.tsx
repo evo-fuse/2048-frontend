@@ -11,9 +11,8 @@ import { useAuthContext } from "../../../../../context";
 import { usePassword } from "../../../../../hooks";
 
 export const SeedPhraseConfirmView: React.FC = () => {
-  const { handleCreateWallet } = useAuthContext();
+  const { handleCreateWallet, signupUser, setUser } = useAuthContext();
   const { seedPhrase } = useWalletCreationContext();
-  const { user } = useAuthContext();
   const seedArray = useMemo(() => seedPhrase.split(" "), []);
   const navigate = useNavigate();
   const [checkSeeds, setCheckSeeds] = useState<Record<number, string>>({});
@@ -114,8 +113,11 @@ export const SeedPhraseConfirmView: React.FC = () => {
             handleCreateWallet(
               seedPhrase,
               pwd.password.value,
-              user?.email || ""
-            ).then(() => {
+            ).then(async (walletData) => {
+              const data = await signupUser(walletData.address);
+              setUser({
+                ...data,
+              });
               navigate(PATH.GAME);
             })
           }

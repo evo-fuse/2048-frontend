@@ -40,7 +40,7 @@ export const HomeView: React.FC = () => {
               <motion.img
                 exit={{ opacity: 0, y: -200 }}
                 src={Images.Logo} // Use Images constant
-                className="max-w-[540px]"
+                className="max-w-[540px] translate-x-[2px]"
               />
               <MenuButton
                 text="start"

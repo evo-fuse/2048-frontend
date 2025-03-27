@@ -1,6 +1,7 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import api from "../../../utils/api";
 import { Theme } from "../../../types";
+import { useOpen } from "../../../hooks";
 
 interface GameContextType {
   initialSetup: boolean;
@@ -15,6 +16,9 @@ interface GameContextType {
   setSelectedTheme: (value: Theme | "Basic") => void;
   getThemes: () => Promise<Theme[]>;
   setThemes: (value: Theme[]) => void;
+  isOpenWalletConnect: boolean;
+  onOpenWalletConnect: () => void;
+  onCloseWalletConnect: () => void;
 }
 
 const GameContext = createContext<GameContextType>({
@@ -30,6 +34,9 @@ const GameContext = createContext<GameContextType>({
   setSelectedTheme: () => {},
   getThemes: () => Promise.resolve([]),
   setThemes: () => {},
+  isOpenWalletConnect: false,
+  onOpenWalletConnect: () => {},
+  onCloseWalletConnect: () => {},
 });
 
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
@@ -38,12 +45,17 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [showPowerupAnimation, setShowPowerupAnimation] = useState(false);
   const [powerup, setPowerup] = useState<number>(0);
   const [selectedTheme, setSelectedTheme] = useState<Theme | "Basic">("Basic");
+  const {
+    isOpen: isOpenWalletConnect,
+    onOpen: onOpenWalletConnect,
+    onClose: onCloseWalletConnect,
+  } = useOpen(false);
 
   const getThemes = async () => {
     const { data } = await api({}).get("/themes");
     return data;
   };
-  
+
   const buyTheme = async (themeId: string, txData: any) => {
     const { data } = await api({}).post(`/themes/buy`, { themeId, txData });
     return data;
@@ -54,20 +66,13 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
       await buyTheme(themeId, txData);
       setThemes(
         themes.map((theme) =>
-          theme.uuid === themeId ? { ...theme, owned: true } : theme,
-        ),
+          theme.uuid === themeId ? { ...theme, owned: true } : theme
+        )
       );
     } catch (error) {
       console.error(error);
     }
   };
-
-
-  useEffect(() => {
-    getThemes().then((data) => {
-      setThemes([...data]);
-    });
-  }, []);
 
   const value = {
     initialSetup,
@@ -82,6 +87,9 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     handleBuyTheme,
     selectedTheme,
     setSelectedTheme,
+    isOpenWalletConnect,
+    onOpenWalletConnect,
+    onCloseWalletConnect,
   };
 
   return (

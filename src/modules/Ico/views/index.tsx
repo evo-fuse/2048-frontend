@@ -2,7 +2,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { PATH } from "../../../const";
-import { useAuth, useClerk } from "@clerk/clerk-react";
 // CSS for 3D golden metallic text
 const goldMetallicStyle = {
   textShadow: `
@@ -41,13 +40,8 @@ export const IcoView: React.FC = () => {
     },
   };
 
-  const { openSignIn } = useClerk();
-  const { isSignedIn } = useAuth();
-
   const handleSignIn = () => {
-    openSignIn({
-      redirectUrl: window.location.origin + PATH.GAME + PATH.LOADING,
-    });
+    navigate(PATH.GAME + PATH.LOADING);
   };
 
   return (
@@ -77,13 +71,7 @@ export const IcoView: React.FC = () => {
               className="get-started w-[360px] h-[133px]"
               style={{ fontFamily: "Patrick Hand" }}
               {...motionProps}
-              onClick={() => {
-                if (isSignedIn) {
-                  navigate(PATH.GAME + PATH.LOADING);
-                } else {
-                  handleSignIn();
-                }
-              }}
+              onClick={handleSignIn}
             >
             </motion.button>
             <motion.button

@@ -15,7 +15,6 @@ interface ImportWalletProps {
   handleCreateWallet: (
     encData: string,
     password: string,
-    email: string
   ) => Promise<void>;
   user: User | null;
   setUser: (user: User | null) => void;
@@ -53,10 +52,9 @@ export const ImportWallet: React.FC<ImportWalletProps> = ({
     handleCreateWallet(
       seedPhrase.join(" "),
       pwd.password.value,
-      user?.email || ""
     ).then(() => {
       if (!user) return;
-      setUser({ ...user, walletAddress });
+      setUser({ ...user, address: walletAddress });
       onClose();
     });
   };

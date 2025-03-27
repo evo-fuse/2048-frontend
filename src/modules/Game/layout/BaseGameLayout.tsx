@@ -1,11 +1,16 @@
 import { Images } from "../../../assets/images";
+import { useAuthContext } from "../../../context";
 import { Navbar } from "../components";
+import WalletConnect from "../components/WalletConnect";
+import { useGameContext } from "../context/GameContext";
 
 interface BaseGameLayoutProps {
   children: React.ReactNode;
 }
 
 export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
+  const { isOpenWalletConnect, onCloseWalletConnect } = useGameContext();
+  const { handleGetPrivateKey } = useAuthContext();
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-gray-800">
       <img
@@ -18,6 +23,11 @@ export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
         <Navbar />
         {children}
       </div>
+      <WalletConnect
+        isOpen={isOpenWalletConnect}
+        onClose={onCloseWalletConnect}
+        handleGetPrivateKey={handleGetPrivateKey}
+      />
     </div>
   );
 };

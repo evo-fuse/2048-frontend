@@ -16,7 +16,7 @@ export const api = ({baseURL, token}: ApiProps) => {
     async function (config: any) {
       const jwt = token || localStorage.getItem("token");
       if (jwt) {
-        config.headers!.Authorization = `Bearer ${jwt}`;
+        config.headers!.Authorization = jwt;
       }
       return config;
     },

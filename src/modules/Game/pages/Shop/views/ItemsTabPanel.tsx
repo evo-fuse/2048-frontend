@@ -4,6 +4,8 @@ import { FaSpinner } from "react-icons/fa";
 import { ShopItem } from "../components";
 import { Images } from "../../../../../assets/images";
 import { User } from "../../../../../types";
+import { useAuthContext } from "../../../../../context";
+import { useGameContext } from "../../../context/GameContext";
 
 interface ItemsTabPanelProps {
   selectedTab: string;
@@ -26,6 +28,8 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
   isLoading,
   setIsLoading,
 }) => {
+  const { privateKey } = useAuthContext();
+  const { onOpenWalletConnect } = useGameContext();
   const [items, setItems] = useState({
     hammer: 0,
     powerup: 0,
@@ -47,6 +51,10 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
   };
 
   const handlePurchaseItems = async () => {
+    if(!privateKey) {
+      onOpenWalletConnect();
+      return;
+    }
     setIsLoading(true);
     try {
       if (totalCost > userBalance || !user) return;

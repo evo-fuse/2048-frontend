@@ -36,7 +36,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
   useEffect(() => {
     const fetchBalances = async () => {
-      if (!user?.walletAddress) return;
+      if (!user?.address) return;
 
       setIsLoadingBalances(true);
       const newBalances: Record<string, string> = {};
@@ -47,7 +47,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           const tokenType = token.type.toUpperCase();
           const tokenObj = TOKEN[tokenType as keyof typeof TOKEN] as TToken;
           if (tokenObj && tokenObj.balance) {
-            const balance = await tokenObj.balance(user.walletAddress);
+            const balance = await tokenObj.balance(user.address);
             newBalances[token.type] = balance;
           }
         }
@@ -63,7 +63,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     if (isOpen) {
       fetchBalances();
     }
-  }, [isOpen, user?.walletAddress]);
+  }, [isOpen, user?.address]);
 
   const handleTokenSelect = (tokenType: string) => {
     setSelectedToken(tokenType);
