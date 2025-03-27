@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { useAuthContext } from "../../../../../../context";
-import Modal from "../../../../../../components/Modal";
+import { useAuthContext } from "../../../context";
+import Modal from "../../../components/Modal";
 
 interface WalletConnectProps {
-  handleGetPrivateKey: (email: string, password: string) => Promise<any>;
+  handleGetPrivateKey: (password: string) => Promise<any>;
   isOpen: boolean;
   onClose: () => void;
   title?: string;
@@ -16,15 +16,22 @@ const WalletConnect: React.FC<WalletConnectProps> = ({
   title,
 }) => {
   const [password, setPassword] = useState("");
-  const { user, setPrivateKey } = useAuthContext();
+  const { setPrivateKey } = useAuthContext();
   const [error, setError] = useState("");
+
+  const handleModalClose = () => {
+    setPassword("");
+    setError("");
+    onClose();
+  }
 
   const handlePrivateKey = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const data = await handleGetPrivateKey(user?.email || "", password);
+      const data = await handleGetPrivateKey(password);
       setPrivateKey(data);
-      onClose();
+      setPassword("");
+      handleModalClose();
     } catch (err: any) {
       if (password === "") setError("Password is required");
       else setError("Password is incorrect");
@@ -33,8 +40,9 @@ const WalletConnect: React.FC<WalletConnectProps> = ({
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
-      title={title || "To Continue Game, Connect Wallet"}
+      onClose={handleModalClose}
+      title={title || "To Buy Items, Connect Wallet"}
+      closeOnOutsideClick
     >
       <div className="w-full px-4 pb-4 flex flex-col gap-4">
         <form className="flex flex-col gap-2" onSubmit={handlePrivateKey}>

@@ -6,13 +6,11 @@ import { useState } from "react";
 import { useClipboard } from "../../../../../hooks";
 
 interface ShowSeedProps {
-  handleGetSeed: (email: string, password: string) => Promise<any>;
-  email: string;
+  handleGetSeed: (password: string) => Promise<any>;
   onClose: () => void;
 }
 export const ShowSeed: React.FC<ShowSeedProps> = ({
   handleGetSeed,
-  email,
   onClose,
 }) => {
   const [password, setPassword] = useState("");
@@ -30,7 +28,7 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
   const handleSeed = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const seed = await handleGetSeed(email, password);
+      const seed = await handleGetSeed(password);
       setSeed(seed);
     } catch (err: any) {
       setError(err.response.data.error);

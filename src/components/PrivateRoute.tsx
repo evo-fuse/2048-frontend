@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "@clerk/clerk-react";
 import { PATH } from "../const";
+import { useAuthContext } from "../context";
 
 /**
  * PrivateRoute component
@@ -19,14 +19,14 @@ import { PATH } from "../const";
  * </Route>
  */
 export const PrivateRoute = () => {
-  const { isSignedIn } = useAuth();
+  const { user } = useAuthContext();
   const location = useLocation();
   
   // If user is signed in, render the protected route
-  if (isSignedIn) {
+  if (user) {
     return <Outlet />;
   }
   
   // If user is not signed in, redirect to home with the current location saved
-  return <Navigate to={PATH.HOME} state={{ from: location }} replace />;
+  return <Navigate to={PATH.WALLET_CREATION} state={{ from: location }} replace />;
 };

@@ -36,13 +36,13 @@ export const WalletView: React.FC = () => {
   useEffect(() => {
     const fetchBalance = async () => {
       const nativeBalance = await tokenList[mainNet].native.balance(
-        user?.walletAddress ?? ""
+        user?.address ?? ""
       );
       const usdtBalance = await tokenList[mainNet].usdt.balance(
-        user?.walletAddress ?? ""
+        user?.address ?? ""
       );
       const usdcBalance = await tokenList[mainNet].usdc.balance(
-        user?.walletAddress ?? ""
+        user?.address ?? ""
       );
       setBalance({
         native: nativeBalance,
@@ -59,7 +59,7 @@ export const WalletView: React.FC = () => {
   const { isOpen, onOpen, onClose } = useOpen();
   const [title, setTitle] = useState<WalletItem>(WalletItem.Import);
   const { content, onClick } = useClipboard(
-    user?.walletAddress ?? "",
+    user?.address ?? "",
     <HiOutlineClipboardDocument size={20} />,
     <HiOutlineClipboardDocumentCheck size={20} />
   );
@@ -149,8 +149,8 @@ export const WalletView: React.FC = () => {
             className="text-white text-sm w-full font-bold bg-gray-800/60 px-3 py-1 rounded-md ml-2 transition-all h-10 flex items-center justify-between"
           >
             {content}
-            {user?.walletAddress.slice(0, 5)} ...{" "}
-            {user?.walletAddress.slice(39)}
+            {user?.address.slice(0, 5)} ...{" "}
+            {user?.address.slice(39)}
           </motion.div>
         </div>
 

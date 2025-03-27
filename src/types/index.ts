@@ -1,7 +1,4 @@
 export type User = {
-  clerkId: string;
-  email: string;
-  username: string;
   uuid: string;
   rows: number;
   cols: number;
@@ -12,7 +9,7 @@ export type User = {
   hammer: number;
   upgrade: number;
   powerup: number;
-  walletAddress: string;
+  address: string;
 };
 
 export type TToken = {

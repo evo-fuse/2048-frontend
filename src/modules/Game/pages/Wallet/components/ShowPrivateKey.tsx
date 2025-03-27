@@ -5,14 +5,12 @@ import { HiOutlineClipboardDocument } from "react-icons/hi2";
 import { useClipboard } from "../../../../../hooks";
 
 interface ShowPrivateKeyProps {
-  handleGetPrivateKey: (email: string, password: string) => Promise<any>;
-  email: string;
+  handleGetPrivateKey: (password: string) => Promise<any>;
   onClose: () => void;
 }
 
 export const ShowPrivateKey: React.FC<ShowPrivateKeyProps> = ({
   handleGetPrivateKey,
-  email,
   onClose,
 }) => {
   const [password, setPassword] = useState("");
@@ -41,7 +39,7 @@ export const ShowPrivateKey: React.FC<ShowPrivateKeyProps> = ({
   const handlePrivateKey = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const data = await handleGetPrivateKey(email, password);
+      const data = await handleGetPrivateKey(password);
       setPrivateKey(data);
     } catch (err: any) {
       setError(err.response.data.error);

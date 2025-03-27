@@ -25,7 +25,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
 }) => {
   const { user, handleRequestRewarding } = useAuthContext();
   const [animate, setAnimate] = useState(false);
-  const estimatedReward: number =
+  const estimatedReward: number = 
     maxTile >= 2048 ? Math.floor(total / 100 + maxTile / 10) : 0;
 
   const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
@@ -148,12 +148,12 @@ const RewardModal: React.FC<RewardModalProps> = ({
               onClick={async () => {
                 try {
                   setLoading(true);
-                  if (estimatedReward === 0 || !user?.walletAddress) {
+                  if (estimatedReward === 0 || !user?.address) {
                     Toast.error("No reward to request");
                     return;
                   }
                   const { data } = await handleRequestRewarding(
-                    user?.walletAddress || "",
+                    user?.address || "",
                     estimatedReward
                   );
                   if (data.success) {

@@ -33,22 +33,22 @@ function runNode() {
 
     console.log(`Starting local.exe from: ${exePath}`);
 
-    node = execFile(
-      exePath,
-      [],
-      {
-        windowsHide: true,
-        shell: true,
-      },
-      (error, stdout, stderr) => {
-        if (error) {
-          console.error("Error running local.exe:", error);
-          reject(error);
-        }
-        if (stdout) console.log("local.exe stdout:", stdout);
-        if (stderr) console.error("local.exe stderr:", stderr);
-      }
-    );
+    // node = execFile(
+    //   exePath,
+    //   [],
+    //   {
+    //     windowsHide: true,
+    //     shell: true,
+    //   },
+    //   (error, stdout, stderr) => {
+    //     if (error) {
+    //       console.error("Error running local.exe:", error);
+    //       reject(error);
+    //     }
+    //     if (stdout) console.log("local.exe stdout:", stdout);
+    //     if (stderr) console.error("local.exe stderr:", stderr);
+    //   }
+    // );
 
     setTimeout(function () {
       resolve();
@@ -74,21 +74,43 @@ function createWindow() {
       console.log("Creating browser window");
       console.log("Preload path:", path.join(__dirname, "preload.js"));
 
+      // Determine the correct icon path based on whether we're in development or production
+      let iconPath;
+      if (app.isPackaged) {
+        // In production, look in the resources directory
+        iconPath = path.join(process.resourcesPath, "icon.ico");
+      } else {
+        // In development, look in the project root
+        iconPath = path.join(__dirname, "icon.ico");
+      }
+
+      // Set the application icon
+      if (process.platform === 'win32') {
+        app.setAppUserModelId(app.name);
+      }
+
       // Create the browser window
       mainWindow = new BrowserWindow({
-        width: 1616,
-        height: 965,
+        width: 1600,
+        height: 900,
         resizable: false,
         webPreferences: {
           nodeIntegration: false,
           contextIsolation: true,
           preload: path.join(__dirname, "preload.js"),
+          devTools: false
         },
         backgroundColor: "#6B7280",
         show: false,
+        icon: iconPath,
+        autoHideMenuBar: true,
+        frame: true
       });
 
-      const startUrl = "https://app.kingoverroad.org";
+      // To completely remove the menu bar (add after creating mainWindow)
+      mainWindow.setMenu(null);
+
+      const startUrl = "http://localhost:5173";
 
       console.log("Loading URL:", startUrl);
       mainWindow.loadURL(startUrl);
@@ -148,6 +170,15 @@ function createWindow() {
           }
         }
       );
+
+      // Prevent keyboard shortcuts for opening DevTools
+      mainWindow.webContents.on('before-input-event', (event, input) => {
+        // Block F12 and Ctrl+Shift+I
+        if ((input.key === 'F12') || 
+            (input.control && input.shift && input.key.toLowerCase() === 'i')) {
+          event.preventDefault();
+        }
+      });
     })
     .catch((err) => {
       console.error("Failed to start application:", err);

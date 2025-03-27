@@ -22,7 +22,6 @@ import { useAuthContext } from "../../../../../context";
 import { TileView } from "../components/TileView";
 import { useOpen } from "../../../../../hooks";
 import RewardModal from "../components/RewardModal";
-import WalletConnect from "../components/WalletConnect";
 
 export type Configuration = {
   theme: ThemeName;
@@ -46,30 +45,17 @@ export const MainView: FC = () => {
     handleUser,
     setUser,
     handleGetWalletAddress,
-    handleGetPrivateKey,
-    privateKey,
   } = useAuthContext();
   const { isOpen, onOpen, onClose } = useOpen();
-  const {
-    isOpen: isOpenWalletConnect,
-    onOpen: onOpenWalletConnect,
-    onClose: onCloseWalletConnect,
-  } = useOpen();
   const [pendingFunction, setPendingFunction] = useState<Function>(() => {});
 
   useEffect(() => {
     handleUser().then((data) => {
-      handleGetWalletAddress(data.email).then((walletAddress) => {
-        setUser({ ...data, walletAddress });
+      handleGetWalletAddress().then((address) => {
+        setUser({ ...data, address });
       });
     });
   }, []);
-
-  useEffect(() => {
-    if (!privateKey) {
-      onOpenWalletConnect();
-    }
-  }, [privateKey, onOpenWalletConnect]);
 
   const [gameState, setGameStatus] = useGameState({
     status: "running",
@@ -88,7 +74,7 @@ export const MainView: FC = () => {
 
   const [initialTiles, setInitialTiles] = useLocalStorage<Tile[]>(
     `${user?.id}-initialTiles`,
-    []
+    []              
   );
 
   const [_, setIndex] = useLocalStorage<number>("index", 0);
@@ -201,11 +187,6 @@ export const MainView: FC = () => {
         total={total}
         status={gameState.status}
         pendingFunction={pendingFunction}
-      />
-      <WalletConnect
-        isOpen={isOpenWalletConnect}
-        onClose={onCloseWalletConnect}
-        handleGetPrivateKey={handleGetPrivateKey}
       />
       <motion.div
         initial={{ opacity: 0, y: -20 }}

@@ -61,7 +61,8 @@
     "vite": "^6.2.0"
   },
   "build": {
-    "appId": "com.yourapp.id",
+    "appId": "com.kingoverroad.app",
+    "productName": "King Over Road",
     "files": [
       "build/**/*",
       "electron/**/*",
@@ -72,8 +73,21 @@
       {
         "from": "local.exe",
         "to": "local.exe"
+      },
+      {
+        "from": "electron/icon.ico",
+        "to": "icon.ico"
       }
     ],
+    "win": {
+      "icon": "electron/icon.ico",
+      "target": ["nsis"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    },
     "directories": {
       "buildResources": "assets",
       "output": "dist"

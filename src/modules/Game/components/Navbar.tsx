@@ -1,4 +1,3 @@
-import { useUser, useClerk } from "@clerk/clerk-react";
 import { Images } from "../../../assets/images";
 import {
   IoDocumentTextOutline,
@@ -11,6 +10,8 @@ import { VscSignOut } from "react-icons/vsc";
 import { IconType } from "react-icons";
 import { PATH } from "../../../const";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../context";
+import { useGameContext } from "../context/GameContext";
 
 const navItems = [
   {
@@ -65,23 +66,30 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
       }`}
       onClick={navigate}
     >
-      <Icon size={24} className={`${checked ? "text-[#FB923C]" : "text-white"}`} />
-      <span className={`${checked ? "text-[#FB923C]" : "text-white"} text-xl font-bold`}>{label}</span>
+      <Icon
+        size={24}
+        className={`${checked ? "text-[#FB923C]" : "text-white"}`}
+      />
+      <span
+        className={`${
+          checked ? "text-[#FB923C]" : "text-white"
+        } text-xl font-bold`}
+      >
+        {label}
+      </span>
     </div>
   );
 };
 
 export const Navbar: React.FC = () => {
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  const { privateKey, handleDisconnectWallet } = useAuthContext();
+  const { onOpenWalletConnect } = useGameContext();
   const navigate = useNavigate();
 
   const handleNavigation = (path: string, label: string) => {
     if (label === "Sign Out") {
-      signOut(() => {
-        localStorage.removeItem("token");
-        navigate(PATH.HOME);
-      });
+      localStorage.removeItem("token");
+      navigate(PATH.HOME);
     } else {
       navigate(path);
     }
@@ -91,17 +99,17 @@ export const Navbar: React.FC = () => {
     <div className="min-w-72 h-full bg-gray-600/50 backdrop-blur-md flex flex-col items-center justify-start py-8 gap-4">
       <img src={Images.Logo} alt="Logo" className="w-64" />
       <div className="flex flex-col w-full">
-        <div className="w-full flex items-center justify-start gap-4 px-8 py-2">
-          {user?.imageUrl && (
-            <img
-              src={user.imageUrl}
-              alt="User avatar"
-              className="w-7 h-7 rounded-full"
-            />
-          )}
-          <span className="text-white text-xl font-bold">
-            {user?.firstName} {user?.lastName}
-          </span>
+        <div className="w-full flex items-center justify-between px-8 py-2">
+          <button
+            onClick={privateKey ? handleDisconnectWallet : onOpenWalletConnect}
+            className={`text-white ${
+              privateKey
+                ? "bg-gray-600/50 hover:bg-gray-600/80"
+                : "bg-[#FB923C] hover:bg-[#FB923C]/80"
+            } transition-colors px-3 py-2 rounded-md text-sm font-bold cursor-none w-full`}
+          >
+            {privateKey ? "Disconnect Wallet" : "Connect Wallet"}
+          </button>
         </div>
         {navItems.map(({ Icon, label, path }) => (
           <NavbarItem

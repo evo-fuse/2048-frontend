@@ -5,11 +5,11 @@ import { Images } from "../assets/images";
 import { getWalletFromMnemonic } from "../modules/Wallet/context/WalletCreationContext";
 
 type AuthContextType = {
-  handleUser: () => Promise<any>;
+  handleUser: (address?: string) => Promise<any>;
   user: User | null;
   setUser: (user: User | null) => void;
-  handleExistWallet: (email: string) => Promise<any>;
-  handleGetWalletAddress: (email: string) => Promise<any>;
+  handleExistWallet: () => Promise<any>;
+  handleGetWalletAddress: () => Promise<any>;
   handleUpdateUser: (user: Partial<User>) => Promise<any>;
   handleUpdateItem: (
     itemId: "hammer" | "upgrade" | "powerup",
@@ -17,16 +17,14 @@ type AuthContextType = {
   ) => Promise<any>;
   cursor: string;
   setCursor: (cursor: string) => void;
-  handleCreateWallet: (
-    encData: string,
-    password: string,
-    email: string
-  ) => Promise<void>;
-  handleGetPrivateKey: (email: string, password: string) => Promise<any>;
-  handleGetSeed: (email: string, password: string) => Promise<any>;
+  handleCreateWallet: (encData: string, password: string) => Promise<any>;
+  handleGetPrivateKey: (password: string) => Promise<any>;
+  handleGetSeed: (password: string) => Promise<any>;
   privateKey: string;
   setPrivateKey: (privateKey: string) => void;
   handleRequestRewarding: (address: string, amount: number) => Promise<any>;
+  signupUser: (address: string) => Promise<any>;
+  handleDisconnectWallet: () => Promise<any>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -38,23 +36,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [cursor, setCursor] = useState<string>(Images.Cursor);
   const [privateKey, setPrivateKey] = useState<string>("");
 
-  const handleUser = async () => {
-    const { data } = await api({}).get("/auth");
+  const handleUser = async (address?: string) => {
+    const { data } = await api({token: address}).get("/auth");
     return data;
   };
 
-  const handleExistWallet = async (email: string) => {
-    const { data } = await api({
-      baseURL: import.meta.env.VITE_LOCAL_URL,
-    }).post("/exist-wallet", {
-      email,
+  const signupUser = async (address: string) => {
+    const { data } = await api({}).post("/auth", {
+      address,
     });
     return data;
   };
 
-  const handleGetWalletAddress = async (email: string) => {
+  const handleExistWallet = async () => {
+    const { data } = await api({
+      baseURL: import.meta.env.VITE_LOCAL_URL,
+    }).post("/exist-wallet");
+    return data;
+  };
+
+  const handleGetWalletAddress = async () => {
     const { data } = await api({ baseURL: import.meta.env.VITE_LOCAL_URL }).get(
-      `/get-address/${email}`
+      `/get-address`
     );
     return data;
   };
@@ -76,35 +79,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return data;
   };
 
-  const handleCreateWallet = async (
-    encData: string,
-    password: string,
-    email: string
-  ) => {
+  const handleCreateWallet = async (encData: string, password: string) => {
     const unencData = getWalletFromMnemonic(encData);
     await api({ baseURL: import.meta.env.VITE_LOCAL_URL }).post("/store-seed", {
       encData,
       password,
-      email,
       unencData: unencData.address,
     });
+    localStorage.setItem("token", unencData.address);
+    return unencData;
   };
 
-  const handleGetPrivateKey = async (email: string, password: string) => {
+  const handleGetPrivateKey = async (password: string) => {
     const { data } = await api({
       baseURL: import.meta.env.VITE_LOCAL_URL,
     }).post("/get-private-key", {
-      email,
       password,
     });
     return data;
   };
 
-  const handleGetSeed = async (email: string, password: string) => {
+  const handleGetSeed = async (password: string) => {
     const { data } = await api({
       baseURL: import.meta.env.VITE_LOCAL_URL,
     }).post("/get-seed", {
-      email,
       password,
     });
     return data;
@@ -118,9 +116,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return res;
   };
 
+  const handleDisconnectWallet = async () => {
+    setPrivateKey("");
+  };
+
   useEffect(() => {
-    handleUser().then((data) => {
-      setUser(data);
+    handleExistWallet().then((exist) => {
+      if (exist) {
+        handleGetWalletAddress().then((address) => {
+          localStorage.setItem("token", address);
+          console.log(address);
+          handleUser(address).then((data) => {
+            setUser({ ...data, address });
+          });
+        });
+      }
     });
   }, []);
 
@@ -140,6 +150,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     privateKey,
     setPrivateKey,
     handleRequestRewarding,
+    signupUser,
+    handleDisconnectWallet
   };
 
   return (

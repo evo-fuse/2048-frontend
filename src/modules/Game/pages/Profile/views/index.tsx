@@ -24,11 +24,6 @@ export const ProfileView: React.FC = () => {
         </div>
 
         <div className="space-y-4 relative z-10">
-          <div className="grid grid-cols-1 gap-4 mb-4">
-            <ProfileItem label="Username" value={user?.username} />
-            <ProfileItem label="Email" value={user?.email} />
-          </div>
-
           <div className="border-t border-gray-600 my-4"></div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -38,9 +33,7 @@ export const ProfileView: React.FC = () => {
 
           <div className="border-t border-gray-600 my-4"></div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <ProfileItem label="Max Count" value={user?.maxCount} />
-            <ProfileItem label="Max Moves" value={user?.maxMoves} />
+          <div className="grid grid-cols-1 gap-4">
             <ProfileItem label="Max Score" value={user?.maxScore} />
             <ProfileItem label="Max Tile" value={user?.maxTile} />
           </div>

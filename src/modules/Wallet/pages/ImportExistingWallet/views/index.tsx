@@ -31,7 +31,7 @@ export const ImportExistingWalletView: React.FC = () => {
     password: { value: "", error: "" },
     cPassword: { value: "", error: "" },
   });
-  const { user, handleCreateWallet } = useAuthContext();
+  const { handleCreateWallet } = useAuthContext();
   useEffect(() => {
     setIsValid(ethers.Mnemonic.isValidMnemonic(seed.join(" ")));
   }, [seed]);
@@ -137,7 +137,6 @@ export const ImportExistingWalletView: React.FC = () => {
             handleCreateWallet(
               seed.join(" "),
               pwd.password.value,
-              user?.email || ""
             ).then(() => navigate(PATH.GAME));
           }}
           disabled={
