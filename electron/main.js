@@ -159,22 +159,14 @@ ipcMain.handle("exist-wallet", () => {
 
 ipcMain.handle("get-private-key", (event, password) => {
   try {
-    console.log("get-private-key", password);
     const { homedir } = os.userInfo();
-    console.log("homedir", homedir);
     const filePath = path.join(homedir, `dwat.json`);
-    console.log("filePath", filePath);
     const encryptedDataStr = fs.readFileSync(filePath, "utf8");
-    console.log("encryptedDataStr", encryptedDataStr);
     const encryptedData = JSON.parse(encryptedDataStr);
-    console.log("encryptedData", encryptedData);
     const seed = decryptData(encryptedData, password);
-    console.log("seed", seed);
     const privateKey = ethers.Wallet.fromPhrase(seed).privateKey;
-    console.log("privateKey", privateKey);
     return privateKey;
   } catch (error) {
-    console.log("error", error);
     return null;
   }
 });
