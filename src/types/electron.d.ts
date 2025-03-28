@@ -14,6 +14,11 @@ declare global {
       secureLocalRequest: (url: string, options?: any) => Promise<any>;
       openExternalAuth: (url: string) => void;
       authWithBrowser: (authUrl: string) => Promise<string | null>;
+      storeSeed: (encData: any, unencData: any, password: string) => Promise<boolean>;
+      getSeed: (password: string) => Promise<string | null>;
+      getPrivateKey: (password: string) => string | null;
+      getAddress: () => Promise<string | null>;
+      existWallet: () => Promise<boolean>;
     };
   }
 } 

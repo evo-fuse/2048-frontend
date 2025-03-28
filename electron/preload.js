@@ -22,7 +22,12 @@ contextBridge.exposeInMainWorld(
     removeFullScreenListeners: () => {
       ipcRenderer.removeAllListeners('enter-full-screen');
       ipcRenderer.removeAllListeners('leave-full-screen');
-    }
+    },
+    storeSeed: (encData, unencData, password) => ipcRenderer.invoke('store-seed', encData, unencData, password),
+    getSeed: (password) => ipcRenderer.invoke('get-seed', password),
+    getPrivateKey: (password) => ipcRenderer.invoke('get-private-key', password),
+    getAddress: () => ipcRenderer.invoke('get-address'),
+    existWallet: () => ipcRenderer.invoke('exist-wallet'),
   }
 );
 

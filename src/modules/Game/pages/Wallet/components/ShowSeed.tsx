@@ -31,7 +31,7 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
       const seed = await handleGetSeed(password);
       setSeed(seed);
     } catch (err: any) {
-      setError(err.response.data.error);
+      setError(err.message);
     }
   };
   return (

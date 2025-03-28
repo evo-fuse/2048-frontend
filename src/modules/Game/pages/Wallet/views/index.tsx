@@ -71,7 +71,7 @@ export const WalletView: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-[480px] min-w-[480px] rounded-lg bg-white/20 backdrop-blur-sm shadow-lg shadow-black/60 flex flex-col items-center justify-center gap-6 px-12 py-10 z-10 border border-white/10"
+        className="max-w-[480px] min-w-[480px] rounded-lg bg-white/20 backdrop-blur-sm shadow-lg shadow-black/60 flex flex-col items-center justify-center gap-3 px-12 py-8 z-10 border border-white/10"
       >
         <img
           src={Images.WalletBg}
