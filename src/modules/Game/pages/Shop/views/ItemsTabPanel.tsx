@@ -86,7 +86,7 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
         <div className="w-full flex flex-col gap-5">
           {/* Hammers Section */}
           <ShopItem
-            icon={<img src={Images.HAMMER} alt="Hammer" className="w-16" />}
+            icon={<img src={Images.HAMMER} alt="Hammer" className="w-10" />}
             title="Hammers"
             price={50}
             description="Break any tile on the grid to create new opportunities."
@@ -99,7 +99,7 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
           {/* Upgrades Section */}
           <ShopItem
             icon={
-              <img src={Images.UPGRADE} alt="Upgrade" className="w-16" />
+              <img src={Images.UPGRADE} alt="Upgrade" className="w-10" />
             }
             title="Tile Upgrade"
             price={200}
@@ -113,7 +113,7 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
           {/* Power-ups Section */}
           <ShopItem
             icon={
-              <img src={Images.POWER_UP} alt="Power-up" className="w-16" />
+              <img src={Images.POWER_UP} alt="Power-up" className="w-10" />
             }
             title="Power Boost"
             price={150}

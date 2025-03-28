@@ -42,7 +42,7 @@ export const ShowPrivateKey: React.FC<ShowPrivateKeyProps> = ({
       const data = await handleGetPrivateKey(password);
       setPrivateKey(data);
     } catch (err: any) {
-      setError(err.response.data.error);
+      setError(err.message);
     }
   };
   return (

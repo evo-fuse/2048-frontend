@@ -49,16 +49,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleExistWallet = async () => {
-    const { data } = await api({
-      baseURL: import.meta.env.VITE_LOCAL_URL,
-    }).post("/exist-wallet");
+    const data = await window.electron.existWallet();
     return data;
   };
 
   const handleGetWalletAddress = async () => {
-    const { data } = await api({ baseURL: import.meta.env.VITE_LOCAL_URL }).get(
-      `/get-address`
-    );
+    const data = await window.electron.getAddress();
+    if(data === null) throw new Error("Didn't retrieve address");
     return data;
   };
 
@@ -81,30 +78,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleCreateWallet = async (encData: string, password: string) => {
     const unencData = getWalletFromMnemonic(encData);
-    await api({ baseURL: import.meta.env.VITE_LOCAL_URL }).post("/store-seed", {
-      encData,
-      password,
-      unencData: unencData.address,
-    });
+    await window.electron.storeSeed(encData, unencData.address, password);
     localStorage.setItem("token", unencData.address);
     return unencData;
   };
 
   const handleGetPrivateKey = async (password: string) => {
-    const { data } = await api({
-      baseURL: import.meta.env.VITE_LOCAL_URL,
-    }).post("/get-private-key", {
-      password,
-    });
+    const data = await window.electron.getPrivateKey(password);
+    console.log("handleGetPrivateKey", data);
+    if(data === null) throw new Error("Didn't retrieve private key");
     return data;
   };
 
   const handleGetSeed = async (password: string) => {
-    const { data } = await api({
-      baseURL: import.meta.env.VITE_LOCAL_URL,
-    }).post("/get-seed", {
-      password,
-    });
+    const data = await window.electron.getSeed(password);
+    if(data === null) throw new Error("Didn't retrieve seed");
     return data;
   };
 
@@ -125,7 +113,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (exist) {
         handleGetWalletAddress().then((address) => {
           localStorage.setItem("token", address);
-          console.log(address);
           handleUser(address).then((data) => {
             setUser({ ...data, address });
           });

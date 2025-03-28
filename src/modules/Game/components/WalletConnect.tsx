@@ -3,7 +3,7 @@ import { useAuthContext } from "../../../context";
 import Modal from "../../../components/Modal";
 
 interface WalletConnectProps {
-  handleGetPrivateKey: (password: string) => Promise<any>;
+  handleGetPrivateKey: (password: string) => Promise<string>;
   isOpen: boolean;
   onClose: () => void;
   title?: string;
