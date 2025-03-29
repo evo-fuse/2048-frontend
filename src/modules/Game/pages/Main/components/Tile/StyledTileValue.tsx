@@ -20,7 +20,7 @@ const StyledTileValue = styled.div<StyledTileValueProps>`
     palette[getTileColor(value)]};
   animation-name: ${({ ismerging, isnew }) =>
     ismerging ? pop : isnew ? expand : ''};
-  animation-duration: 0.05s;
+  animation-duration: 0.06s;
   animation-fill-mode: forwards;
   color: ${({ theme: { palette }, value }) =>
     value > 4 ? palette.foreground : palette.primary};
