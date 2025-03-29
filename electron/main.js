@@ -8,27 +8,17 @@ const { encryptData, decryptData } = require("./wallet");
 let mainWindow;
 
 function createWindow() {
-  console.log("Starting application...");
-
-  console.log("Creating browser window");
-  console.log("Preload path:", path.join(__dirname, "preload.js"));
-
-  // Determine the correct icon path based on whether we're in development or production
   let iconPath;
   if (app.isPackaged) {
-    // In production, look in the resources directory
     iconPath = path.join(process.resourcesPath, "icon.ico");
   } else {
-    // In development, look in the project root
     iconPath = path.join(__dirname, "icon.ico");
   }
 
-  // Set the application icon
   if (process.platform === "win32") {
     app.setAppUserModelId(app.name);
   }
 
-  // Create the browser window
   mainWindow = new BrowserWindow({
     width: 1600,
     height: 900,
@@ -38,23 +28,23 @@ function createWindow() {
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
       devTools: false,
+      // devTools: true,
     },
     backgroundColor: "#6B7280",
     show: false,
     icon: iconPath,
     autoHideMenuBar: true,
+    // autoHideMenuBar: false,
     frame: true,
   });
 
-  // Enable the menu bar
   mainWindow.setMenu(null);
 
+  // const startUrl = "http://localhost:5173";
   const startUrl = "https://app.kingoverroad.org";
 
-  console.log("Loading URL:", startUrl);
   mainWindow.loadURL(startUrl);
 
-  // Create a loading screen
   let loadingScreen = new BrowserWindow({
     width: 1600,
     height: 900,
@@ -70,7 +60,6 @@ function createWindow() {
   loadingScreen.loadFile(path.join(__dirname, "loading.html"));
   loadingScreen.center();
 
-  // Once the main window is ready, show it and close the loading screen
   mainWindow.once("ready-to-show", () => {
     setTimeout(() => {
       mainWindow.show();
@@ -85,7 +74,6 @@ function createWindow() {
     mainWindow = null;
   });
 
-  // For debugging
   mainWindow.webContents.on(
     "did-fail-load",
     (event, errorCode, errorDescription) => {
@@ -100,17 +88,14 @@ function createWindow() {
   mainWindow.webContents.session.setCertificateVerifyProc(
     (request, callback) => {
       try {
-        // Make sure requestUrl exists before trying to parse it
-        callback(0); // Accept certificate
+        callback(0);
       } catch (error) {
         console.error("Error in certificate verification:", error);
-        // If URL parsing fails, use default verification
         callback(-3);
       }
     }
   );
 
-  // Enable DevTools in development mode
   mainWindow.webContents.openDevTools();
 }
 

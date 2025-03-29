@@ -1,5 +1,5 @@
 import Modal from "../../../../../../components/Modal";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useAuthContext } from "../../../../../../context/AuthContext";
 import { useWeb3Context } from "../../../../../../context/Web3Context";
 import { Toast } from "../../../../../../components";
@@ -25,6 +25,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
 }) => {
   const { user, handleRequestRewarding } = useAuthContext();
   const [animate, setAnimate] = useState(false);
+  const click = useRef<boolean>(false);
   const estimatedReward: number = 
     maxTile >= 2048 ? Math.floor(total / 100 + maxTile / 10) : 0;
 
@@ -41,6 +42,27 @@ const RewardModal: React.FC<RewardModalProps> = ({
       setAnimate(false);
     }
   }, [isOpen]);
+
+  const handleNewGame = async () => {
+    if (click.current === true || loading) return;
+    click.current = true;
+    try {
+      setLoading(true);
+      if (estimatedReward === 0 || !user?.address) return;
+      await handleRequestRewarding(user?.address || "", estimatedReward);
+      await getBalance();
+    } catch (error) {
+      Toast.error("Error requesting reward");
+    } finally {
+      setLoading(false);
+      pendingFunction();
+      onClose();
+      // Set a small delay before allowing clicks again
+      setTimeout(() => {
+        click.current = false;
+      }, 500);
+    }
+  };
 
   return (
     <Modal
@@ -145,29 +167,13 @@ const RewardModal: React.FC<RewardModalProps> = ({
             </button>
 
             <button
-              onClick={async () => {
-                try {
-                  setLoading(true);
-                  if (estimatedReward === 0 || !user?.address) {
-                    Toast.error("No reward to request");
-                    return;
-                  }
-                  const { data } = await handleRequestRewarding(
-                    user?.address || "",
-                    estimatedReward
-                  );
-                  if (data.success) {
-                    await getBalance();
-                  }
-                } catch (error) {
-                  Toast.error("Error requesting reward");
-                } finally {
-                  setLoading(false);
-                  pendingFunction();
-                  onClose();
-                }
-              }}
-              className="px-6 py-3 w-32 flex items-center justify-center bg-gray-600 text-white rounded-md hover:bg-gray-700 transition-all shadow-lg border border-white/10 font-medium"
+              onClick={handleNewGame}
+              disabled={loading || click.current}
+              className={`px-6 py-3 w-32 flex items-center justify-center ${
+                loading || click.current
+                  ? "bg-gray-500 cursor-not-allowed opacity-70"
+                  : "bg-gray-600 hover:bg-gray-700"
+              } text-white rounded-md transition-all shadow-lg border border-white/10 font-medium`}
             >
               {loading ? (
                 <FaSpinner className="animate-spin" />
