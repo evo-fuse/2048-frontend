@@ -119,9 +119,9 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
   };
 
   const getUserGameTokenBalance = async () => {
-    if (account) {
+    if (user) {
       const balance: bigint = await tokenContract.methods
-        .balanceOf(account?.address)
+        .balanceOf(user.address)
         .call();
       return balance;
     }
