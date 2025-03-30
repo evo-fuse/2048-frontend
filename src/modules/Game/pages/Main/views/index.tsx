@@ -22,6 +22,7 @@ import { useAuthContext } from "../../../../../context";
 import { TileView } from "../components/TileView";
 import { useOpen } from "../../../../../hooks";
 import RewardModal from "../components/RewardModal";
+import { ItemModal } from "../components/ItemModal";
 
 export type Configuration = {
   theme: ThemeName;
@@ -40,6 +41,11 @@ export const MainView: FC = () => {
     showPowerupAnimation,
     setPowerup,
     powerup,
+    isOpenItemModal,
+    onCloseItemModal,
+    itemModalNotice,
+    onOpenItemModal,
+    setItemModalNotice,
   } = useGameContext();
   const {
     handleUser,
@@ -178,6 +184,11 @@ export const MainView: FC = () => {
     return Math.max(...tiles.map((tile) => tile.value));
   }, [tiles]);
 
+  const handleOpenItemModal = (notice: string) => {
+    onOpenItemModal();
+    setItemModalNotice(notice);
+  };
+
   return (
     <ThemeProvider theme={themeValue}>
       <RewardModal
@@ -187,6 +198,11 @@ export const MainView: FC = () => {
         total={total}
         status={gameState.status}
         pendingFunction={pendingFunction}
+      />
+      <ItemModal
+        isOpen={isOpenItemModal}
+        onClose={onCloseItemModal}
+        notice={itemModalNotice}
       />
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -258,7 +274,7 @@ export const MainView: FC = () => {
                 doubleTile={doubleTile}
               />
             </div>
-            <ItemBar />
+            <ItemBar handleOpenItemModal={handleOpenItemModal} />
           </div>
         </Box>
         <TileView value={maxTile} />

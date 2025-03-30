@@ -2,6 +2,7 @@ import { createContext, useState, useContext } from "react";
 import api from "../../../utils/api";
 import { Theme } from "../../../types";
 import { useOpen } from "../../../hooks";
+import useLocalStorage from "../pages/Main/hooks/useLocalStorage";
 
 interface GameContextType {
   initialSetup: boolean;
@@ -19,25 +20,16 @@ interface GameContextType {
   isOpenWalletConnect: boolean;
   onOpenWalletConnect: () => void;
   onCloseWalletConnect: () => void;
+  itemUsage: { powerup: boolean; upgrade: boolean };
+  setItemUsage: (value: { powerup: boolean; upgrade: boolean }) => void;
+  isOpenItemModal: boolean;
+  onOpenItemModal: () => void;
+  onCloseItemModal: () => void;
+  itemModalNotice: string;
+  setItemModalNotice: (value: string) => void;
 }
 
-const GameContext = createContext<GameContextType>({
-  initialSetup: true,
-  setInitialSetup: () => {},
-  themes: [],
-  showPowerupAnimation: false,
-  setShowPowerupAnimation: () => {},
-  powerup: 0,
-  setPowerup: () => {},
-  handleBuyTheme: () => Promise.resolve(),
-  selectedTheme: "Basic",
-  setSelectedTheme: () => {},
-  getThemes: () => Promise.resolve([]),
-  setThemes: () => {},
-  isOpenWalletConnect: false,
-  onOpenWalletConnect: () => {},
-  onCloseWalletConnect: () => {},
-});
+const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [initialSetup, setInitialSetup] = useState(false);
@@ -50,6 +42,18 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     onOpen: onOpenWalletConnect,
     onClose: onCloseWalletConnect,
   } = useOpen(false);
+  const [itemModalNotice, setItemModalNotice] = useState<string>("");
+
+  const [itemUsage, setItemUsage] = useLocalStorage<{
+    powerup: boolean;
+    upgrade: boolean;
+  }>("itemUsage", { powerup: false, upgrade: false });
+
+  const {
+    isOpen: isOpenItemModal,
+    onOpen: onOpenItemModal,
+    onClose: onCloseItemModal,
+  } = useOpen();
 
   const getThemes = async () => {
     const { data } = await api({}).get("/themes");
@@ -90,6 +94,13 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     isOpenWalletConnect,
     onOpenWalletConnect,
     onCloseWalletConnect,
+    itemUsage,
+    setItemUsage,
+    isOpenItemModal,
+    onOpenItemModal,
+    onCloseItemModal,
+    itemModalNotice,
+    setItemModalNotice,
   };
 
   return (
