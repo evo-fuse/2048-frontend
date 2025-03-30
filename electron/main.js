@@ -4,7 +4,7 @@ const fs = require("fs");
 const os = require("os");
 const ethers = require("ethers");
 const { encryptData, decryptData } = require("./wallet");
-
+const isDev = require("electron-is-dev");
 let mainWindow;
 
 function createWindow() {
@@ -27,21 +27,20 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
-      devTools: false,
-      // devTools: true,
+      devTools: isDev,
     },
     backgroundColor: "#6B7280",
     show: false,
     icon: iconPath,
-    autoHideMenuBar: true,
-    // autoHideMenuBar: false,
+    autoHideMenuBar: !isDev,
     frame: true,
   });
 
-  mainWindow.setMenu(null);
+  if (!isDev) {
+    mainWindow.setMenu(null);
+  }
 
-  // const startUrl = "http://localhost:5173";
-  const startUrl = "https://app.kingoverroad.org";
+  const startUrl = isDev ? "http://localhost:5173" : "https://app.kingoverroad.org";
 
   mainWindow.loadURL(startUrl);
 

@@ -6,11 +6,20 @@ import { useAuthContext } from "../../../../../../context";
 import { useGameContext } from "../../../../context/GameContext";
 import { useOpen } from "../../../../../../hooks";
 
-export const ItemBar: React.FC = () => {
-  // const { useItem } = useGameItems();
+interface ItemBarProps {
+  handleOpenItemModal: (notice: string) => void;
+}
+
+export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
   const { user, setCursor, cursor, handleUpdateItem, setUser } =
     useAuthContext();
-  const { setShowPowerupAnimation, setPowerup, powerup } = useGameContext();
+  const {
+    setShowPowerupAnimation,
+    setPowerup,
+    powerup,
+    itemUsage,
+    setItemUsage,
+  } = useGameContext();
   const { isOpen, onOpen, onClose } = useOpen();
 
   return (
@@ -34,9 +43,13 @@ export const ItemBar: React.FC = () => {
           quantity: user?.upgrade || 0,
         }}
         onClick={() => {
-          cursor === Images.UPGRADE
-            ? setCursor(Images.Cursor)
-            : setCursor(Images.UPGRADE);
+          if (itemUsage.upgrade) {
+            handleOpenItemModal("You have already used the upgrade");
+          } else if (user && user.upgrade > 0) {
+            cursor === Images.UPGRADE
+              ? setCursor(Images.Cursor)
+              : setCursor(Images.UPGRADE);
+          }
         }}
       />
       <ItemButton
@@ -47,13 +60,16 @@ export const ItemBar: React.FC = () => {
         }}
         loading={isOpen}
         onClick={() => {
-          if (powerup === 0 && user) {
+          if (itemUsage.powerup) {
+            handleOpenItemModal("You have already used the powerup");
+          } else if (powerup === 0 && user) {
             onOpen();
             setUser({ ...user, powerup: user.powerup - 1 });
             setPowerup(20);
             setShowPowerupAnimation(true);
             setTimeout(() => setShowPowerupAnimation(false), 750);
             handleUpdateItem("powerup", -1).finally(() => onClose());
+            setItemUsage({ ...itemUsage, powerup: true });
           }
         }}
       />

@@ -5,6 +5,7 @@ import { useWeb3Context } from "../../../../../../context/Web3Context";
 import { Toast } from "../../../../../../components";
 import { FaSpinner } from "react-icons/fa";
 import { GameStatus } from "../../hooks/useGameState";
+import { useGameContext } from "../../../../context/GameContext";
 
 interface RewardModalProps {
   isOpen: boolean;
@@ -24,6 +25,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
   status,
 }) => {
   const { user, handleRequestRewarding } = useAuthContext();
+  const { setItemUsage } = useGameContext();
   const [animate, setAnimate] = useState(false);
   const click = useRef<boolean>(false);
   const estimatedReward: number = 
@@ -57,6 +59,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
       setLoading(false);
       pendingFunction();
       onClose();
+      setItemUsage({ powerup: false, upgrade: false });
       // Set a small delay before allowing clicks again
       setTimeout(() => {
         click.current = false;
@@ -64,15 +67,18 @@ const RewardModal: React.FC<RewardModalProps> = ({
     }
   };
 
+  const handleClose = () => {
+    if (status === "lost") {
+      pendingFunction();
+    } else {
+      onClose();
+    }
+  };
+
   return (
     <Modal
       isOpen={isOpen}
-      onClose={() => {
-        if (status === "lost") {
-          pendingFunction();
-        }
-        onClose();
-      }}
+      onClose={handleClose}
       title={status === "lost" ? "Game Over" : "Game Rewards"}
       closeOnOutsideClick={!loading && status !== "lost"}
     >
@@ -155,12 +161,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
 
           <div className="flex gap-4 mt-6">
             <button
-              onClick={() => {
-                if (status === "lost") {
-                  pendingFunction();
-                }
-                onClose();
-              }}
+              onClick={handleClose}
               className="px-6 py-3 bg-white/10 backdrop-blur-sm text-white rounded-md hover:bg-white/20 transition-colors border border-white/10"
             >
               Close

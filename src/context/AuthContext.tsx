@@ -79,6 +79,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleCreateWallet = async (encData: string, password: string) => {
     const unencData = getWalletFromMnemonic(encData);
     await window.electron.storeSeed(encData, unencData.address, password);
+    handleUpdateUser({ address: unencData.address });
     localStorage.setItem("token", unencData.address);
     return unencData;
   };

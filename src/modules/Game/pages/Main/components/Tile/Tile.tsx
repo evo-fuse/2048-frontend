@@ -31,7 +31,7 @@ const Tile: FC<TileProps> = ({
 }) => {
   const { cursor, setCursor, handleUpdateItem, user, setUser } =
     useAuthContext();
-  const { selectedTheme } = useGameContext();
+  const { selectedTheme, itemUsage, setItemUsage } = useGameContext();
   const [isHover, setIsHover] = useState(false);
 
   // Calculate position once
@@ -61,6 +61,7 @@ const Tile: FC<TileProps> = ({
       setCursor(Images.Cursor);
       handleUpdateItem("upgrade", -1);
       setUser({ ...user, upgrade: user.upgrade - 1 });
+      setItemUsage({ ...itemUsage, upgrade: true });
     }
   }, [breakTile, doubleTile, cursor, position, setCursor, handleUpdateItem]);
 
