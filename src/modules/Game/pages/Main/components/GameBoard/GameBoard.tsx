@@ -6,6 +6,8 @@ import { calcLocation, calcTileSize } from "../../utils/common";
 import { Vector } from "../../utils/types";
 import Grid from "../Grid";
 import TileComponent from "../Tile";
+import Fireworks from "../../../../../../assets/video/fireworks.mp4";
+import { useGameContext } from "../../../../context/GameContext";
 
 export interface GameBoardProps {
   tiles?: Tile[];
@@ -18,6 +20,7 @@ export interface GameBoardProps {
   onMergePending: () => void;
   breakTile: (tile: Location) => void;
   doubleTile: (tile: Location) => void;
+  showFireworks?: boolean;
 }
 
 const GameBoard: FC<GameBoardProps> = ({
@@ -31,11 +34,15 @@ const GameBoard: FC<GameBoardProps> = ({
   onMergePending,
   breakTile,
   doubleTile,
+  showFireworks = false,
 }) => {
+  const { setFireworksState, fireworksState } = useGameContext();
+  const [fireworksVisible, setFireworksVisible] = useState(false);
   const [{ width: tileWidth, height: tileHeight }, setTileSize] = useState(() =>
     calcTileSize(boardSize, rows, cols, spacing)
   );
   const boardRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   useArrowKeyPress(onMove);
   useSwipe(boardRef as RefObject<HTMLElement>, onMove);
 
@@ -43,8 +50,44 @@ const GameBoard: FC<GameBoardProps> = ({
     setTileSize(calcTileSize(boardSize, rows, cols, spacing));
   }, [boardSize, cols, rows, spacing]);
 
+  useEffect(() => {
+    console.log("fireworksState", fireworksState);
+    console.log("showFireworks", showFireworks);
+    console.log("fireworksVisible", fireworksVisible);
+    console.log("");
+    if (showFireworks && !fireworksState) {
+      setFireworksState(true);
+      setFireworksVisible(true);
+      if (videoRef.current) {
+        console.log("videoRef.current", videoRef.current);
+        videoRef.current.currentTime = 0;
+        videoRef.current.play();
+        videoRef.current.playbackRate = 1.75;
+      }
+
+      console.log("start timer");
+      setTimeout(() => {
+        console.log("stop timer");
+        setFireworksVisible(false);
+      }, 4500);
+    }
+  }, [showFireworks, fireworksState, setFireworksState]);
+
   return (
     <div className="relative" ref={boardRef}>
+      <div className="absolute inset-0 z-10 pointer-events-none rounded-md">
+        <video
+          ref={videoRef}
+          loop
+          muted
+          className={`w-full h-full object-cover rounded-xl transition-opacity duration-500 ${
+            fireworksVisible ? "opacity-50" : "opacity-0"
+          }`}
+          src={Fireworks}
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <Grid
         width={boardSize}
         height={boardSize}

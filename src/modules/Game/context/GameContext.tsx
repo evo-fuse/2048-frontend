@@ -27,6 +27,8 @@ interface GameContextType {
   onCloseItemModal: () => void;
   itemModalNotice: string;
   setItemModalNotice: (value: string) => void;
+  fireworksState: boolean;
+  setFireworksState: (value: boolean) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -43,6 +45,7 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     onClose: onCloseWalletConnect,
   } = useOpen(false);
   const [itemModalNotice, setItemModalNotice] = useState<string>("");
+  const [fireworksState, setFireworksState] = useState(false);
 
   const [itemUsage, setItemUsage] = useLocalStorage<{
     powerup: boolean;
@@ -101,6 +104,8 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     onCloseItemModal,
     itemModalNotice,
     setItemModalNotice,
+    fireworksState,
+    setFireworksState,
   };
 
   return (

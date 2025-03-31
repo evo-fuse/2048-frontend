@@ -25,7 +25,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
   status,
 }) => {
   const { user, handleRequestRewarding } = useAuthContext();
-  const { setItemUsage } = useGameContext();
+  const { setItemUsage, setFireworksState } = useGameContext();
   const [animate, setAnimate] = useState(false);
   const click = useRef<boolean>(false);
   const estimatedReward: number = 
@@ -57,6 +57,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
       Toast.error("Error requesting reward");
     } finally {
       setLoading(false);
+      setFireworksState(false);
       pendingFunction();
       onClose();
       setItemUsage({ powerup: false, upgrade: false });

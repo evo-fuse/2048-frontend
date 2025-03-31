@@ -272,6 +272,7 @@ export const MainView: FC = () => {
                 onMergePending={onMergePending}
                 breakTile={breakTile}
                 doubleTile={doubleTile}
+                showFireworks={maxTile === 32}
               />
             </div>
             <ItemBar handleOpenItemModal={handleOpenItemModal} />
