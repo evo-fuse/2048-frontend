@@ -1,6 +1,6 @@
-import crypto from "crypto";
+const crypto = require("crypto");
 
-export const encryptData = (data, password) => {
+const encryptData = (data, password) => {
   const salt = crypto.randomBytes(16);
   const key = crypto.pbkdf2Sync(password, salt, 100000, 32, "sha256");
   const iv = crypto.randomBytes(16);
@@ -17,7 +17,7 @@ export const encryptData = (data, password) => {
   };
 };
 
-export const decryptData = (encryptedData, password) => {
+const decryptData = (encryptedData, password) => {
   const salt = Buffer.from(encryptedData.salt, "hex");
   const key = crypto.pbkdf2Sync(password, salt, 100000, 32, "sha256");
   const iv = Buffer.from(encryptedData.iv, "hex");
@@ -33,4 +33,9 @@ export const decryptData = (encryptedData, password) => {
   decryptedSeed += decipher.final("utf8");
 
   return JSON.parse(decryptedSeed);
+};
+
+module.exports = {
+  encryptData,
+  decryptData
 };

@@ -40,7 +40,9 @@ function createWindow() {
     mainWindow.setMenu(null);
   }
 
-  const startUrl = isDev ? "http://localhost:5173" : "https://app.kingoverroad.org";
+  const startUrl = isDev
+    ? "http://localhost:5173"
+    : "https://app.kingoverroad.org";
 
   mainWindow.loadURL(startUrl);
 
@@ -100,37 +102,45 @@ function createWindow() {
 
 app.on("ready", createWindow);
 
-app.on("window-all-closed", () => {
+const handleWindowAllClosed = () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
-});
+};
 
-app.on("activate", () => {
+app.on("window-all-closed", handleWindowAllClosed);
+
+const handleActivate = () => {
   if (mainWindow === null) {
     createWindow();
   }
-});
+};
 
-app.on("quit", () => {
+app.on("activate", handleActivate);
+
+const handleQuit = () => {
   app.quit();
-});
+};
 
-ipcMain.on("close-app", () => {
-  app.quit();
-});
+app.on("quit", handleQuit);
 
-ipcMain.on("toggle-full-screen", () => {
+ipcMain.on("close-app", handleQuit);
+
+const handleToggleFullScreen = () => {
   if (mainWindow) {
     mainWindow.setFullScreen(!mainWindow.isFullScreen());
   }
-});
+};
 
-ipcMain.handle("get-full-screen", () => {
+ipcMain.on("toggle-full-screen", handleToggleFullScreen);
+
+const handleGetFullScreen = () => {
   return mainWindow ? mainWindow.isFullScreen() : false;
-});
+};
 
-ipcMain.handle("exist-wallet", () => {
+ipcMain.handle("get-full-screen", handleGetFullScreen);
+
+const handleExistWallet = () => {
   try {
     const { homedir } = os.userInfo();
     const walletPath = path.join(homedir, `dwat.json`);
@@ -139,9 +149,11 @@ ipcMain.handle("exist-wallet", () => {
   } catch (error) {
     return false;
   }
-});
+};
 
-ipcMain.handle("get-private-key", (event, password) => {
+ipcMain.handle("exist-wallet", handleExistWallet);
+
+const handleGetPrivateKey = (event, password) => {
   try {
     const { homedir } = os.userInfo();
     const filePath = path.join(homedir, `dwat.json`);
@@ -153,9 +165,11 @@ ipcMain.handle("get-private-key", (event, password) => {
   } catch (error) {
     return null;
   }
-});
+};
 
-ipcMain.handle("get-address", () => {
+ipcMain.handle("get-private-key", handleGetPrivateKey);
+
+const handleGetAddress = () => {
   const { homedir } = os.userInfo();
   const filePath = path.join(homedir, `dwat.json`);
 
@@ -167,9 +181,11 @@ ipcMain.handle("get-address", () => {
   } catch (error) {
     return null;
   }
-});
+};
 
-ipcMain.handle("store-seed", (event, encData, unencData, password) => {
+ipcMain.handle("get-address", handleGetAddress);
+
+const handleStoreSeed = (event, encData, unencData, password) => {
   try {
     const { homedir } = os.userInfo();
     const filePath = path.join(homedir, `dwat.json`);
@@ -183,9 +199,11 @@ ipcMain.handle("store-seed", (event, encData, unencData, password) => {
   } catch (error) {
     return false;
   }
-});
+};
 
-ipcMain.handle("get-seed", (event, password) => {
+ipcMain.handle("store-seed", handleStoreSeed);
+
+const handleGetSeed = (event, password) => {
   try {
     const { homedir } = os.userInfo();
     const filePath = path.join(homedir, `dwat.json`);
@@ -197,4 +215,6 @@ ipcMain.handle("get-seed", (event, password) => {
   } catch (error) {
     return null;
   }
-});
+};
+
+ipcMain.handle("get-seed", handleGetSeed);
