@@ -54,11 +54,11 @@ button.start {
 }
 
 button.start:hover {
-  background: url('./assets/images/start.png') 0 132px;
+  background: url('./assets/images/start.png') 0 117.5px;
 }
 
 button.start:active {
-  background: url('./assets/images/start.png') 0 265.666px;
+  background: url('./assets/images/start.png') 0 236.5px;
 }
 
 button.setting {
@@ -66,11 +66,11 @@ button.setting {
 }
 
 button.setting:hover {
-  background: url('./assets/images/setting.png') 0 133px;
+  background: url('./assets/images/setting.png') 0 118px;
 }
 
 button.setting:active {
-  background: url('./assets/images/setting.png') 0 267px;
+  background: url('./assets/images/setting.png') 0 237px;
 }
 
 button.credits {
@@ -78,11 +78,11 @@ button.credits {
 }
 
 button.credits:hover {
-  background: url('./assets/images/credits.png') 0 133px;
+  background: url('./assets/images/credits.png') 0 118px;
 }
 
 button.credits:active {
-  background: url('./assets/images/credits.png') 0 267px;
+  background: url('./assets/images/credits.png') 0 237px;
 }
 
 button.quit {
@@ -90,11 +90,23 @@ button.quit {
 }
 
 button.quit:hover {
-  background: url('./assets/images/quit.png') 0 133px;
+  background: url('./assets/images/quit.png') 0 118px;
 }
 
 button.quit:active {
-  background: url('./assets/images/quit.png') 0 267px;
+  background: url('./assets/images/quit.png') 0 237px;
+}
+
+button.more-games {
+  background: url('./assets/images/more-games.png') 0 0;
+}
+
+button.more-games:hover {
+  background: url('./assets/images/more-games.png') 0 118px;
+}
+
+button.more-games:active {
+  background: url('./assets/images/more-games.png') 0 237px;
 }
 
 button.controller {

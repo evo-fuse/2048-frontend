@@ -4,13 +4,17 @@ import Modal from '../Modal';
 // Mock framer-motion to avoid animation issues in tests
 jest.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, onClick, ...props }) => (
+    div: ({ children, onClick, ...props }: { 
+      children: React.ReactNode; 
+      onClick?: (event: React.MouseEvent) => void;
+      [key: string]: any;
+    }) => (
       <div onClick={onClick} data-testid="motion-div" {...props}>
         {children}
       </div>
     ),
   },
-  AnimatePresence: ({ children }) => <>{children}</>,
+  AnimatePresence: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
 describe('Modal Component', () => {

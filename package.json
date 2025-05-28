@@ -16,7 +16,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "eject": "react-scripts eject",
-    "electron-dev": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-dev": "concurrently \"npm run dev\" \"electron .\"",
     "electron": "electron .",
     "electron-build": "npm run build && electron-builder"
   },
@@ -50,6 +50,7 @@
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "10.4.18",
+    "concurrently": "^9.1.2",
     "electron": "^35.0.1",
     "electron-builder": "^25.1.8",
     "eslint": "^9.21.0",
@@ -70,15 +71,9 @@
     "productName": "King Over Road",
     "files": [
       "build/**/*",
-      "electron/**/*",
-      "node_modules/**/*",
-      "local.exe"
+      "electron/**/*"
     ],
     "extraResources": [
-      {
-        "from": "local.exe",
-        "to": "local.exe"
-      },
       {
         "from": "electron/icon.ico",
         "to": "icon.ico"

@@ -4,3 +4,4 @@ export * from "./Ico";
 export * from "./Credits";
 export * from "./Game";
 export * from "./Wallet";
+export * from "./MoreGames";

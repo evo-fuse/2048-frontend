@@ -37,6 +37,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [privateKey, setPrivateKey] = useState<string>("");
 
   const handleUser = async (address?: string) => {
+    console.log(address);
     const { data } = await api({token: address}).get("/auth");
     return data;
   };

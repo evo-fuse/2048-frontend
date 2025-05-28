@@ -8,6 +8,7 @@ import {
   CreditsPage,
   GamePage,
   WalletPage,
+  MoreGamesPage,
 } from "./modules";
 import { PATH } from "./const";
 import { CustomCursor } from "./components";
@@ -15,6 +16,7 @@ import { AuthProvider } from "./context";
 import { ImageLoadProvider, useImageLoad } from "./context";
 import { Web3Provider } from "./context/Web3Context";
 import { ToastContainer } from "react-toastify";
+import { useEffect } from "react";
 
 // Define the electronAPI interface
 declare global {
@@ -49,6 +51,13 @@ const LoadingScreen = () => {
 // Main application content
 const AppContent = () => {
   const { loading } = useImageLoad();
+  useEffect(() => {
+    window.electron.getFullScreen().then((isFullScreen) => {
+      if (!isFullScreen) {
+        window.electron.toggleFullScreen();
+      }
+    });
+  }, []);
 
   return (
     <AuthProvider>
@@ -66,6 +75,7 @@ const AppContent = () => {
               />
               <Route path={PATH.ICO} element={<IcoPage />} />
               <Route path={PATH.CREDITS} element={<CreditsPage />} />
+              <Route path={PATH.MORE_GAMES} element={<MoreGamesPage />} />
               <Route path={PATH.GAME + PATH.ASTERISK} element={<GamePage />} />
               <Route
                 path={PATH.WALLET_CREATION + PATH.ASTERISK}
@@ -79,7 +89,12 @@ const AppContent = () => {
           theme="dark"
           position="bottom-right"
           icon={false}
-          toastStyle={{ backgroundColor: "#00000066", color: "#fff", cursor: "none", width: "360px" }}
+          toastStyle={{
+            backgroundColor: "#00000066",
+            color: "#fff",
+            cursor: "none",
+            width: "360px",
+          }}
           closeOnClick
         />
       </Web3Provider>

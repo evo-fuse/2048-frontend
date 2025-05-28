@@ -8,3 +8,4 @@ export * from "./Modal";
 export * from "./PasswordInput";
 export * from "./Ribbon";
 export * from "./toast";
+export * from "./ImageModal";
