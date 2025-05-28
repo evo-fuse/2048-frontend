@@ -1,11 +1,51 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron");
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
-const ethers = require("ethers");
-const { encryptData, decryptData } = require("./wallet");
-const isDev = require("electron-is-dev");
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
+import path from "path";
+import fs from "fs";
+import os from "os";
+import { ethers } from "ethers";
+import isDev from "electron-is-dev";
+import crypto from "crypto";
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 let mainWindow;
+
+const encryptData = (data, password) => {
+  const salt = crypto.randomBytes(16);
+  const key = crypto.pbkdf2Sync(password, salt, 100000, 32, "sha256");
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
+  let encryptedSeed = cipher.update(JSON.stringify(data), "utf8", "hex");
+  encryptedSeed += cipher.final("hex");
+  const authTag = cipher.getAuthTag();
+
+  return {
+    salt: salt.toString("hex"),
+    iv: iv.toString("hex"),
+    encryptedSeed,
+    authTag: authTag.toString("hex"),
+  };
+};
+
+const decryptData = (encryptedData, password) => {
+  const salt = Buffer.from(encryptedData.salt, "hex");
+  const key = crypto.pbkdf2Sync(password, salt, 100000, 32, "sha256");
+  const iv = Buffer.from(encryptedData.iv, "hex");
+  const authTag = Buffer.from(encryptedData.authTag, "hex");
+  const decipher = crypto.createDecipheriv("aes-256-gcm", key, iv);
+  decipher.setAuthTag(authTag);
+
+  let decryptedSeed = decipher.update(
+    encryptedData.encryptedSeed,
+    "hex",
+    "utf8"
+  );
+  decryptedSeed += decipher.final("utf8");
+
+  return JSON.parse(decryptedSeed);
+};
 
 function createWindow() {
   let iconPath;
@@ -20,11 +60,11 @@ function createWindow() {
   }
 
   mainWindow = new BrowserWindow({
-    width: 1600,
-    height: 900,
+    width: 1920,
+    height: 960,
     resizable: false,
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true,
       preload: path.join(__dirname, "preload.js"),
       devTools: isDev,
@@ -32,7 +72,7 @@ function createWindow() {
     backgroundColor: "#6B7280",
     show: false,
     icon: iconPath,
-    autoHideMenuBar: !isDev,
+    autoHideMenuBar: true,
     frame: true,
   });
 
@@ -40,7 +80,9 @@ function createWindow() {
     mainWindow.setMenu(null);
   }
 
-  const startUrl = isDev ? "http://localhost:5173" : "https://app.kingoverroad.org";
+  const startUrl = isDev
+    ? "http://localhost:5173"
+    : "https://app.kingoverroad.org";
 
   mainWindow.loadURL(startUrl);
 
@@ -55,6 +97,9 @@ function createWindow() {
       contextIsolation: true,
     },
   });
+
+  console.log("OK");
+  console.log(import.meta.url);
 
   loadingScreen.loadFile(path.join(__dirname, "loading.html"));
   loadingScreen.center();
@@ -100,37 +145,45 @@ function createWindow() {
 
 app.on("ready", createWindow);
 
-app.on("window-all-closed", () => {
+const handleWindowAllClosed = () => {
   if (process.platform !== "darwin") {
     app.quit();
   }
-});
+};
 
-app.on("activate", () => {
+app.on("window-all-closed", handleWindowAllClosed);
+
+const handleActivate = () => {
   if (mainWindow === null) {
     createWindow();
   }
-});
+};
 
-app.on("quit", () => {
+app.on("activate", handleActivate);
+
+const handleQuit = () => {
   app.quit();
-});
+};
 
-ipcMain.on("close-app", () => {
-  app.quit();
-});
+app.on("quit", handleQuit);
 
-ipcMain.on("toggle-full-screen", () => {
+ipcMain.on("close-app", handleQuit);
+
+const handleToggleFullScreen = () => {
   if (mainWindow) {
     mainWindow.setFullScreen(!mainWindow.isFullScreen());
   }
-});
+};
 
-ipcMain.handle("get-full-screen", () => {
+ipcMain.on("toggle-full-screen", handleToggleFullScreen);
+
+const handleGetFullScreen = () => {
   return mainWindow ? mainWindow.isFullScreen() : false;
-});
+};
 
-ipcMain.handle("exist-wallet", () => {
+ipcMain.handle("get-full-screen", handleGetFullScreen);
+
+const handleExistWallet = () => {
   try {
     const { homedir } = os.userInfo();
     const walletPath = path.join(homedir, `dwat.json`);
@@ -139,9 +192,11 @@ ipcMain.handle("exist-wallet", () => {
   } catch (error) {
     return false;
   }
-});
+};
 
-ipcMain.handle("get-private-key", (event, password) => {
+ipcMain.handle("exist-wallet", handleExistWallet);
+
+const handleGetPrivateKey = (event, password) => {
   try {
     const { homedir } = os.userInfo();
     const filePath = path.join(homedir, `dwat.json`);
@@ -153,9 +208,11 @@ ipcMain.handle("get-private-key", (event, password) => {
   } catch (error) {
     return null;
   }
-});
+};
 
-ipcMain.handle("get-address", () => {
+ipcMain.handle("get-private-key", handleGetPrivateKey);
+
+const handleGetAddress = () => {
   const { homedir } = os.userInfo();
   const filePath = path.join(homedir, `dwat.json`);
 
@@ -167,9 +224,11 @@ ipcMain.handle("get-address", () => {
   } catch (error) {
     return null;
   }
-});
+};
 
-ipcMain.handle("store-seed", (event, encData, unencData, password) => {
+ipcMain.handle("get-address", handleGetAddress);
+
+const handleStoreSeed = (event, encData, unencData, password) => {
   try {
     const { homedir } = os.userInfo();
     const filePath = path.join(homedir, `dwat.json`);
@@ -183,9 +242,11 @@ ipcMain.handle("store-seed", (event, encData, unencData, password) => {
   } catch (error) {
     return false;
   }
-});
+};
 
-ipcMain.handle("get-seed", (event, password) => {
+ipcMain.handle("store-seed", handleStoreSeed);
+
+const handleGetSeed = (event, password) => {
   try {
     const { homedir } = os.userInfo();
     const filePath = path.join(homedir, `dwat.json`);
@@ -197,4 +258,6 @@ ipcMain.handle("get-seed", (event, password) => {
   } catch (error) {
     return null;
   }
-});
+};
+
+ipcMain.handle("get-seed", handleGetSeed);
