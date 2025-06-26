@@ -12,14 +12,14 @@ export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
   const { isOpenWalletConnect, onCloseWalletConnect } = useGameContext();
   const { handleGetPrivateKey } = useAuthContext();
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-800">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gray-800 overflow-x-hidden">
       <img
         src={Images.Bg}
         className="fixed top-0 left-0 w-screen h-full object-cover"
         alt="Fantasy Background"
       />
       <div className="absolute top-0 left-0 w-full h-full bg-black/50 backdrop-blur-sm" />
-      <div className="relative z-10 w-full h-full flex justify-start items-center mt-0">
+      <div className="relative z-10 w-full h-full flex justify-start items-center mt-0 gap-4">
         <Navbar />
         {children}
       </div>

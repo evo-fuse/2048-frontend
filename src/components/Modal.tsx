@@ -82,7 +82,7 @@ const Modal: React.FC<ModalProps> = ({
                 {showCloseButton && (
                   <button
                     onClick={onClose}
-                    className="text-gray-400 hover:text-gray-300 focus:outline-none"
+                    className="text-gray-400 hover:text-gray-300"
                     aria-label="Close"
                   >
                     <svg

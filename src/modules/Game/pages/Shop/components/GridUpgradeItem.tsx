@@ -29,7 +29,7 @@ export const GridUpgradeItem: React.FC<GridUpgradeItemProps> = ({
   const canAfford = userBalance >= price;
 
   return (
-    <div className="bg-gray-800/30 rounded-lg p-4 border border-white/10">
+    <div className="w-full bg-gray-800/30 rounded-lg p-4 border border-white/10">
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
           <h4 className="text-xl font-bold text-white">{title}</h4>

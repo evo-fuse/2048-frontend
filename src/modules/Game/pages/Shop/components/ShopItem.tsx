@@ -39,7 +39,7 @@ export const ShopItem: React.FC<ShopItemProps> = ({
             </button>
             <input
               type="text"
-              className="w-12 bg-transparent text-center text-white border-0 focus:outline-none"
+              className="w-12 bg-transparent text-center text-white border-0"
               value={quantity}
               onChange={(e) => {
                 const value = parseInt(e.target.value) || 0;

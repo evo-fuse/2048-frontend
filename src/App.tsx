@@ -2,13 +2,9 @@ import "@fontsource/patrick-hand";
 import "@fontsource/cinzel-decorative";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  HomePage,
-  SettingPage,
   IcoPage,
-  CreditsPage,
   GamePage,
   WalletPage,
-  MoreGamesPage,
 } from "./modules";
 import { PATH } from "./const";
 import { CustomCursor } from "./components";
@@ -16,7 +12,8 @@ import { AuthProvider } from "./context";
 import { ImageLoadProvider, useImageLoad } from "./context";
 import { Web3Provider } from "./context/Web3Context";
 import { ToastContainer } from "react-toastify";
-import { useEffect } from "react";
+import { MdDownload } from "react-icons/md";
+import { motion } from "framer-motion";
 
 // Define the electronAPI interface
 declare global {
@@ -35,15 +32,19 @@ declare global {
 
 // Loading component to show while images are loading
 const LoadingScreen = () => {
-  const { loadedCount, totalImages } = useImageLoad();
-
   return (
-    <div className="w-full h-full flex flex-col items-start justify-end overflow-hidden gap-4">
-      <span className="text-3xl font-bold pl-8">Loading...</span>
-      <div
-        className="border-t border-t-black transition-all pb-8"
-        style={{ width: `${(1600 * totalImages) / loadedCount}px` }}
-      />
+    <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-gray-950">
+      <MdDownload color="white" size={96} className="animate-bounce" />
+      <span className="text-white text-2xl font-bold">Preparing Assets...</span>
+      <div className="w-96 h-2 bg-white rounded-full mt-4 relative overflow-hidden">
+        <motion.div
+          className="absolute left-0 top-0 h-full bg-gray-500 rounded-full"
+          style={{ width: "25%" }}
+          initial={{ x: -96 }}
+          animate={{ x: 384 }}
+          transition={{ duration: 1, repeat: Infinity }}
+        />
+      </div>
     </div>
   );
 };
@@ -51,13 +52,6 @@ const LoadingScreen = () => {
 // Main application content
 const AppContent = () => {
   const { loading } = useImageLoad();
-  useEffect(() => {
-    window.electron.getFullScreen().then((isFullScreen) => {
-      if (!isFullScreen) {
-        window.electron.toggleFullScreen();
-      }
-    });
-  }, []);
 
   return (
     <AuthProvider>
@@ -68,14 +62,7 @@ const AppContent = () => {
         ) : (
           <BrowserRouter>
             <Routes>
-              <Route path={PATH.HOME} element={<HomePage />} />
-              <Route
-                path={PATH.SETTING + PATH.ASTERISK}
-                element={<SettingPage />}
-              />
-              <Route path={PATH.ICO} element={<IcoPage />} />
-              <Route path={PATH.CREDITS} element={<CreditsPage />} />
-              <Route path={PATH.MORE_GAMES} element={<MoreGamesPage />} />
+              <Route path={PATH.HOME} element={<IcoPage />} />
               <Route path={PATH.GAME + PATH.ASTERISK} element={<GamePage />} />
               <Route
                 path={PATH.WALLET_CREATION + PATH.ASTERISK}

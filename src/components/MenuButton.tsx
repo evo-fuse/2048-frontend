@@ -11,7 +11,7 @@ interface MenuButtonProps {
 export const MenuButton = ({ text, onClick, delay, width=360, height=133 }: MenuButtonProps) => {
   return (
     <motion.button
-      className={`text-white py-3 px-6 rounded-lg flex items-center justify-center ${text} h-[119px] w-[320px] focus:outline-none`}
+      className={`text-white py-3 px-6 rounded-lg flex items-center justify-center ${text} h-[119px] w-[320px]`}
       initial={{
         x: -100,
         opacity: 0,

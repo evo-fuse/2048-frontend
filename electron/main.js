@@ -60,8 +60,8 @@ function createWindow() {
   }
 
   mainWindow = new BrowserWindow({
-    width: 1920,
-    height: 960,
+    width: 1600,
+    height: 900,
     resizable: false,
     webPreferences: {
       nodeIntegration: true,

@@ -69,7 +69,7 @@ export const ImportExistingWalletView: React.FC = () => {
                 )
               }
               type={isOpen ? "text" : "password"}
-              className="px-2 py-1 text-white text-lg rounded-md text-center bg-transparent border border-white focus:outline-none"
+              className="px-2 py-1 text-white text-lg rounded-md text-center bg-transparent border border-white"
             />
           ))}
         </div>

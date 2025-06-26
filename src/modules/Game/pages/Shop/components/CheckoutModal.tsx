@@ -92,7 +92,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           </div>
           <div>
             <h3 className="text-white text-lg font-bold">{theme.title}</h3>
-            <p className="text-white font-bold mt-2">Price: $1.99</p>
+            <p className="text-white font-bold mt-2">Price: {theme.price}$</p>
           </div>
         </div>
 
@@ -133,7 +133,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         )}
         <div className="flex justify-between items-center bg-gray-800/40 p-3 rounded-md mt-2">
           <span className="text-white font-bold">Total:</span>
-          <span className="text-white font-bold">$1.99</span>
+          <span className="text-white font-bold">{theme.price}$</span>
         </div>
 
         <button

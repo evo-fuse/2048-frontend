@@ -30,6 +30,18 @@ div {
   font-family: "Sans-serif", cursive;
 }
 
+input:focus {
+  outline: none;
+}
+
+textarea:focus {
+  outline: none;
+}
+
+button:focus {
+  outline: none;
+}
+
 /* Hide cursor on scrollbar */
  ::-webkit-scrollbar {
   width: 2px;

@@ -24,11 +24,11 @@ const RewardModal: React.FC<RewardModalProps> = ({
   pendingFunction,
   status,
 }) => {
-  const { user, handleRequestRewarding } = useAuthContext();
+  const { user, handleRequestRewarding, handleUpdateUser } = useAuthContext();
   const { setItemUsage, setFireworksState } = useGameContext();
   const [animate, setAnimate] = useState(false);
   const click = useRef<boolean>(false);
-  const estimatedReward: number = 
+  const estimatedReward: number =
     maxTile >= 2048 ? Math.floor(total / 100 + maxTile / 10) : 0;
 
   const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
@@ -52,6 +52,10 @@ const RewardModal: React.FC<RewardModalProps> = ({
       setLoading(true);
       if (estimatedReward === 0 || !user?.address) return;
       await handleRequestRewarding(user?.address || "", estimatedReward);
+      await handleUpdateUser({
+        maxTile: Math.max(maxTile, user.maxTile),
+        maxScore: Math.max(total, user.maxScore),
+      });
       await getBalance();
     } catch (error) {
       Toast.error("Error requesting reward");
@@ -171,11 +175,11 @@ const RewardModal: React.FC<RewardModalProps> = ({
             <button
               onClick={handleNewGame}
               disabled={loading || click.current}
-              className={`px-6 py-3 w-32 flex items-center justify-center ${
+              className={`px-6 py-3 flex items-center justify-center ${
                 loading || click.current
                   ? "bg-gray-500 cursor-not-allowed opacity-70"
                   : "bg-gray-600 hover:bg-gray-700"
-              } text-white rounded-md transition-all shadow-lg border border-white/10 font-medium`}
+              } text-white text-nowrap rounded-md transition-all shadow-lg border border-white/10 font-medium`}
             >
               {loading ? (
                 <FaSpinner className="animate-spin" />

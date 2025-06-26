@@ -17,7 +17,7 @@ export const ShopView: React.FC = () => {
 
   useEffect(() => {
     getBalance();
-    getThemes().then((data) => {
+    getThemes("premium").then((data) => {
       setThemes(data);
     });
   }, []);
@@ -42,8 +42,8 @@ export const ShopView: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-full h-full items-center justify-center py-8">
-      <div className="w-[480px] h-full overflow-hidden bg-black/20 border border-white/10 rounded-lg">
+    <div className="flex flex-col gap-4 w-full h-full items-center justify-center p-8">
+      <div className="w-full h-full overflow-hidden bg-black/20 border border-white/10 rounded-lg">
         {/* User's coin balance display */}
         <div className="flex justify-between items-center px-4 py-2 bg-gray-800/50 border-b border-white/10">
           <h2 className="text-xl font-bold text-white">Shop</h2>

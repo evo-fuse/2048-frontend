@@ -80,7 +80,7 @@ export const SeedPhraseConfirmView: React.FC = () => {
                   [idx]: e.target.value,
                 });
               }}
-              className="px-2 py-1 text-white text-md rounded-md text-center bg-transparent border border-orange-500 read-only:border-white focus:outline-none"
+              className="px-2 py-1 text-white text-md rounded-md text-center bg-transparent border border-orange-500 read-only:border-white"
             />
           ))}
         </div>

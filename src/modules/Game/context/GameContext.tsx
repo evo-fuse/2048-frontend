@@ -15,7 +15,7 @@ interface GameContextType {
   handleBuyTheme: (themeId: string, txData: any) => Promise<void>;
   selectedTheme: Theme | "Basic";
   setSelectedTheme: (value: Theme | "Basic") => void;
-  getThemes: () => Promise<Theme[]>;
+  getThemes: (visibility?: string) => Promise<Theme[]>;
   setThemes: (value: Theme[]) => void;
   isOpenWalletConnect: boolean;
   onOpenWalletConnect: () => void;
@@ -29,6 +29,9 @@ interface GameContextType {
   setItemModalNotice: (value: string) => void;
   fireworksState: boolean;
   setFireworksState: (value: boolean) => void;
+  createdThemes: Theme[];
+  setCreatedThemes: (value: Theme[]) => void;
+  getCreatedThemes: () => Promise<void>;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -36,6 +39,7 @@ const GameContext = createContext<GameContextType | undefined>(undefined);
 export const GameProvider = ({ children }: { children: React.ReactNode }) => {
   const [initialSetup, setInitialSetup] = useState(false);
   const [themes, setThemes] = useState<Theme[]>([]);
+  const [createdThemes, setCreatedThemes] = useState<Theme[]>([]);
   const [showPowerupAnimation, setShowPowerupAnimation] = useState(false);
   const [powerup, setPowerup] = useState<number>(0);
   const [selectedTheme, setSelectedTheme] = useState<Theme | "Basic">("Basic");
@@ -58,8 +62,9 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     onClose: onCloseItemModal,
   } = useOpen();
 
-  const getThemes = async () => {
-    const { data } = await api({}).get("/themes");
+  const getThemes = async (visibility: string = "all") => {
+    setThemes([]);
+    const { data } = await api({}).get(`/themes/${visibility}`);
     return data;
   };
 
@@ -79,6 +84,11 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const getCreatedThemes = async () => {
+    const { data } = await api({}).post(`/themes/created`);
+    setCreatedThemes(data);
   };
 
   const value = {
@@ -106,6 +116,9 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     setItemModalNotice,
     fireworksState,
     setFireworksState,
+    createdThemes,
+    setCreatedThemes,
+    getCreatedThemes,
   };
 
   return (

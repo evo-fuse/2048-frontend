@@ -25,6 +25,10 @@ type AuthContextType = {
   handleRequestRewarding: (address: string, amount: number) => Promise<any>;
   signupUser: (address: string) => Promise<any>;
   handleDisconnectWallet: () => Promise<any>;
+  handleCreateTheme: (
+    themeData: FormData,
+    onProgress: (status: { status: string; progress?: number; message: string }) => void
+  ) => Promise<any>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -37,8 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [privateKey, setPrivateKey] = useState<string>("");
 
   const handleUser = async (address?: string) => {
-    console.log(address);
-    const { data } = await api({token: address}).get("/auth");
+    const { data } = await api({ token: address }).get("/auth");
     return data;
   };
 
@@ -56,7 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleGetWalletAddress = async () => {
     const data = await window.electron.getAddress();
-    if(data === null) throw new Error("Didn't retrieve address");
+    if (data === null) throw new Error("Didn't retrieve address");
     return data;
   };
 
@@ -88,13 +91,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleGetPrivateKey = async (password: string) => {
     const data = await window.electron.getPrivateKey(password);
     console.log("handleGetPrivateKey", data);
-    if(data === null) throw new Error("Didn't retrieve private key");
+    if (data === null) throw new Error("Didn't retrieve private key");
     return data;
   };
 
   const handleGetSeed = async (password: string) => {
     const data = await window.electron.getSeed(password);
-    if(data === null) throw new Error("Didn't retrieve seed");
+    if (data === null) throw new Error("Didn't retrieve seed");
     return data;
   };
 
@@ -108,6 +111,60 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const handleDisconnectWallet = async () => {
     setPrivateKey("");
+  };
+
+  const handleCreateTheme = async (
+    themeData: FormData,
+    onProgress: (status: { status: string; progress?: number; message: string }) => void
+  ) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/themes`, {
+        method: 'POST',
+        body: themeData,
+        headers: {
+          'Authorization': `${localStorage.getItem('token')}`,
+        },
+      });
+
+      const reader = response.body?.getReader();
+      if (!reader) throw new Error('Failed to get response reader');
+
+      const decoder = new TextDecoder();
+      let theme = null;
+
+      // Process the stream of events
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n\n');
+        
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.substring(6));
+              onProgress(data);
+              
+              if (data.status === 'complete') {
+                theme = data.theme;
+              }
+            } catch (e) {
+              console.error('Error parsing SSE data:', e);
+            }
+          }
+        }
+      }
+      
+      return theme;
+    } catch (error) {
+      console.error("Error creating theme:", error);
+      onProgress({ 
+        status: 'error', 
+        message: error instanceof Error ? error.message : 'Failed to create theme' 
+      });
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -140,7 +197,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setPrivateKey,
     handleRequestRewarding,
     signupUser,
-    handleDisconnectWallet
+    handleDisconnectWallet,
+    handleCreateTheme,
   };
 
   return (

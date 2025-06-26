@@ -56,7 +56,7 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white focus:outline-none"
+            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white"
           >
             Close
           </button>
@@ -68,12 +68,12 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-10 rounded-md bg-transparent px-3 border border-white/10 py-1 text-white focus:outline-none"
+            className="w-full h-10 rounded-md bg-transparent px-3 border border-white/10 py-1 text-white"
           />
           {error && <div className="text-red-500 text-sm">{error}</div>}
           <button
             type="submit"
-            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white focus:outline-none"
+            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white"
           >
             Enter
           </button>

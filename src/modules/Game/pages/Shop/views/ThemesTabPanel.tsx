@@ -50,11 +50,14 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
     if (!selectedTheme) return;
     setIsLoading(true);
     try {
-      const data = await buyThemesWithUSD(tokenType, 199);
+      const data = await buyThemesWithUSD(
+        tokenType,
+        Number(selectedTheme.price) * 100
+      );
       await handleBuyTheme(selectedTheme.uuid, {
         txHash: data.transactionHash,
         tokenType: network[tokenType as keyof typeof network].token,
-        amount: 1.99,
+        amount: selectedTheme.price,
         network: network[tokenType as keyof typeof network].network,
         fromAddr: data.from,
         toAddr: CONFIG.RECEIVER_ADDRESS,
@@ -72,11 +75,11 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
       <TabPanel
         id="Themes"
         selectedTab={selectedTab}
-        className="w-[480px] px-2"
+        className="w-full max-w-[1214px] px-2"
       >
         <motion.div
           ref={scrollRef}
-          className="w-full h-[700px] overflow-y-auto overflow-x-hidden flex flex-col gap-6 px-4 py-2"
+          className="w-full h-[664px] overflow-y-auto overflow-x-hidden flex flex-col gap-6 px-4 py-2"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -108,7 +111,6 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
               scrollRef.current.scrollTop -= info.delta.y;
             }
           }}
-          whileTap={{ cursor: "grabbing" }}
         >
           {themes.map((theme) => (
             <motion.div
@@ -125,7 +127,9 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
                   className="w-32 object-cover"
                   draggable="false"
                 />
-                {theme.owned && <Ribbon title="Purchased" color="blue" top={8} left={8} />}
+                {theme.owned && (
+                  <Ribbon title="Purchased" color="blue" top={8} left={8} />
+                )}
               </div>
               <div className="flex flex-col gap-2 flex-1">
                 <h3 className="text-white text-xl font-bold">{theme.title}</h3>
@@ -136,7 +140,7 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
                       className="max-w-min text-nowrap bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-4 rounded-md transition-colors cursor-none"
                       onClick={() => handleBuyClick(theme)}
                     >
-                      Buy 1.99$
+                      Buy {theme.price}$
                     </button>
                   </div>
                 )}

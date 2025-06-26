@@ -21,9 +21,9 @@ export const IcoView: React.FC = () => {
   const navigate = useNavigate();
   const [show, setShow] = useState(true);
 
-  const handleClick = () => {
+  const handleSignIn = () => {
     setShow(false);
-    setTimeout(() => navigate(PATH.HOME), 300);
+    setTimeout(() => navigate(PATH.GAME + PATH.LOADING), 300);
   };
 
   const motionProps = {
@@ -38,10 +38,6 @@ export const IcoView: React.FC = () => {
       scale: 1.05,
       transition: { duration: 0.3, type: "spring", stiffness: 300 },
     },
-  };
-
-  const handleSignIn = () => {
-    navigate(PATH.GAME + PATH.LOADING);
   };
 
   return (
@@ -72,17 +68,6 @@ export const IcoView: React.FC = () => {
               style={{ fontFamily: "Patrick Hand" }}
               {...motionProps}
               onClick={handleSignIn}
-            >
-            </motion.button>
-            <motion.button
-              onClick={handleClick}
-              className="back w-[360px] h-[133px]"
-              style={{ fontFamily: "Patrick Hand" }}
-              {...motionProps}
-              animate={{
-                ...motionProps.animate,
-                transition: { ...motionProps.animate.transition, delay: 0.2 },
-              }}
             >
             </motion.button>
             <motion.div

@@ -5,7 +5,6 @@ import { Location } from "../../hooks/useGameBoard";
 import { useAuthContext } from "../../../../../../context";
 import { Images } from "../../../../../../assets/images";
 import { useGameContext } from "../../../../context";
-import type { Theme } from "../../../../../../types";
 
 export interface TileProps extends StyledTileProps {
   isnew?: boolean;
@@ -76,6 +75,7 @@ const Tile: FC<TileProps> = ({
           isnew={isnew}
           ismerging={ismerging}
           onAnimationEnd={onAnimationEnd}
+          transparent={false}
         >
           {tileValue}
         </StyledTileValue>
@@ -84,14 +84,27 @@ const Tile: FC<TileProps> = ({
 
     return (
       <StyledTileValue
+        transparent
         value={tileValue}
         isnew={isnew}
         ismerging={ismerging}
         onAnimationEnd={onAnimationEnd}
       >
+        {selectedTheme.numberDisplay && (
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+            <p
+              style={{
+                color: selectedTheme.numberColor,
+                fontSize: selectedTheme.numberSize / 2,
+              }}
+            >
+              {tileValue}
+            </p>
+          </div>
+        )}
         <img
           src={
-            (selectedTheme as Theme)[
+            selectedTheme[
               tileValue as
                 | 2
                 | 4

@@ -14,12 +14,9 @@ export const LoadingView: React.FC = () => {
         const exist = await handleExistWallet();
         if (exist) {
           setLoadingText("Getting wallet address...");
-          console.log("step 1");
           const walletAddress = await handleGetWalletAddress();
           localStorage.setItem("token", walletAddress);
-          console.log("step 2");
           const userData = await handleUser(walletAddress);
-          console.log("step 3");
           setUser({ ...userData, address: walletAddress });
           navigate(PATH.GAME);
         } else {

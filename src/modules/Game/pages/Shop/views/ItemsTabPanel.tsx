@@ -80,7 +80,7 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
     <TabPanel
       id="Items"
       selectedTab={selectedTab}
-      className="w-[480px] px-2"
+      className="w-full max-w-[1214px] px-2"
     >
       <div className="w-full h-full flex flex-col gap-2 px-4 py-2">
         <div className="w-full flex flex-col gap-5">

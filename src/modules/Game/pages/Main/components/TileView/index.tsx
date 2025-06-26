@@ -6,7 +6,20 @@ interface TileViewProps {
   value: number;
 }
 
-type TileViewTheme = Omit<Theme, "description"|"owned"|"title"|"uuid">;
+type TileViewTheme = Omit<
+  Theme,
+  | "description"
+  | "owned"
+  | "title"
+  | "uuid"
+  | "position"
+  | "numberColor"
+  | "numberSize"
+  | "numberDisplay"
+  | "visibility"
+  | "price"
+  | "creator_id"
+>;
 
 export const TileView: React.FC<TileViewProps> = ({ value }) => {
   const { selectedTheme } = useGameContext();
@@ -18,7 +31,7 @@ export const TileView: React.FC<TileViewProps> = ({ value }) => {
     if (selectedTheme !== "Basic" && value <= 8192) {
       setIsLargeImageLoaded(false);
       const img = new Image();
-      img.src = selectedTheme[value as keyof TileViewTheme].lg;
+      img.src = selectedTheme[value as keyof TileViewTheme]?.lg || "";
       img.onload = () => {
         setIsLargeImageLoaded(true);
       };
@@ -33,7 +46,7 @@ export const TileView: React.FC<TileViewProps> = ({ value }) => {
       <div className="w-[512px] h-[512px] relative">
         {/* Small image (shown initially) */}
         <img
-          src={selectedTheme[value as keyof TileViewTheme].sm}
+          src={selectedTheme[value as keyof TileViewTheme]?.sm}
           alt="tile"
           className={`w-[512px] h-[512px] absolute top-0 left-0 transition-opacity duration-300 ${
             isLargeImageLoaded ? "opacity-0" : "opacity-100"
@@ -43,7 +56,7 @@ export const TileView: React.FC<TileViewProps> = ({ value }) => {
 
         {/* Large image (shown when loaded) */}
         <img
-          src={selectedTheme[value as keyof TileViewTheme].lg}
+          src={selectedTheme[value as keyof TileViewTheme]?.lg}
           alt="tile"
           className={`w-[512px] h-[512px] absolute top-0 left-0 transition-opacity duration-300 ${
             isLargeImageLoaded ? "opacity-100" : "opacity-0"
@@ -53,7 +66,7 @@ export const TileView: React.FC<TileViewProps> = ({ value }) => {
       </div>
       <div className="mt-8">
         <p className="text-white text-left text-lg border border-white/20 rounded-lg p-6 break-all">
-          {selectedTheme[value as keyof TileViewTheme].description}
+          {selectedTheme[value as keyof TileViewTheme]?.description}
         </p>
       </div>
     </div>

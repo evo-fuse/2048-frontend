@@ -5,6 +5,7 @@ export interface StyledTileValueProps {
   isnew: boolean;
   ismerging: boolean;
   value: number;
+  transparent: boolean;
 }
 
 const StyledTileValue = styled.div<StyledTileValueProps>`
@@ -16,8 +17,8 @@ const StyledTileValue = styled.div<StyledTileValueProps>`
   flex-direction: column;
   justify-content: center;
   border-radius: 12px;
-  background-color: ${({ theme: { palette }, value }) =>
-    palette[getTileColor(value)]};
+  background-color: ${({ theme: { palette }, value, transparent }) =>
+    transparent ? 'transparent' : palette[getTileColor(value)]};
   animation-name: ${({ ismerging, isnew }) =>
     ismerging ? pop : isnew ? expand : ''};
   animation-duration: 0.06s;

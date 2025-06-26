@@ -10,7 +10,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({ label, error, ...p
       <label>{label}</label>
       <input
         type="password"
-        className="focus:outline-none cursor-none bg-transparent border border-white py-1 ps-4 text-white text-lg font-bold rounded-md"
+        className="cursor-none bg-transparent border border-white py-1 ps-4 text-white text-lg font-bold rounded-md"
         role="textbox"
         {...props}
       />

@@ -9,7 +9,7 @@ export const api = ({baseURL, token}: ApiProps) => {
       'Content-Type': 'application/json',
     },
     baseURL: baseURL || import.meta.env.VITE_API_URL,
-    timeout: 60000,
+    timeout: 600000,
   });
 
   instance.interceptors.request.use(

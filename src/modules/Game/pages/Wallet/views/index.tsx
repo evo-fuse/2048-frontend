@@ -73,11 +73,11 @@ export const WalletView: React.FC = () => {
         transition={{ duration: 0.5 }}
         className="max-w-[480px] min-w-[480px] rounded-lg bg-white/20 backdrop-blur-sm shadow-lg shadow-black/60 flex flex-col items-center justify-center gap-3 px-12 py-8 z-10 border border-white/10"
       >
-        <img
+        {/* <img
           src={Images.WalletBg}
           alt="wallet"
           className="w-full h-full object-cover absolute top-0 left-0"
-        />
+        /> */}
         <div className="w-full h-full absolute top-0 left-0 bg-black/50 backdrop-blur-sm" />
         <div className="w-full flex items-center justify-center mb-2 relative z-10">
           <div className="text-3xl text-white font-bold flex items-center gap-4">
