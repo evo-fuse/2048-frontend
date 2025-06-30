@@ -33,9 +33,9 @@ export const SeedPhraseConfirmView: React.FC = () => {
     usePassword();
 
   return (
-    <div className="w-full h-full relative flex flex-col items-center justify-center">
+    <div className="w-full h-full relative flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 to-black">
       <motion.div
-        className="max-w-[480px] min-w-[480px] border-2 border-white/20 overflow-hidden min-h-2/3 rounded-lg bg-white/20 backdrop-blur-sm shadow-md shadow-black/60 flex flex-col items-center justify-center gap-4 px-16 py-8"
+        className="max-w-[520px] min-w-[520px] overflow-hidden rounded-2xl bg-gray-800/30 backdrop-blur-xl border border-gray-700/50 shadow-2xl flex flex-col items-center justify-center gap-6 px-12 py-10"
         animate={{
           minHeight: emptyInputs.every(
             (idx) => checkSeeds[idx] === seedArray[idx]
@@ -45,20 +45,14 @@ export const SeedPhraseConfirmView: React.FC = () => {
         }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       >
-        <img
-          src={Images.WalletBg}
-          alt="wallet"
-          className="w-full h-auto absolute top-0 left-0 z-10 rounded-lg"
-        />
-        <div className="w-full h-full absolute top-0 left-0 z-10 bg-black/50 backdrop-blur-sm" />
         <div className="w-full flex relative z-20">
           <FaArrowLeft
-            className="text-white border-2 border-white rounded-full p-1 hover:bg-white/10 hover:-translate-x-1 transition"
+            className="text-gray-300 border-2 border-gray-600 rounded-full p-1 hover:bg-gray-700/50 hover:-translate-x-1 transition"
             size={28}
             onClick={handleBack}
           />
         </div>
-        <div className="text-4xl text-white font-bold text-center flex items-center justify-center gap-2 relative z-20">
+        <div className="text-2xl text-gray-100 font-medium text-center flex items-center justify-center gap-2 relative z-20">
           Confirm Secret Recovery Phrase
         </div>
         <img
@@ -66,7 +60,7 @@ export const SeedPhraseConfirmView: React.FC = () => {
           alt="wallet"
           className="w-56 relative z-20"
         />
-        <div className="w-full grid grid-cols-4 gap-2 relative z-20">
+        <div className="w-full grid grid-cols-4 gap-3 relative z-20">
           {seedArray.map((seed, idx) => (
             <input
               type="text"
@@ -80,7 +74,7 @@ export const SeedPhraseConfirmView: React.FC = () => {
                   [idx]: e.target.value,
                 });
               }}
-              className="px-2 py-1 text-white text-md rounded-md text-center bg-transparent border border-orange-500 read-only:border-white"
+              className="px-3 py-2 text-gray-100 text-sm rounded-lg text-center bg-gray-800/60 backdrop-blur-sm border border-gray-700/30 font-mono read-only:border-gray-600/50 read-only:bg-gray-700/40"
             />
           ))}
         </div>
@@ -91,7 +85,7 @@ export const SeedPhraseConfirmView: React.FC = () => {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full flex flex-col gap-2 overflow-hidden relative z-20"
+              className="w-full flex flex-col gap-4 overflow-hidden relative z-20"
             >
               <PasswordInput
                 label="Password"
@@ -129,8 +123,19 @@ export const SeedPhraseConfirmView: React.FC = () => {
                 pwd.password.value.length > 8
             )
           }
-          className="confirm relative z-20 h-[71px] w-[352px] cursor-none"
-        ></button>
+          className={`w-full py-4 px-6 rounded-xl font-medium transition-all duration-200 ${
+            emptyInputs.every(
+              (idx) =>
+                checkSeeds[idx] === seedArray[idx] &&
+                pwd.password.value === pwd.cPassword.value &&
+                pwd.password.value.length > 8
+            )
+              ? "bg-gray-100 text-gray-900 hover:bg-gray-200"
+              : "bg-gray-700/50 text-gray-500"
+          }`}
+        >
+          Create Wallet
+        </button>
       </motion.div>
     </div>
   );
