@@ -36,27 +36,37 @@ export const ImportExistingWalletView: React.FC = () => {
     setIsValid(ethers.Mnemonic.isValidMnemonic(seed.join(" ")));
   }, [seed]);
   return (
-    <div className="w-full h-full relative flex flex-col items-center justify-center">
-      <div className="max-w-[480px] min-h-2/3 py-8 rounded bg-white/20 backdrop-blur-sm shadow-md shadow-black/60 flex flex-col items-center justify-center gap-4 px-16">
-        <div className="text-3xl text-white font-bold text-center">
-          Access your wallet with your Secret Recovery Phrase
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 p-8">
+      {/* Main glass container */}
+      <div className="w-full max-w-2xl backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
+        {/* Header section */}
+        <div className="w-full flex flex-col items-center justify-center gap-8">
+          <div className="text-3xl font-bold text-white tracking-tight text-center">
+            Access your wallet with your Secret Recovery Phrase
+          </div>
+          <div className="w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-2xl flex items-center justify-center shadow-lg">
+            <img src={Images.WalletLogo} alt="wallet" className="w-16 h-16 object-contain" />
+          </div>
         </div>
-        <img src={Images.WalletLogo} alt="wallet" className="w-56" />
+
+        {/* Show/Hide toggle */}
         <div
-          className="flex items-center justify-end gap-2 text-white w-full"
+          className="flex items-center justify-end gap-2 text-white/80 hover:text-white cursor-pointer transition-colors w-full"
           onClick={onToggle}
         >
           {isOpen ? (
             <>
-              Hide <FaRegEyeSlash />
+              <span className="text-sm">Hide</span> <FaRegEyeSlash className="w-4 h-4" />
             </>
           ) : (
             <>
-              Show <FaRegEye />
+              <span className="text-sm">Show</span> <FaRegEye className="w-4 h-4" />
             </>
           )}
         </div>
-        <div className="w-full grid grid-cols-4 gap-2">
+
+        {/* Seed phrase inputs */}
+        <div className="w-full grid grid-cols-4 gap-3">
           {Array.from({ length: 12 }).map((_, idx) => (
             <input
               key={idx}
@@ -69,19 +79,24 @@ export const ImportExistingWalletView: React.FC = () => {
                 )
               }
               type={isOpen ? "text" : "password"}
-              className="px-2 py-1 text-white text-lg rounded-md text-center bg-transparent border border-white"
+              className="px-3 py-2 text-white text-sm rounded-xl text-center bg-white/10 border border-white/20 focus:border-white/40 focus:outline-none transition-all duration-200 placeholder-white/30"
+              placeholder={`${idx + 1}`}
             />
           ))}
         </div>
+
+        {/* Validation messages */}
         {seed.join(" ").trim().split(" ").length < 12 ? (
-          <p className="text-orange-500 font-bold text-lg">Enter Seed Phrase</p>
+          <p className="text-orange-400 font-medium text-sm">Enter Seed Phrase</p>
         ) : (
           !isValid && (
-            <p className="text-orange-500 font-bold text-lg">
+            <p className="text-orange-400 font-medium text-sm">
               Invalid Seed Phrase
             </p>
           )
         )}
+
+        {/* Password inputs */}
         <AnimatePresence>
           {isValid && (
             <motion.div
@@ -89,7 +104,7 @@ export const ImportExistingWalletView: React.FC = () => {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className="w-full flex flex-col gap-2 overflow-hidden"
+              className="w-full flex flex-col gap-4 overflow-hidden"
             >
               <PasswordInput
                 label="Password"
@@ -132,6 +147,8 @@ export const ImportExistingWalletView: React.FC = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Confirm button */}
         <button
           onClick={() => {
             handleCreateWallet(
@@ -144,7 +161,13 @@ export const ImportExistingWalletView: React.FC = () => {
             pwd.password.value.length < 8 ||
             pwd.password.value !== pwd.cPassword.value
           }
-          className="bg-orange-500 hover:bg-orange-600 transition text-white font-bold w-full rounded-full py-1 text-2xl disabled:bg-orange-600/50"
+          className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
+            !isValid ||
+            pwd.password.value.length < 8 ||
+            pwd.password.value !== pwd.cPassword.value
+              ? "bg-white/10 text-white/50 cursor-not-allowed"
+              : "bg-gradient-to-r from-gray-700 to-gray-900 shadow-lg shadow-gray-700/25 hover:shadow-gray-700/40"
+          }`}
         >
           Confirm
         </button>
