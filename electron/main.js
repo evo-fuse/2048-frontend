@@ -5,7 +5,7 @@ import os from "os";
 import { ethers } from "ethers";
 import isDev from "electron-is-dev";
 import crypto from "crypto";
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -81,37 +81,13 @@ function createWindow() {
   }
 
   const startUrl = isDev
-    ? "http://localhost:5173"
+    ? "http://localhost:5175"
     : "https://app.kingoverroad.org";
 
   mainWindow.loadURL(startUrl);
 
-  let loadingScreen = new BrowserWindow({
-    width: 1600,
-    height: 900,
-    frame: false,
-    transparent: true,
-    alwaysOnTop: true,
-    webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-    },
-  });
-
-  console.log("OK");
-  console.log(import.meta.url);
-
-  loadingScreen.loadFile(path.join(__dirname, "loading.html"));
-  loadingScreen.center();
-
   mainWindow.once("ready-to-show", () => {
-    setTimeout(() => {
-      mainWindow.show();
-      if (loadingScreen) {
-        loadingScreen.close();
-        loadingScreen = null;
-      }
-    }, 500);
+    mainWindow.show();
   });
 
   mainWindow.on("closed", () => {

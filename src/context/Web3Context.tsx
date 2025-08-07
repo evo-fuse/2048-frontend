@@ -22,7 +22,7 @@ interface Web3ContextType {
   getBalance: () => Promise<any>;
   getUserGameTokenBalance: () => Promise<any>;
   buyItemsWithGameTokens: (amount: number) => Promise<any>;
-  buyThemesWithUSD: (tokenType: string | null, amount: number) => Promise<any>;
+  buyThemesWithUSD: (tokenType: string | null, amount: number, creatorAddress?: string) => Promise<any>;
   getRewardContractGameTokenBalance: () => Promise<any>;
 }
 
@@ -123,7 +123,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
       const balance: bigint = await tokenContract.methods
         .balanceOf(user.address)
         .call();
-      return balance;
+      return balance / BigInt(10 ** 18);
     }
     return BigInt(0);
   };
@@ -140,7 +140,8 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
 
   const buyThemesWithUSD = async (
     tokenType: string | null,
-    amount: number
+    amount: number,
+    creatorAddress?: string
   ): Promise<any> => {
     const networkName = getNetworkFromToken(tokenType as string);
     const providerUrl = getProviderUrl(tokenType || "");
@@ -160,7 +161,8 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
             "Token not supported",
             `Token ${tokenType} not supported on ${networkName}`
           );
-          return;
+          console.error(`Token ${tokenType} not supported on ${networkName}`)
+          return null; // Return null instead of undefined when token is not supported
         }
 
         const tokenContractInfo =
@@ -179,38 +181,93 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
           (BigInt(amount) * BigInt(10 ** Number(decimals))) / BigInt(10 ** 2)
         );
 
-        // Now transfer the tokens
-        const transferData = contract.methods
-          .transfer(receiverAddress, amountInSmallestUnit)
-          .encodeABI();
-
+        let transferData;
+        let transferTransaction;
         const gasPrice: bigint = await web3_2.eth.getGasPrice();
 
-        const transferTransaction = {
-          from: account.address,
-          to: contract.options.address,
-          gas: 100000,
-          gasPrice: gasPrice,
-          data: transferData,
-        };
+        // If creator address is provided and different from receiver address, split payment
+        if (creatorAddress && creatorAddress !== receiverAddress) {
+          // Calculate 90% for creator and 10% for receiver
+          const creatorAmount = (amountInSmallestUnit * BigInt(90)) / BigInt(100);
+          const receiverAmount = amountInSmallestUnit - creatorAmount;
+
+          // First transfer to creator (90%)
+          const creatorTransferData = contract.methods
+            .transfer(creatorAddress, creatorAmount)
+            .encodeABI();
+
+          const creatorTransaction = {
+            from: account.address,
+            to: contract.options.address,
+            gas: 100000,
+            gasPrice: gasPrice,
+            data: creatorTransferData,
+          };
+
+          const creatorSignedTx = await web3_2.eth.accounts.signTransaction(
+            creatorTransaction,
+            account.privateKey
+          );
+
+          // Send first transaction to creator
+          const creatorReceipt = await web3_2.eth.sendSignedTransaction(creatorSignedTx.rawTransaction!);
+          console.log("Creator transaction receipt:", creatorReceipt);
+
+          // Then transfer to receiver (10%)
+          transferData = contract.methods
+            .transfer(receiverAddress, receiverAmount)
+            .encodeABI();
+
+          transferTransaction = {
+            from: account.address,
+            to: contract.options.address,
+            gas: 100000,
+            gasPrice: gasPrice,
+            data: transferData,
+          };
+        } else {
+          // Standard transfer to receiver (100%)
+          transferData = contract.methods
+            .transfer(receiverAddress, amountInSmallestUnit)
+            .encodeABI();
+
+          transferTransaction = {
+            from: account.address,
+            to: contract.options.address,
+            gas: 100000,
+            gasPrice: gasPrice,
+            data: transferData,
+          };
+        }
 
         const signedTx = await web3_2.eth.accounts.signTransaction(
           transferTransaction,
           account.privateKey
         );
-        //const receipt = await web3_2.eth.sendSignedTransaction(signedTx.rawTransaction!);
 
-        // Replace the problematic line with this event-based approach
+        // Return a properly resolved promise with transaction data
         return new Promise((resolve, reject) => {
           const promiEvent = web3_2.eth.sendSignedTransaction(
             signedTx.rawTransaction!
           );
 
           promiEvent
-            .on("transactionHash", () => {})
+            .on("transactionHash", (hash) => {
+              console.log("Transaction hash:", hash);
+              // You can use this to track the transaction
+            })
             .then((receipt) => {
+              console.log("Transaction receipt:", receipt);
               Toast.success("Congratulations!", "Payment successful!");
-              resolve(receipt);
+              // Make sure we're returning a complete object with all needed data
+              resolve({
+                transactionHash: receipt.transactionHash,
+                from: receipt.from,
+                to: receipt.to,
+                blockNumber: receipt.blockNumber,
+                status: receipt.status,
+                // Include any other fields that might be needed
+              });
             })
             .catch((error) => {
               console.error("Transaction error:", error);
@@ -258,15 +315,15 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
                     });
                 }
               } else if (error.message.includes("insufficient funds")) {
-                Toast.error("Payment Filed", "Can't pay gas. Native token is not enough.");
+                Toast.error("Payment Failed", "Can't pay gas. Native token is not enough.");
               } else if (error.message.includes("nonce too low")) {
                 Toast.error(
-                  "Payment Filed",
+                  "Payment Failed",
                   "Transaction nonce issue. Try again."
                 );
               } else if (error.message.includes("gas limit")) {
                 Toast.error(
-                  "Payment Filed",
+                  "Payment Failed",
                   "Gas limit issue. Try with higher gas."
                 );
               } else {
@@ -282,6 +339,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
         throw error;
       }
     }
+    return null; // Return null if account is not available
   };
 
   const buyItemsWithGameTokens = async (amount: number): Promise<any> => {
@@ -291,10 +349,10 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
       try {
         const gasPrice: bigint = await web3_2.eth.getGasPrice();
         const gasLimit: bigint = await tokenContract.methods
-          .transfer(REWARD_CONTRACT_INFO.address, amount)
+          .transfer(REWARD_CONTRACT_INFO.address, BigInt(amount * 10 ** 18))
           .estimateGas({ from: account.address });
         const paymentData = tokenContract.methods
-          .transfer(REWARD_CONTRACT_INFO.address, amount)
+          .transfer(REWARD_CONTRACT_INFO.address, BigInt(amount * 10 ** 18))
           .encodeABI();
         const paymentTransaction = {
           from: account.address,

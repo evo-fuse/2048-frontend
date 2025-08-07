@@ -225,8 +225,8 @@ export const MainView: FC = () => {
               justifycontent="space-between"
               marginblockstart="s2"
             >
-              <Box>
-                <img src={Images.DWAT_2048} alt="DWAT 2048" />
+              <Box className="text-5xl font-bold">
+                EvoFuse 2048
               </Box>
               <Box justifycontent="center">
                 <ScoreBoard total={total} title="score" />

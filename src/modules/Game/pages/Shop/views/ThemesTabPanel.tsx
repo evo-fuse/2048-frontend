@@ -52,12 +52,17 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
     try {
       const data = await buyThemesWithUSD(
         tokenType,
-        Number(selectedTheme.price) * 100
+        Number(selectedTheme.price) * 100,
+        selectedTheme.creator_id
       );
+      console.log("data", data);
       await handleBuyTheme(selectedTheme.uuid, {
         txHash: data.transactionHash,
         tokenType: network[tokenType as keyof typeof network].token,
-        amount: selectedTheme.price,
+        amount:
+          selectedTheme.creator_id === CONFIG.RECEIVER_ADDRESS
+            ? selectedTheme.price
+            : (selectedTheme.price || 0) * 0.1,
         network: network[tokenType as keyof typeof network].network,
         fromAddr: data.from,
         toAddr: CONFIG.RECEIVER_ADDRESS,

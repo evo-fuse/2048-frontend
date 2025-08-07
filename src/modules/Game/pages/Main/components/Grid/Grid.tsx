@@ -13,7 +13,7 @@ const Grid: FC<GridProps> = ({ width, height, rows, cols, spacing }) => {
 
   return (
     <div
-      className="bg-black/20 border-8 border-transparent"
+      className="bg-white/5 border-8 border-transparent"
       style={{
         width: width,
         height: height,

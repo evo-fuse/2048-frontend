@@ -2,7 +2,7 @@ import "@fontsource/patrick-hand";
 import "@fontsource/cinzel-decorative";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  IcoPage,
+  LandingPage,
   GamePage,
   WalletPage,
 } from "./modules";
@@ -62,7 +62,7 @@ const AppContent = () => {
         ) : (
           <BrowserRouter>
             <Routes>
-              <Route path={PATH.HOME} element={<IcoPage />} />
+              <Route path={PATH.HOME} element={<LandingPage />} />
               <Route path={PATH.GAME + PATH.ASTERISK} element={<GamePage />} />
               <Route
                 path={PATH.WALLET_CREATION + PATH.ASTERISK}

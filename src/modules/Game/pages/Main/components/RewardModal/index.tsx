@@ -29,7 +29,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
   const [animate, setAnimate] = useState(false);
   const click = useRef<boolean>(false);
   const estimatedReward: number =
-    maxTile >= 2048 ? Math.floor(total / 100 + maxTile / 10) : 0;
+    maxTile >= 256 ? Math.floor(total / 100 + maxTile / 10) : 0;
 
   const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
 
