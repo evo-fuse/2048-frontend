@@ -1,8 +1,43 @@
 import { useNavigate } from "react-router-dom";
 import { Images } from "../../../../../assets/images";
-import { CheckBox } from "../../../../../components";
 import { useOpen } from "../../../../../hooks";
 import { PATH } from "../../../../../const";
+
+// Custom checkbox component
+interface CheckBoxProps {
+  isOpen: boolean;
+  onToggle: () => void;
+}
+
+const CheckBox: React.FC<CheckBoxProps> = ({ isOpen, onToggle }) => {
+  return (
+    <div
+      className={`w-3rem h-3rem border-2 rounded-md flex items-center justify-center transition-all duration-200 ${
+        isOpen
+          ? "bg-gray-700 border-gray-500"
+          : "bg-transparent border-gray-500"
+      }`}
+      onClick={onToggle}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="min-h-4 min-w-4 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        {isOpen && (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M5 13l4 4L19 7"
+          />
+        )}
+      </svg>
+    </div>
+  );
+};
 
 export const WalletDashboardView = () => {
   const { isOpen, onToggle } = useOpen();
@@ -39,7 +74,7 @@ export const WalletDashboardView = () => {
 
         {/* Terms agreement */}
         <div className="flex items-end justify-center gap-3 w-full">
-          <CheckBox isOpen={isOpen} onToggle={onToggle} size={24} />
+          <CheckBox isOpen={isOpen} onToggle={onToggle} />
           <div className="text-sm text-white/80 leading-relaxed">
             I agree to DWAT Wallet's Terms of use
           </div>
@@ -58,7 +93,7 @@ export const WalletDashboardView = () => {
           >
             Create New Wallet
           </button>
-          
+
           <button
             disabled={!isOpen}
             onClick={handleImportExistWallet}
