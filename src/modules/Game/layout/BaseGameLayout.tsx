@@ -1,4 +1,3 @@
-import { Images } from "../../../assets/images";
 import { useAuthContext } from "../../../context";
 import { Navbar } from "../components";
 import WalletConnect from "../components/WalletConnect";
