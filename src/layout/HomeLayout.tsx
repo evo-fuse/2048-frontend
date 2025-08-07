@@ -1,4 +1,3 @@
-import Bg from "../assets/images/background.jpg";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 

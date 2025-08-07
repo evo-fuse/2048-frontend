@@ -1,4 +1,3 @@
-export * from "./CheckBox";
 export * from "./Cursor";
 export * from "./MenuButton";
 export * from "./PrivateRoute";
@@ -8,4 +7,3 @@ export * from "./Modal";
 export * from "./PasswordInput";
 export * from "./Ribbon";
 export * from "./toast";
-export * from "./ImageModal";
