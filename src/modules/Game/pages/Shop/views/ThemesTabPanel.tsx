@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { motion, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { TabPanel } from "../../../../../components/Tab";
 import { Theme } from "../../../../../types";
 import { CheckoutModal } from "../components";
@@ -7,6 +7,7 @@ import { useWeb3Context } from "../../../../../context/Web3Context";
 import { useGameContext } from "../../../context/GameContext";
 import { CONFIG } from "../../../../../const";
 import { Ribbon } from "../../../../../components";
+import useLocalStorage from "../../Main/hooks/useLocalStorage";
 
 interface ThemesTabPanelProps {
   selectedTab: string;
@@ -18,24 +19,29 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
   themes,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const y = useMotionValue(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState<Theme | null>(null);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useLocalStorage(
+    "theme-checkout-modal-open",
+    false
+  );
+  const [selectedThemeId, setSelectedThemeId] = useLocalStorage(
+    "theme-checkout-selected-theme",
+    ""
+  );
+  const selectedTheme = selectedThemeId
+    ? themes.find((theme) => theme.uuid === selectedThemeId) || null
+    : null;
   const { buyThemesWithUSD } = useWeb3Context();
   const { handleBuyTheme } = useGameContext();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleBuyClick = (theme: Theme) => {
-    if (!isDragging) {
-      setSelectedTheme(theme);
-      setIsCheckoutOpen(true);
-    }
+    setSelectedThemeId(theme.uuid);
+    setIsCheckoutOpen(true);
   };
 
   const handleCheckoutClose = () => {
     setIsCheckoutOpen(false);
-    setSelectedTheme(null);
+    setSelectedThemeId("");
   };
 
   const handlePurchase = async (tokenType: string) => {
@@ -77,53 +83,22 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
 
   return (
     <>
-      <TabPanel
-        id="Themes"
-        selectedTab={selectedTab}
-        className="w-full max-w-[1214px] px-2"
-      >
-        <motion.div
+      <TabPanel id="Themes" selectedTab={selectedTab} className="w-full px-2">
+        <div
           ref={scrollRef}
-          className="w-full h-[664px] overflow-y-auto overflow-x-hidden flex flex-col gap-6 px-4 py-2"
+          className="w-full h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6 px-4 py-2"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
-            y,
-          }}
-          drag="y"
-          dragConstraints={{ top: 0, bottom: 0 }}
-          dragElastic={0.1}
-          onDragStart={() => setIsDragging(true)}
-          onDragEnd={(_, info) => {
-            setIsDragging(false);
-
-            // Get the current scroll position
-            const currentScroll = scrollRef.current?.scrollTop || 0;
-
-            // Calculate new scroll position based on drag velocity
-            const newScroll = currentScroll - info.velocity.y * 10;
-
-            // Animate to the new scroll position
-            if (scrollRef.current) {
-              scrollRef.current.scrollTo({
-                top: newScroll,
-                behavior: "smooth",
-              });
-            }
-          }}
-          onDrag={(_, info) => {
-            if (scrollRef.current) {
-              scrollRef.current.scrollTop -= info.delta.y;
-            }
           }}
         >
           {themes.map((theme) => (
             <motion.div
               key={theme.uuid}
               className="relative w-full flex gap-3 bg-gray-800/40 p-4 rounded-lg border border-white/10 hover:border-white/30 transition-all"
-              whileHover={{ scale: isDragging ? 1 : 1.02 }}
+              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
-              style={{ pointerEvents: isDragging ? "none" : "auto" }}
+              style={{ pointerEvents: "auto" }}
             >
               <div className="min-w-[128px] h-[128px] bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
                 <img
@@ -152,7 +127,7 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </TabPanel>
 
       {selectedTheme && (

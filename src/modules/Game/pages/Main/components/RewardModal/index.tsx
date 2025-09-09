@@ -29,7 +29,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
   const [animate, setAnimate] = useState(false);
   const click = useRef<boolean>(false);
   const estimatedReward: number =
-    maxTile >= 256 ? Math.floor(total / 100 + maxTile / 10) : 0;
+    maxTile >= 1024 ? Math.floor(total / 100 + maxTile / 10) : 0;
 
   const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
 
@@ -50,13 +50,14 @@ const RewardModal: React.FC<RewardModalProps> = ({
     click.current = true;
     try {
       setLoading(true);
-      if (estimatedReward === 0 || !user?.address) return;
-      await handleRequestRewarding(user?.address || "", estimatedReward);
-      await handleUpdateUser({
-        maxTile: Math.max(maxTile, user.maxTile),
-        maxScore: Math.max(total, user.maxScore),
-      });
-      await getBalance();
+      if (estimatedReward > 0 && user?.address) {
+        await handleRequestRewarding(user?.address, estimatedReward);
+        await handleUpdateUser({
+          maxTile: Math.max(maxTile, user.maxTile),
+          maxScore: Math.max(total, user.maxScore),
+        });
+        await getBalance();
+      }
     } catch (error) {
       Toast.error("Error requesting reward");
     } finally {
@@ -75,9 +76,11 @@ const RewardModal: React.FC<RewardModalProps> = ({
   const handleClose = () => {
     if (status === "lost") {
       pendingFunction();
-    } else {
-      onClose();
     }
+    // Always execute these actions when closing
+    setFireworksState(false);
+    setItemUsage({ powerup: false, upgrade: false });
+    onClose();
   };
 
   return (

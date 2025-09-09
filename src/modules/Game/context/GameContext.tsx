@@ -15,7 +15,7 @@ interface GameContextType {
   handleBuyTheme: (themeId: string, txData: any) => Promise<void>;
   selectedTheme: Theme | "Basic";
   setSelectedTheme: (value: Theme | "Basic") => void;
-  getThemes: (visibility?: string) => Promise<Theme[]>;
+  getThemes: (visibility?: string, privateVisibility?: boolean) => Promise<Theme[]>;
   setThemes: (value: Theme[]) => void;
   isOpenWalletConnect: boolean;
   onOpenWalletConnect: () => void;
@@ -62,9 +62,10 @@ export const GameProvider = ({ children }: { children: React.ReactNode }) => {
     onClose: onCloseItemModal,
   } = useOpen();
 
-  const getThemes = async (visibility: string = "all") => {
+  const getThemes = async (visibility: string = "all", authorized: boolean = false) => {
     setThemes([]);
-    const { data } = await api({}).get(`/themes/${visibility}`);
+    const auth = localStorage.getItem("token") ? "private" : authorized ? "public" : "private";
+    const { data } = await api({}).get(`/themes/${auth}/${visibility}`);
     return data;
   };
 

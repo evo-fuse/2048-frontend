@@ -42,7 +42,7 @@ export const TileView: React.FC<TileViewProps> = ({ value }) => {
   if (selectedTheme === "Basic" || value > 8192) return <></>;
 
   return (
-    <div className="min-w-[556px] max-w-min h-[794.5px] bg-black/20 rounded-lg border border-white/20 p-8">
+    <div className="min-w-[556px] max-w-min h-full max-h-min bg-black/20 rounded-lg border border-white/20 p-8">
       <div className="w-[512px] h-[512px] relative">
         {/* Small image (shown initially) */}
         <img

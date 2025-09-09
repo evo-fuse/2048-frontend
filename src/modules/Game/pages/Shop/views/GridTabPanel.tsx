@@ -80,9 +80,9 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
     <TabPanel
       id="Grid"
       selectedTab={selectedTab}
-      className="w-full max-w-[1214px] px-2"
+      className="w-full px-2"
     >
-      <div className="w-full h-full flex flex-col gap-4 px-4 py-4">
+      <div className="w-full h-full flex flex-col gap-4 p-4 overflow-auto">
         <div className="w-full flex flex-col gap-6">
           {/* Grid Columns Upgrade */}
           <GridUpgradeItem

@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface TabProps {
   tabs: { id: string; label: string }[];
@@ -14,12 +14,6 @@ const underlineVariants = {
     transition: { type: 'spring', stiffness: 300, damping: 20 }
   },
   inactive: { width: '0%' }
-};
-
-const contentVariants = {
-  hidden: { opacity: 0, x: 100 },
-  visible: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -100 }
 };
 
 export const Tabs = ({
@@ -76,25 +70,18 @@ export const TabPanel = ({
   children,
   className = ''
 }: TabPanelProps) => {
+  const isActive = selectedTab === id;
+  
   return (
-    <AnimatePresence mode="wait">
-      {selectedTab === id && (
-        <motion.div
-          id={`panel-${id}`}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          variants={contentVariants}
-          transition={{ duration: 0.4, ease: "easeInOut" }}
-          className={className}
-          role="tabpanel"
-          aria-labelledby={id}
-          style={{ position: 'absolute', top: 144 }}
-        >
-          {children}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div 
+      className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 overflow-auto ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'} ${className}`}
+      id={`panel-${id}`}
+      role="tabpanel"
+      aria-labelledby={id}
+      aria-hidden={!isActive}
+    >
+      {children}
+    </div>
   );
 };
 

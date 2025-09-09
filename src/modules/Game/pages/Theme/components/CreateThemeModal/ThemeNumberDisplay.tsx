@@ -1,5 +1,6 @@
 import React from "react";
 import { FormSection } from "../../../../../common/components/FormSection";
+import { Select } from "../../../../../../components";
 import { ThemeFormData } from "../../types";
 
 interface ThemeNumberDisplayProps {
@@ -19,8 +20,8 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
             type="checkbox"
             id="show-numbers"
             checked={numberDisplay.show}
-            onChange={(e) => 
-              setNumberDisplay({...numberDisplay, show: e.target.checked})
+            onChange={(e) =>
+              setNumberDisplay({ ...numberDisplay, show: e.target.checked })
             }
             className="bg-gray-700 border border-gray-600 rounded"
           />
@@ -28,27 +29,29 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
             Show numbers on tiles
           </label>
         </div>
-        
+
         {numberDisplay.show && (
           <>
             <div>
               <label className="block text-white mb-2">Number Position</label>
-              <select
+              <Select
                 value={numberDisplay.position}
-                onChange={(e) => 
+                onChange={(value) =>
                   setNumberDisplay({
-                    ...numberDisplay, 
-                    position: e.target.value as ThemeFormData["numberDisplay"]["position"]
+                    ...numberDisplay,
+                    position:
+                      value as ThemeFormData["numberDisplay"]["position"],
                   })
                 }
-                className="w-full bg-gray-600 text-white border border-gray-500 rounded-md p-2"
-              >
-                <option value="center">Center</option>
-                <option value="top-left">Top Left</option>
-                <option value="top-right">Top Right</option>
-                <option value="bottom-left">Bottom Left</option>
-                <option value="bottom-right">Bottom Right</option>
-              </select>
+                options={[
+                  { value: "center", label: "Center" },
+                  { value: "top-left", label: "Top Left" },
+                  { value: "top-right", label: "Top Right" },
+                  { value: "bottom-left", label: "Bottom Left" },
+                  { value: "bottom-right", label: "Bottom Right" },
+                ]}
+                className="w-full"
+              />
             </div>
             
             <div>
@@ -67,7 +70,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                       const sizeValue = parseInt(e.target.value);
                       setNumberDisplay({
                         ...numberDisplay,
-                        size: sizeValue
+                        size: sizeValue,
                       });
                     }}
                     className="appearance-none absolute w-full h-1 bg-transparent"
@@ -76,48 +79,56 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                 <span className="text-white text-base">96px</span>
               </div>
               <div className="mt-2 flex justify-center items-center gap-3">
-                <span className="text-gray-300">
-                  {numberDisplay.size}px
-                </span>
+                <span className="text-gray-300">{numberDisplay.size}px</span>
                 <div className="flex gap-2">
-                  <button 
+                  <button
                     className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
-                    onClick={() => setNumberDisplay({
-                      ...numberDisplay,
-                      size: Math.max(10, numberDisplay.size - 1)
-                    })}
+                    onClick={() =>
+                      setNumberDisplay({
+                        ...numberDisplay,
+                        size: Math.max(10, numberDisplay.size - 1),
+                      })
+                    }
                   >
                     -
                   </button>
-                  <button 
+                  <button
                     className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
-                    onClick={() => setNumberDisplay({
-                      ...numberDisplay,
-                      size: Math.min(96, numberDisplay.size + 1)
-                    })}
+                    onClick={() =>
+                      setNumberDisplay({
+                        ...numberDisplay,
+                        size: Math.min(96, numberDisplay.size + 1),
+                      })
+                    }
                   >
                     +
                   </button>
                 </div>
               </div>
             </div>
-            
+
             <div>
               <label className="block text-white mb-2">Number Color</label>
               <div className="flex items-center space-x-2">
                 <input
                   type="color"
                   value={numberDisplay.color}
-                  onChange={(e) => 
-                    setNumberDisplay({...numberDisplay, color: e.target.value})
+                  onChange={(e) =>
+                    setNumberDisplay({
+                      ...numberDisplay,
+                      color: e.target.value,
+                    })
                   }
                   className="bg-gray-700 border border-gray-600 rounded h-10 w-10"
                 />
                 <input
                   type="text"
                   value={numberDisplay.color}
-                  onChange={(e) => 
-                    setNumberDisplay({...numberDisplay, color: e.target.value})
+                  onChange={(e) =>
+                    setNumberDisplay({
+                      ...numberDisplay,
+                      color: e.target.value,
+                    })
                   }
                   className="bg-gray-600 text-white border border-gray-500 rounded-md p-2"
                   placeholder="#ffffff"
@@ -129,4 +140,4 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
       </div>
     </FormSection>
   );
-}; 
+};

@@ -8,6 +8,7 @@ import {
   ThemeItem,
   CreateThemeButton,
   CreateThemeModal,
+  ThemeDetailModal,
 } from "../components";
 import { ThemeFormData } from "../types";
 
@@ -22,6 +23,10 @@ export const ThemeView = () => {
   );
   const [hoverTheme, setHoverTheme] = useState<Theme | "Basic" | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  const [selectedThemeForDetail, setSelectedThemeForDetail] = useState<
+    Theme | "Basic" | null
+  >(null);
 
   useEffect(() => {
     setIsFetchingThemes(true);
@@ -64,7 +69,14 @@ export const ThemeView = () => {
     [activeTab]
   );
 
-  const handleThemeChange = useCallback(
+  const handleThemeChange = useCallback((theme: Theme | "Basic") => {
+    // Show theme detail modal instead of immediately applying
+    setSelectedThemeForDetail(theme);
+    setShowDetailModal(true);
+  }, []);
+
+  // New function to apply the theme when confirmed in the modal
+  const handleApplyTheme = useCallback(
     async (theme: Theme | "Basic") => {
       if (theme === selectedTheme) return;
 
@@ -82,16 +94,29 @@ export const ThemeView = () => {
           const imageUrls = [
             2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192,
           ]
-            .map((value) => (theme[value as keyof Theme] as TileImg).sm)
-            .filter(Boolean);
+            .map((value) => {
+              // Check if the tile exists and has a valid sm property
+              const tile = theme[value as keyof Theme] as TileImg | undefined;
+              return tile && typeof tile === "object" ? tile.sm : null;
+            })
+            .filter(Boolean); // Remove null/undefined values
 
           // Preload all images
           await Promise.all(
             imageUrls.map((url) => {
-              return new Promise((resolve, reject) => {
+              return new Promise((resolve) => {
+                if (!url) {
+                  // Skip invalid URLs
+                  resolve(null);
+                  return;
+                }
+
                 const img = new Image();
-                img.onload = resolve;
-                img.onerror = reject;
+                img.onload = () => resolve(null);
+                img.onerror = () => {
+                  console.warn(`Failed to load image: ${url}`);
+                  resolve(null); // Resolve anyway to avoid Promise.all rejection
+                };
                 img.src = url;
               });
             })
@@ -121,8 +146,13 @@ export const ThemeView = () => {
     setShowCreateModal(true);
   }, []);
 
-  const handleCloseModal = useCallback(() => {
+  const handleCloseCreateModal = useCallback(() => {
     setShowCreateModal(false);
+  }, []);
+
+  const handleCloseDetailModal = useCallback(() => {
+    setShowDetailModal(false);
+    setSelectedThemeForDetail(null);
   }, []);
 
   const handleSubmitTheme = useCallback(
@@ -144,8 +174,15 @@ export const ThemeView = () => {
       <AnimatePresence>{isLoading && <LoadingModal />}</AnimatePresence>
       <CreateThemeModal
         isOpen={showCreateModal}
-        onClose={handleCloseModal}
+        onClose={handleCloseCreateModal}
         onSubmit={handleSubmitTheme}
+      />
+      <ThemeDetailModal
+        isOpen={showDetailModal}
+        onClose={handleCloseDetailModal}
+        theme={selectedThemeForDetail}
+        onApplyTheme={handleApplyTheme}
+        isSelected={selectedThemeForDetail === selectedTheme}
       />
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -187,7 +224,9 @@ export const ThemeView = () => {
             <div className="w-full h-64 flex items-center justify-center">
               <div className="flex flex-col items-center gap-3">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-                <p className="text-white/70 text-sm font-medium">Loading themes...</p>
+                <p className="text-white/70 text-sm font-medium">
+                  Loading themes...
+                </p>
               </div>
             </div>
           ) : (
@@ -280,7 +319,9 @@ export const ThemeView = () => {
           {hoverTheme && hoverTheme !== "Basic" && (
             <div className="w-full bg-black/50 absolute bottom-0 left-0">
               <div className="w-full h-full flex items-center justify-center">
-                <div className="text-white text-2xl font-bold">{hoverTheme.title}</div>
+                <div className="text-white text-2xl font-bold">
+                  {hoverTheme.title}
+                </div>
               </div>
             </div>
           )}

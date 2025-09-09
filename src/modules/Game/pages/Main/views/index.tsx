@@ -12,8 +12,7 @@ import { GRID_SIZE, MIN_SCALE, SPACING } from "../utils/constants";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { ThemeName } from "../themes/types";
 import useTheme from "../hooks/useTheme";
-import { canGameContinue, isWin } from "../utils/rules";
-import { useUser } from "@clerk/clerk-react";
+import { canGameContinue } from "../utils/rules";
 import { useGameContext } from "../../../context/GameContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { Images } from "../../../../../assets/images";
@@ -47,11 +46,7 @@ export const MainView: FC = () => {
     onOpenItemModal,
     setItemModalNotice,
   } = useGameContext();
-  const {
-    handleUser,
-    setUser,
-    handleGetWalletAddress,
-  } = useAuthContext();
+  const { handleUser, setUser, handleGetWalletAddress } = useAuthContext();
   const { isOpen, onOpen, onClose } = useOpen();
   const [pendingFunction, setPendingFunction] = useState<Function>(() => {});
 
@@ -68,8 +63,6 @@ export const MainView: FC = () => {
     pause: false,
   });
 
-  const { user } = useUser();
-
   const [config, setConfig] = useLocalStorage<Configuration>(APP_NAME, {
     theme: "dark",
     bestScore: 0,
@@ -79,8 +72,8 @@ export const MainView: FC = () => {
   });
 
   const [initialTiles, setInitialTiles] = useLocalStorage<Tile[]>(
-    `${user?.id}-initialTiles`,
-    []              
+    `initialTiles`,
+    []
   );
 
   const [_, setIndex] = useLocalStorage<number>("index", 0);
@@ -147,15 +140,24 @@ export const MainView: FC = () => {
   if (gameState.status === "restart") {
     setTotal(0);
     setGameStatus("running");
-  } else if (gameState.status === "running" && isWin(tiles)) {
-    // setGameStatus("win");
-  } else if (gameState.status !== "lost" && !canGameContinue(grid, tiles)) {
-    setGameStatus("lost");
-    onOpen();
-    setPendingFunction(() => {
-      return () => setGameStatus("restart");
-    });
   }
+  // Use effect for checking game state to avoid render loop issues
+  useEffect(() => {
+    if (gameState.status === "running" && !canGameContinue(grid, tiles)) {
+      setGameStatus("lost");
+      onOpen();
+      setPendingFunction(() => {
+        return () => setGameStatus("restart");
+      });
+    }
+  }, [
+    gameState.status,
+    grid,
+    tiles,
+    setGameStatus,
+    onOpen,
+    setPendingFunction,
+  ]);
 
   useEffect(() => {
     if (initialSetup) {
@@ -225,9 +227,7 @@ export const MainView: FC = () => {
               justifycontent="space-between"
               marginblockstart="s2"
             >
-              <Box className="text-5xl font-bold">
-                EvoFuse 2048
-              </Box>
+              <Box className="text-5xl font-bold">EvoFuse 2048</Box>
               <Box justifycontent="center">
                 <ScoreBoard total={total} title="score" />
                 <ScoreBoard total={best} title="best" />

@@ -7,9 +7,13 @@ import { GridTabPanel } from "./GridTabPanel";
 import { ItemsTabPanel } from "./ItemsTabPanel";
 import { ThemesTabPanel } from "./ThemesTabPanel";
 import { Images } from "../../../../../assets/images";
+import useLocalStorage from "../../Main/hooks/useLocalStorage";
 
 export const ShopView: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState("Grid");
+  const [selectedTab, setSelectedTab] = useLocalStorage(
+    "shop-selected-tab",
+    "Grid"
+  );
   const { user, handleUpdateUser, setUser } = useAuthContext();
   const { themes, setThemes, getThemes } = useGameContext();
   const { userBalance, getBalance, buyItemsWithGameTokens } = useWeb3Context();
@@ -17,14 +21,14 @@ export const ShopView: React.FC = () => {
 
   useEffect(() => {
     getBalance();
-    getThemes("premium").then((data) => {
+    getThemes("premium", true).then((data) => {
       setThemes(data);
     });
   }, []);
 
   useEffect(() => {
     // Add the CSS rule for no-select
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.innerHTML = `
       .no-select {
         user-select: none !important;
@@ -34,7 +38,7 @@ export const ShopView: React.FC = () => {
       }
     `;
     document.head.appendChild(style);
-    
+
     // Clean up when component unmounts
     return () => {
       document.head.removeChild(style);
@@ -65,32 +69,34 @@ export const ShopView: React.FC = () => {
           tabsContainerClassName="border-b border-gray-200 text-white"
         />
 
-        <GridTabPanel 
-          selectedTab={selectedTab}
-          user={user}
-          userBalance={Number(userBalance)}
-          handleUpdateUser={handleUpdateUser}
-          setUser={setUser}
-          buyItemsWithGameTokens={buyItemsWithGameTokens}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
+        <div className="relative w-full h-[calc(100vh-180px)]">
+          <GridTabPanel
+            selectedTab={selectedTab}
+            user={user}
+            userBalance={Number(userBalance)}
+            handleUpdateUser={handleUpdateUser}
+            setUser={setUser}
+            buyItemsWithGameTokens={buyItemsWithGameTokens}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
 
-        <ItemsTabPanel 
-          selectedTab={selectedTab}
-          user={user}
-          userBalance={Number(userBalance)}
-          handleUpdateUser={handleUpdateUser}
-          setUser={setUser}
-          buyItemsWithGameTokens={buyItemsWithGameTokens}
-          isLoading={isLoading}
-          setIsLoading={setIsLoading}
-        />
+          <ItemsTabPanel
+            selectedTab={selectedTab}
+            user={user}
+            userBalance={Number(userBalance)}
+            handleUpdateUser={handleUpdateUser}
+            setUser={setUser}
+            buyItemsWithGameTokens={buyItemsWithGameTokens}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
 
-        <ThemesTabPanel 
-          selectedTab={selectedTab}
-          themes={themes}
-        />
+          <ThemesTabPanel
+            selectedTab={selectedTab}
+            themes={themes}
+          />
+        </div>
       </div>
     </div>
   );
