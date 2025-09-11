@@ -1,15 +1,15 @@
 import "@fontsource/patrick-hand";
 import "@fontsource/cinzel-decorative";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import {
-  LandingPage,
-  GamePage,
-  WalletPage,
-} from "./modules";
+import { LandingPage, GamePage, WalletPage } from "./modules";
 import { PATH } from "./const";
 import { CustomCursor } from "./components";
-import { AuthProvider } from "./context";
-import { ImageLoadProvider, useImageLoad } from "./context";
+import {
+  AuthProvider,
+  RecordProvider,
+  ImageLoadProvider,
+  useImageLoad,
+} from "./context";
 import { Web3Provider } from "./context/Web3Context";
 import { ToastContainer } from "react-toastify";
 import { MdDownload } from "react-icons/md";
@@ -54,38 +54,43 @@ const AppContent = () => {
   const { loading } = useImageLoad();
 
   return (
-    <AuthProvider>
-      <Web3Provider>
-        <CustomCursor />
-        {loading ? (
-          <LoadingScreen />
-        ) : (
-          <BrowserRouter>
-            <Routes>
-              <Route path={PATH.HOME} element={<LandingPage />} />
-              <Route path={PATH.GAME + PATH.ASTERISK} element={<GamePage />} />
-              <Route
-                path={PATH.WALLET_CREATION + PATH.ASTERISK}
-                element={<WalletPage />}
-              />
-            </Routes>
-          </BrowserRouter>
-        )}
-        <ToastContainer
-          autoClose={4500}
-          theme="dark"
-          position="bottom-right"
-          icon={false}
-          toastStyle={{
-            backgroundColor: "#00000066",
-            color: "#fff",
-            cursor: "none",
-            width: "360px",
-          }}
-          closeOnClick
-        />
-      </Web3Provider>
-    </AuthProvider>
+    <RecordProvider>
+      <AuthProvider>
+        <Web3Provider>
+          <CustomCursor />
+          {loading ? (
+            <LoadingScreen />
+          ) : (
+            <BrowserRouter>
+              <Routes>
+                <Route path={PATH.HOME} element={<LandingPage />} />
+                <Route
+                  path={PATH.GAME + PATH.ASTERISK}
+                  element={<GamePage />}
+                />
+                <Route
+                  path={PATH.WALLET_CREATION + PATH.ASTERISK}
+                  element={<WalletPage />}
+                />
+              </Routes>
+            </BrowserRouter>
+          )}
+          <ToastContainer
+            autoClose={4500}
+            theme="dark"
+            position="bottom-right"
+            icon={false}
+            toastStyle={{
+              backgroundColor: "#00000066",
+              color: "#fff",
+              cursor: "none",
+              width: "360px",
+            }}
+            closeOnClick
+          />
+        </Web3Provider>
+      </AuthProvider>
+    </RecordProvider>
   );
 };
 

@@ -17,11 +17,12 @@ import { useGameContext } from "../../../context/GameContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { Images } from "../../../../../assets/images";
 import { ItemBar } from "../components/ItemBar/ItemBar";
-import { useAuthContext } from "../../../../../context";
+import { useAuthContext, useRecordContext } from "../../../../../context";
 import { TileView } from "../components/TileView";
 import { useOpen } from "../../../../../hooks";
 import RewardModal from "../components/RewardModal";
 import { ItemModal } from "../components/ItemModal";
+import RecordModal from "../components/RecordModal";
 
 export type Configuration = {
   theme: ThemeName;
@@ -191,6 +192,8 @@ export const MainView: FC = () => {
     setItemModalNotice(notice);
   };
 
+  const { isRecordOpen, onRecordClose } = useRecordContext();
+
   return (
     <ThemeProvider theme={themeValue}>
       <RewardModal
@@ -200,6 +203,13 @@ export const MainView: FC = () => {
         total={total}
         status={gameState.status}
         pendingFunction={pendingFunction}
+      />
+      <RecordModal
+        rows={rows}
+        cols={cols}
+        isOpen={isRecordOpen}
+        total={total}
+        onClose={onRecordClose}
       />
       <ItemModal
         isOpen={isOpenItemModal}
@@ -237,6 +247,7 @@ export const MainView: FC = () => {
               <Control
                 rows={rows}
                 cols={cols}
+                tiles={tiles}
                 onReset={onResetGame}
                 onChangeRow={onChangeRows}
                 onChangeCol={onChangeCols}

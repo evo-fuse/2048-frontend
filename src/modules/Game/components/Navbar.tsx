@@ -13,12 +13,17 @@ import { useAuthContext } from "../../../context";
 import { useGameContext } from "../context/GameContext";
 import Metamask from "../../../assets/images/token/metamask.svg";
 import { motion } from "framer-motion";
-
+import { SlCamrecorder } from "react-icons/sl";
 const navItems = [
   {
     Icon: IoGameControllerOutline,
     label: "Game",
     path: PATH.GAME,
+  },
+  {
+    Icon: SlCamrecorder,
+    label: "Record",
+    path: `${PATH.GAME}${PATH.RECORD}`,
   },
   {
     Icon: IoDocumentTextOutline,

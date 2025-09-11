@@ -18,3 +18,4 @@ export const SEED_CREATION = "/seed-creation";
 export const IMPORT_EXIST_WALLET = "/import-exist-wallet";
 export const SEED_CONFIRM = "/seed-confirm";
 export const MORE_GAMES = "/more-games";
+export const RECORD = "/record";

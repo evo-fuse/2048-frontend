@@ -1,18 +1,15 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  clamp,
-  createIndexArray,
   nextTileIndex,
   getId,
   resetTileIndex,
   shuffle,
   create2DArray,
 } from "../utils/common";
-import { Vector } from "../utils/types";
 import type { GameState } from "./useGameState";
 import useLazyRef from "./useLazyRef";
 import { useGameContext } from "../../../context";
-import { useRecordContext } from "../../../../../context";
+import { Activity } from "../../../../../context";
 
 export interface Location {
   r: number;
@@ -30,12 +27,13 @@ export interface Tile extends Location {
 
 export type Cell = Tile | undefined;
 
-export type GameBoardParams = {
+export type GameBoardParamsForReplay = {
   rows: number;
   cols: number;
   gameState: GameState;
   addScore: (score: number) => void;
-  initialTiles: Tile[];
+  replay: Activity[];
+  index: number;
 };
 
 const createNewTile = (r: number, c: number): Tile => {
@@ -72,24 +70,12 @@ const createNewTilesInEmptyCells = (
     .map(({ r, c }) => createNewTile(r, c));
 };
 
-const createTraversalMap = (rows: number, cols: number, dir: Vector) => {
-  const rowsMap = createIndexArray(rows);
-  const colsMap = createIndexArray(cols);
-  return {
-    // Always start from the last cell in the moving direction
-    rows: dir.r > 0 ? rowsMap.reverse() : rowsMap,
-    cols: dir.c > 0 ? colsMap.reverse() : colsMap,
-  };
-};
-
 const sortTiles = (tiles: Tile[]) =>
   [...tiles].sort((t1, t2) => t1.index - t2.index);
 
 const mergeAndCreateNewTiles = (grid: Cell[][]) => {
   const tiles: Tile[] = [];
   let score = 0;
-  const rows = grid.length;
-  const cols = grid[0].length;
 
   const newGrid = grid.map((row) =>
     row.map((tile) => {
@@ -118,88 +104,10 @@ const mergeAndCreateNewTiles = (grid: Cell[][]) => {
     })
   );
 
-  const emptyCells = getEmptyCellsLocation(newGrid);
-  const newTiles = createNewTilesInEmptyCells(
-    emptyCells,
-    Math.ceil((rows * cols) / 16)
-  );
-  newTiles.forEach((tile) => {
-    newGrid[tile.r][tile.c] = tile;
-    tiles.push(tile);
-  });
-
   return {
     grid: newGrid,
     tiles,
     score,
-  };
-};
-
-const moveInDirection = (grid: Cell[][], dir: Vector) => {
-  const newGrid = grid.slice(0);
-  const totalRows = newGrid.length;
-  const totalCols = newGrid[0].length;
-  const tiles: Tile[] = [];
-  const moveStack: number[] = [];
-
-  const traversal = createTraversalMap(totalRows, totalCols, dir);
-  traversal.rows.forEach((row) => {
-    traversal.cols.forEach((col) => {
-      const tile = newGrid[row][col];
-      if (tile != null) {
-        const pos = {
-          currRow: row,
-          currCol: col,
-          // clamp to ensure next row and col are still in the grid
-          nextRow: clamp(row + dir.r, 0, totalRows - 1),
-          nextCol: clamp(col + dir.c, 0, totalCols - 1),
-        };
-
-        while (pos.nextRow !== pos.currRow || pos.nextCol !== pos.currCol) {
-          const { nextRow, nextCol } = pos;
-          const nextTile = newGrid[nextRow][nextCol];
-          if (nextTile != null) {
-            // Move to the next cell if the tile inside has the same value and not been merged
-            if (nextTile.value === tile.value && !nextTile.canMerge) {
-              pos.currRow = nextRow;
-              pos.currCol = nextCol;
-            }
-            break;
-          }
-          // We keep moving to the next cell until the cell contains a tile
-          pos.currRow = nextRow;
-          pos.currCol = nextCol;
-          pos.nextRow = clamp(nextRow + dir.r, 0, totalRows - 1);
-          pos.nextCol = clamp(nextCol + dir.c, 0, totalCols - 1);
-        }
-
-        const { currRow, currCol } = pos;
-        const currentTile = newGrid[currRow][currCol];
-        // If the tile has been moved
-        if (currRow !== row || currCol !== col) {
-          const updatedTile = {
-            ...tile,
-            r: currRow,
-            c: currCol,
-            canMerge: tile.value === currentTile?.value,
-            isnew: false,
-            ismerging: false,
-          };
-          newGrid[currRow][currCol] = updatedTile;
-          newGrid[row][col] = undefined;
-          tiles.push(updatedTile);
-          moveStack.push(updatedTile.index);
-        } else if (currentTile != null) {
-          tiles.push({ ...currentTile, isnew: false, ismerging: false });
-        }
-      }
-    });
-  });
-
-  return {
-    tiles,
-    grid: newGrid,
-    moveStack,
   };
 };
 
@@ -226,19 +134,18 @@ const resetGameBoard = (rows: number, cols: number) => {
   };
 };
 
-const useGameBoard = ({
+const useGameBoardForReplay = ({
   rows,
   cols,
   gameState,
   addScore,
-  initialTiles,
-}: GameBoardParams) => {
+  replay,
+  index
+}: GameBoardParamsForReplay) => {
   const { powerup } = useGameContext();
-  const { recording, setActivity, activity } = useRecordContext();
   const gridMapRef = useLazyRef(() => {
     const grid = create2DArray<Cell>(rows, cols);
-    const tiles =
-      initialTiles.length > 0 ? [...initialTiles] : createInitialTiles(grid);
+    const tiles = replay.length > 0 ? [...replay[0].tiles] : createInitialTiles(grid);
     tiles.forEach((tile) => {
       grid[tile.r][tile.c] = tile;
     });
@@ -250,35 +157,19 @@ const useGameBoard = ({
   const pendingStackRef = useRef<number[]>([]);
   const pauseRef = useRef(gameState.pause);
 
-  const onMove = useCallback(
-    (dir: Vector) => {
-      if (recording) {
-        setActivity([
-          ...activity,
-          {
-            vector: { ...dir },
-            tiles: [ ...gridMapRef.current.tiles ],
-            timestamp: Date.now(),
-          },
-        ]);
-      }
-      if (pendingStackRef.current.length === 0 && !pauseRef.current) {
-        const {
-          tiles: newTiles,
-          moveStack,
-          grid,
-        } = moveInDirection(gridMapRef.current.grid, dir);
-        gridMapRef.current = { grid, tiles: newTiles };
-        pendingStackRef.current = moveStack;
-
-        // No need to update when no tile moves
-        if (moveStack.length > 0) {
-          setTiles(sortTiles(newTiles));
-        }
-      }
-    },
-    [gridMapRef, recording, setActivity, activity]
-  );
+  useEffect(() => {
+    if (replay.length > 0) {
+      const grid = create2DArray<Cell>(rows, cols);
+      console.log("replay[index].tiles", replay[index].tiles);
+      const newTiles = [...replay[index].tiles];
+      newTiles.forEach((tile) => {
+        grid[tile.r][tile.c] = tile;
+      });
+      
+      gridMapRef.current = { grid, tiles: newTiles };
+      setTiles(sortTiles(newTiles));
+    }
+  }, [replay, rows, cols, index]);
 
   const breakTile = useCallback(
     (tile: Location) => {
@@ -378,7 +269,6 @@ const useGameBoard = ({
   return {
     tiles,
     grid: gridMapRef.current.grid,
-    onMove,
     onMovePending,
     onMergePending,
     breakTile,
@@ -386,4 +276,4 @@ const useGameBoard = ({
   };
 };
 
-export default useGameBoard;
+export default useGameBoardForReplay;

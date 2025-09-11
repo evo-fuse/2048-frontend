@@ -20,5 +20,12 @@ declare global {
       getAddress: () => Promise<string | null>;
       existWallet: () => Promise<boolean>;
     };
+    showSaveFilePicker: (options?: {
+      suggestedName?: string;
+      types?: Array<{
+        description: string;
+        accept: Record<string, string[]>;
+      }>;
+    }) => Promise<FileSystemFileHandle>;
   }
 } 

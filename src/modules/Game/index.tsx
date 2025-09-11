@@ -5,6 +5,7 @@ import {
   WalletPage,
   ShopPage,
   ThemePage,
+  RecordPage,
 } from "./pages";
 import { PATH } from "../../const";
 import { GameProvider } from "./context/GameContext";
@@ -20,6 +21,7 @@ export const GamePage = () => {
           <Route path={PATH.WALLET} element={<WalletPage />} />
           <Route path={PATH.SHOP} element={<ShopPage />} />
           <Route path={PATH.THEME} element={<ThemePage />} />
+          <Route path={PATH.RECORD} element={<RecordPage />} />
         </Route>
       </Routes>
     </GameProvider>
