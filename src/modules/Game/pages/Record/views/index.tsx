@@ -1,4 +1,4 @@
-import { useRecordContext } from "../../../../../context";
+import { Record, useRecordContext } from "../../../../../context";
 import { useDragAndDrop } from "../../../../../hooks";
 import GameBoard from "../../Main/components/GameBoard";
 import { GRID_SIZE, SPACING } from "../../Main/utils/constants";
@@ -10,21 +10,10 @@ import { IoCaretForward } from "react-icons/io5";
 import { IoPlay, IoPause, IoStop } from "react-icons/io5";
 import { IoTime } from "react-icons/io5";
 import { Select } from "../../../../../components/Select";
+import { OnlineReplayExploreModal } from "../components/OnlineReplayExploreModal";
 import { useEffect, useState, useRef, useCallback } from "react";
 export const RecordView: React.FC = () => {
-  const { replay, setReplay } = useRecordContext();
-
-  // Mock metadata for current replay
-  const [currentMetadata] = useState({
-    player: "Current Player",
-    score: 0,
-    moves: 0,
-    duration: "0:00",
-    date: new Date().toISOString().split("T")[0],
-    difficulty: "Normal",
-    bestMove: "None",
-    efficiency: "0%",
-  });
+  const { replay, setReplay, setMetadata, metadata } = useRecordContext();
 
   // Speed options for the Select component
   const speedOptions = [
@@ -39,7 +28,7 @@ export const RecordView: React.FC = () => {
     reader.onload = (e) => {
       try {
         const content = e.target?.result as string;
-        const parsedData = JSON.parse(content);
+        const parsedData: any = JSON.parse(content);
         console.log("Parsed JSON data:", parsedData);
 
         // Check if the parsed data has the expected structure
@@ -51,6 +40,15 @@ export const RecordView: React.FC = () => {
 
         console.log("Valid activity data:", parsedData.playHistory);
         setReplay([...parsedData.playHistory]);
+        setMetadata({
+          user: { ...parsedData.user },
+          rows: parsedData.rows,
+          cols: parsedData.cols,
+          score: parsedData.score,
+          move: parsedData.move,
+          playTime: parsedData.playTime,
+          date: parsedData.date,
+        });
       } catch (err) {
         console.error("JSON parsing error:", err);
         throw new Error(
@@ -73,6 +71,7 @@ export const RecordView: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
   const currentTimeRef = useRef<number>(0);
@@ -176,6 +175,33 @@ export const RecordView: React.FC = () => {
     resetPlayback();
   }, [replay, resetPlayback]);
 
+  // Handle record selection from modal
+  const handleRecordSelect = async (record: Record) => {
+    const { playHistoryUrl, ...data } = record;
+    setMetadata({ ...data });
+
+    // Fetch and load the replay data from the S3 bucket URL
+    if (playHistoryUrl) {
+      try {
+        const response = await fetch(playHistoryUrl);
+        if (!response.ok) {
+          throw new Error("Failed to fetch replay data");
+        }
+        const data = await response.json();
+
+        if (data && Array.isArray(data)) {
+          setReplay([...data]);
+        } else {
+          console.error("Invalid replay data format");
+        }
+      } catch (error) {
+        console.error("Error loading replay data:", error);
+      } finally {
+        setIsModalOpen(false);
+      }
+    }
+  };
+
   return (
     <ThemeProvider theme={{ borderradius: "14px", palette: defaultPalette }}>
       <div className="w-full h-full flex flex-col items-center justify-center p-4 overflow-y-auto">
@@ -188,9 +214,15 @@ export const RecordView: React.FC = () => {
         </div>
 
         {/* Upload Section - Inline */}
-        <div className="w-full max-w-4xl mb-4">
+        <div className="w-full max-w-4xl mb-4 flex items-center gap-4">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="text-nowrap text-white p-[14px] border-2 rounded-lg border-gray-600 text-sm min-h-max hover:border-gray-400 hover:bg-gray-800/30 transition-colors"
+          >
+            Explore Online Replay
+          </button>
           <div
-            className={`flex items-center justify-between p-3 border-2 border-dashed rounded-lg transition-all duration-300 ${
+            className={`w-full flex items-center justify-between p-3 border-2 border-dashed rounded-lg transition-all duration-300 ${
               isDragOver
                 ? "border-gray-400 bg-gray-800/50 shadow-lg shadow-gray-500/20"
                 : "border-gray-600 hover:border-gray-400 bg-gray-900/30 hover:bg-gray-800/40"
@@ -323,8 +355,8 @@ export const RecordView: React.FC = () => {
               <GameBoard
                 tiles={tiles}
                 boardSize={GRID_SIZE}
-                rows={4}
-                cols={4}
+                rows={metadata?.rows || 4}
+                cols={metadata?.cols || 4}
                 spacing={SPACING}
                 onMove={() => {}}
                 onMovePending={onMovePending}
@@ -346,49 +378,44 @@ export const RecordView: React.FC = () => {
                 <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
                   <div className="text-xs text-gray-400 mb-1">Player</div>
                   <div className="text-white text-xs font-medium truncate">
-                    {currentMetadata.player}
+                    {metadata?.user.address}
                   </div>
                 </div>
                 <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
                   <div className="text-xs text-gray-400 mb-1">Score</div>
                   <div className="text-white text-xs font-medium">
-                    {currentMetadata.score.toLocaleString()}
+                    {metadata?.score.toLocaleString()}
                   </div>
                 </div>
                 <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
                   <div className="text-xs text-gray-400 mb-1">Moves</div>
                   <div className="text-white text-xs font-medium">
-                    {currentMetadata.moves}
+                    {metadata?.move}
                   </div>
                 </div>
                 <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
                   <div className="text-xs text-gray-400 mb-1">Duration</div>
                   <div className="text-white text-xs font-medium">
-                    {currentMetadata.duration}
+                    {metadata?.playTime}
                   </div>
                 </div>
                 <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
                   <div className="text-xs text-gray-400 mb-1">Date</div>
                   <div className="text-white text-xs font-medium">
-                    {currentMetadata.date}
-                  </div>
-                </div>
-                <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
-                  <div className="text-xs text-gray-400 mb-1">Difficulty</div>
-                  <div className="text-white text-xs font-medium">
-                    {currentMetadata.difficulty}
-                  </div>
-                </div>
-                <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
-                  <div className="text-xs text-gray-400 mb-1">Efficiency</div>
-                  <div className="text-white text-xs font-medium">
-                    {currentMetadata.efficiency}
+                    {metadata?.date}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Online Replay Explore Modal */}
+        <OnlineReplayExploreModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onSelectRecord={handleRecordSelect}
+        />
       </div>
     </ThemeProvider>
   );

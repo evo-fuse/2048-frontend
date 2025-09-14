@@ -1,4 +1,4 @@
-import { useRecordContext } from "../../../../../../context";
+import { useAuthContext, useRecordContext } from "../../../../../../context";
 import Modal from "../../../../../../components/Modal";
 import { useMemo, useState } from "react";
 import { IoMdDownload } from "react-icons/io";
@@ -22,6 +22,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
 }) => {
   const { activity, setActivity } = useRecordContext();
   const [uploading, setUploading] = useState(false);
+  const { user } = useAuthContext();
 
   const recordData = useMemo(
     () => ({
@@ -35,6 +36,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
           ? activity[activity.length - 1].timestamp - activity[0].timestamp
           : 0,
       playHistory: activity,
+      user,
     }),
     [activity, total, rows, cols]
   );

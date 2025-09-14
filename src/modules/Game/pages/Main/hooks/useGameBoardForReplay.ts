@@ -160,13 +160,12 @@ const useGameBoardForReplay = ({
   useEffect(() => {
     if (replay.length > 0) {
       const grid = create2DArray<Cell>(rows, cols);
-      console.log("replay[index].tiles", replay[index].tiles);
-      const newTiles = [...replay[index].tiles];
+      const newTiles = replay[index] ? [...replay[index].tiles] : createInitialTiles(grid);
       newTiles.forEach((tile) => {
         grid[tile.r][tile.c] = tile;
       });
       
-      gridMapRef.current = { grid, tiles: newTiles };
+      gridMapRef.current = { grid, tiles: newTiles as Tile[] };
       setTiles(sortTiles(newTiles));
     }
   }, [replay, rows, cols, index]);

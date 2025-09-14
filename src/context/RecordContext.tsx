@@ -1,12 +1,84 @@
+import api from "../utils/api";
 import { useOpen } from "../hooks";
 import { Tile } from "../modules/Game/pages/Main/hooks/useGameBoard";
 import { Vector } from "../modules/Game/pages/Main/utils/types";
-import {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-} from "react";
+import { createContext, useState, useContext, ReactNode } from "react";
+import { User } from "types";
+
+// Records API functions
+export interface Record {
+  uuid?: string;
+  user: User;
+  rows: number;
+  cols: number;
+  score: number;
+  move: number;
+  playTime: string;
+  date: string;
+  playHistoryUrl: string;
+}
+
+export interface Pagination {
+  limit: number;
+  offset: number;
+  total: number;
+  hasMore: boolean;
+}
+
+export interface RecordsSearchResponse {
+  pagination: Pagination;
+  filters: {
+    startDate?: string;
+    endDate?: string;
+  };
+  records: Record[];
+}
+
+export interface RecordsDateRangeResponse {
+  pagination: Pagination;
+  filters: {
+    startDate?: string;
+    endDate?: string;
+    sortBy?: string;
+    sortOrder?: string;
+  };
+  records: Record[];
+}
+
+export interface RecordsSearchParams {
+  startDate?: string;
+  endDate?: string;
+  limit?: number;
+  offset?: number;
+}
+
+export interface RecordsDateRangeParams {
+  startDate: string;
+  endDate: string;
+  sortBy?: string;
+  sortOrder?: string;
+  limit?: number;
+  offset?: number;
+}
+
+// Search records endpoint
+export const searchRecords = async (
+  params: RecordsSearchParams
+): Promise<RecordsSearchResponse> => {
+  const apiInstance = api({});
+  const response = await apiInstance.get("/records/search", { params });
+  console.log("response.data", response.data);
+  return response.data;
+};
+
+// Date range records endpoint
+export const getRecordsByDateRange = async (
+  params: RecordsDateRangeParams
+): Promise<RecordsDateRangeResponse> => {
+  const apiInstance = api({});
+  const response = await apiInstance.get("/records/date-range", { params });
+  return response.data;
+};
 
 type RecordContextType = {
   recording: boolean;
@@ -18,6 +90,8 @@ type RecordContextType = {
   isRecordOpen: boolean;
   onRecordOpen: () => void;
   onRecordClose: () => void;
+  metadata: Omit<Record, "playHistoryUrl"> | null;
+  setMetadata: (metadata: Omit<Record, "playHistoryUrl"> | null) => void;
 };
 
 export type Activity = {
@@ -34,6 +108,9 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
   const [recording, setRecording] = useState(false);
   const [activity, setActivity] = useState<Activity[]>([]);
   const [replay, setReplay] = useState<Activity[]>([]);
+  const [metadata, setMetadata] = useState<Omit<Record, "playHistoryUrl"> | null>(
+    null
+  );
   const {
     isOpen: isRecordOpen,
     onOpen: onRecordOpen,
@@ -51,6 +128,8 @@ export const RecordProvider = ({ children }: { children: ReactNode }) => {
         isRecordOpen,
         onRecordOpen,
         onRecordClose,
+        metadata,
+        setMetadata,
       }}
     >
       {children}
