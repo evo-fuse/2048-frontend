@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import StyledBackdrop from './StyledBackdrop';
 import StyledModal from './StyledModal';
 import Button from '../Button';

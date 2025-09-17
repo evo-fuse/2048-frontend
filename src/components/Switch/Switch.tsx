@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 import StyledCheckbox from './StyledCheckbox';
 import StyledKnob from './StyledKnob';
 import StyledSwitch from './StyledSwitch';

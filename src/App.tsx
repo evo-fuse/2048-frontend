@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Box from './components/Box';
 import Control from './components/Control/Control';

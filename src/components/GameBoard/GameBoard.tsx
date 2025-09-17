@@ -40,7 +40,7 @@ const GameBoard: FC<GameBoardProps> = ({
   );
   const boardRef = useRef<HTMLDivElement>(null);
   useArrowKeyPress(onMove);
-  useSwipe(boardRef, onMove);
+  useSwipe(boardRef as React.RefObject<HTMLElement>, onMove);
 
   useEffect(() => {
     setTileSize(calcTileSize(boardSize, rows, cols, spacing));
