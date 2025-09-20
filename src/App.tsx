@@ -4,7 +4,6 @@ import Box from "./components/Box";
 import Control from "./components/Control/Control";
 import GameBoard from "./components/GameBoard";
 import ScoreBoard from "./components/ScoreBoard";
-import Switch from "./components/Switch";
 import Text from "./components/Text";
 import ThemeSkeleton from "./components/Skeleton";
 import { PreloadingModal } from "./components/Modal";
@@ -40,13 +39,13 @@ const App: FC = () => {
   const [preloadingTheme, setPreloadingTheme] = useState<any>(null);
 
   const [config, setConfig] = useLocalStorage<Configuration>(APP_NAME, {
-    theme: "default",
+    theme: "dark",
     bestScore: 0,
     rows: MIN_SCALE,
     cols: MIN_SCALE,
   });
 
-  const [{ name: themeName, value: themeValue }, setTheme] = useTheme(
+  const [{ name: themeName, value: themeValue }] = useTheme(
     config.theme
   );
 
@@ -188,20 +187,12 @@ const App: FC = () => {
             )}
           </div>
         </div>
+        <div className="pt-12">
         <Box
           justifyContent="center"
           flexDirection="column"
           inlineSize={`${GRID_SIZE}px`}
         >
-          <Box marginBlockStart="s6" inlineSize="100%" justifyContent="end">
-            <Switch
-              title="dark mode"
-              checked={themeName === "dark"}
-              activeValue="dark"
-              inactiveValue="default"
-              onChange={setTheme}
-            />
-          </Box>
           <Box
             inlineSize="100%"
             justifyContent="space-between"
@@ -247,6 +238,7 @@ const App: FC = () => {
             </Text>
           </Box>
         </Box>
+        </div>
       </Box>
     </ThemeProvider>
   );
