@@ -49,6 +49,7 @@ export interface StyledBoxProps {
   alignItems?: 'center' | 'start' | 'end' | 'stretch';
   background?: Color;
   borderRadius?: Length;
+  gap?: BoxSpacing;
 }
 
 const getBoxSizeStyles = ({
@@ -78,6 +79,7 @@ const getBoxSizeStyles = ({
   paddingBlockEnd = paddingBlock,
   paddingInlineStart = paddingInline,
   paddingInlineEnd = paddingInline,
+  gap,
 }: StyledBoxProps) => css`
   position: ${position};
   box-sizing: ${boxSizing};
@@ -101,6 +103,7 @@ const getBoxSizeStyles = ({
   margin-bottom: ${marginBlockEnd && SpacingValues[marginBlockEnd]};
   margin-left: ${marginInlineStart && SpacingValues[marginInlineStart]};
   margin-right: ${marginInlineEnd && SpacingValues[marginInlineEnd]};
+  gap: ${gap && SpacingValues[gap]};
 `;
 
 const StyledBox = styled.div<StyledBoxProps>`
@@ -120,6 +123,7 @@ const StyledBox = styled.div<StyledBoxProps>`
     borderRadius ?? theme.borderRadius};
   color: ${({ theme: { palette } }) => palette.foreground};
   ${getBoxSizeStyles}
+  gap: ${({ gap }) => gap && SpacingValues[gap]};
 `;
 
 export default StyledBox;
