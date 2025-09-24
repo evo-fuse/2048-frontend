@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import Box from '../Box';
 import Text from '../Text';
 import StyledScore from './StyledScore';

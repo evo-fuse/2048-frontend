@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import StyledTile, { StyledTileProps } from './StyledTile';
 import StyledTileValue from './StyledTileValue';
 

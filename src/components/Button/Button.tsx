@@ -1,4 +1,4 @@
-import { forwardRef, PropsWithChildren } from 'react';
+import React, { forwardRef, PropsWithChildren } from 'react';
 import StyledButton, { StyledButtonProps } from './StyledButton';
 
 export interface ButtonProps extends StyledButtonProps {

@@ -1,7 +1,7 @@
 import { MutableRefObject, useRef } from 'react';
 
 const useLazyRef = <T>(init: () => T) => {
-  const lazyRef = useRef<T | undefined>(undefined);
+  const lazyRef = useRef<T>();
 
   if (lazyRef.current == null) {
     lazyRef.current = init();
