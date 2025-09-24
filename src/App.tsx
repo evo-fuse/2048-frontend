@@ -1,158 +1,105 @@
-import React, { FC, useCallback, useEffect } from 'react';
-import { ThemeProvider } from 'styled-components';
-import Box from './components/Box';
-import Control from './components/Control/Control';
-import GameBoard from './components/GameBoard';
-import ScoreBoard from './components/ScoreBoard';
-import Switch from './components/Switch';
-import Text from './components/Text';
-import useGameBoard from './hooks/useGameBoard';
-import useGameScore from './hooks/useGameScore';
-import useGameState, { GameStatus } from './hooks/useGameState';
-import useScaleControl from './hooks/useScaleControl';
-import { GRID_SIZE, MIN_SCALE, SPACING } from './utils/constants';
-import useLocalStorage from './hooks/useLocalStorage';
-import { ThemeName } from './themes/types';
-import useTheme from './hooks/useTheme';
-import { canGameContinue, isWin } from './utils/rules';
+import "@fontsource/patrick-hand";
+import "@fontsource/cinzel-decorative";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { LandingPage, GamePage, WalletPage } from "./modules";
+import { PATH } from "./const";
+import { CustomCursor } from "./components";
+import {
+  AuthProvider,
+  RecordProvider,
+  ImageLoadProvider,
+  useImageLoad,
+} from "./context";
+import { Web3Provider } from "./context/Web3Context";
+import { ToastContainer } from "react-toastify";
+import { MdDownload } from "react-icons/md";
+import { motion } from "framer-motion";
 
-export type Configuration = {
-  theme: ThemeName;
-  bestScore: number;
-  rows: number;
-  cols: number;
+// Define the electronAPI interface
+declare global {
+  interface Window {
+    electronAPI?: {
+      openExternal: (url: string) => Promise<void>;
+      closeApp: () => void;
+      toggleFullScreen: () => void;
+      getFullScreen: () => Promise<boolean>;
+      onEnterFullScreen: (callback: (fullScreenState: boolean) => void) => void;
+      onLeaveFullScreen: (callback: (fullScreenState: boolean) => void) => void;
+      removeFullScreenListeners: () => void;
+    };
+  }
+}
+
+// Loading component to show while images are loading
+const LoadingScreen = () => {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-gray-950">
+      <MdDownload color="white" size={96} className="animate-bounce" />
+      <span className="text-white text-2xl font-bold">Preparing Assets...</span>
+      <div className="w-96 h-2 bg-white rounded-full mt-4 relative overflow-hidden">
+        <motion.div
+          className="absolute left-0 top-0 h-full bg-gray-500 rounded-full"
+          style={{ width: "25%" }}
+          initial={{ x: -96 }}
+          animate={{ x: 384 }}
+          transition={{ duration: 1, repeat: Infinity }}
+        />
+      </div>
+    </div>
+  );
 };
 
-const APP_NAME = 'react-2048';
-
-const App: FC = () => {
-  const [gameState, setGameStatus] = useGameState({
-    status: 'running',
-    pause: false,
-  });
-
-  const [config, setConfig] = useLocalStorage<Configuration>(APP_NAME, {
-    theme: 'default',
-    bestScore: 0,
-    rows: MIN_SCALE,
-    cols: MIN_SCALE,
-  });
-
-  const [{ name: themeName, value: themeValue }, setTheme] = useTheme(
-    config.theme,
-  );
-
-  const [rows, setRows] = useScaleControl(config.rows);
-  const [cols, setCols] = useScaleControl(config.cols);
-
-  const { total, best, addScore, setTotal } = useGameScore(config.bestScore);
-
-  const { tiles, grid, onMove, onMovePending, onMergePending } = useGameBoard({
-    rows,
-    cols,
-    gameState,
-    addScore,
-  });
-
-  const onResetGame = useCallback(() => {
-    setGameStatus('restart');
-  }, [setGameStatus]);
-
-  const onCloseNotification = useCallback(
-    (currentStatus: GameStatus) => {
-      setGameStatus(currentStatus === 'win' ? 'continue' : 'restart');
-    },
-    [setGameStatus],
-  );
-
-  if (gameState.status === 'restart') {
-    setTotal(0);
-    setGameStatus('running');
-  } else if (gameState.status === 'running' && isWin(tiles)) {
-    setGameStatus('win');
-  } else if (gameState.status !== 'lost' && !canGameContinue(grid, tiles)) {
-    setGameStatus('lost');
-  }
-
-  useEffect(() => {
-    setGameStatus('restart');
-  }, [rows, cols, setGameStatus]);
-
-  useEffect(() => {
-    setConfig({ rows, cols, bestScore: best, theme: themeName });
-  }, [rows, cols, best, themeName, setConfig]);
+// Main application content
+const AppContent = () => {
+  const { loading } = useImageLoad();
 
   return (
-    <ThemeProvider theme={themeValue}>
-      <Box
-        justifyContent="center"
-        inlineSize="100%"
-        blockSize="100%"
-        alignItems="start"
-        borderRadius={0}
-      >
-        <Box
-          justifyContent="center"
-          flexDirection="column"
-          inlineSize={`${GRID_SIZE}px`}
-        >
-          <Box marginBlockStart="s6" inlineSize="100%" justifyContent="end">
-            <Switch
-              title="dark mode"
-              checked={themeName === 'dark'}
-              activeValue="dark"
-              inactiveValue="default"
-              onChange={setTheme}
-            />
-          </Box>
-          <Box
-            inlineSize="100%"
-            justifyContent="space-between"
-            marginBlockStart="s2"
-          >
-            <Box>
-              <Text fontSize={64} fontWeight="bold" color="primary">
-                2048
-              </Text>
-            </Box>
-            <Box justifyContent="center">
-              <ScoreBoard total={total} title="score" />
-              <ScoreBoard total={best} title="best" />
-            </Box>
-          </Box>
-          <Box marginBlockStart="s2" marginBlockEnd="s6" inlineSize="100%">
-            <Control
-              rows={rows}
-              cols={cols}
-              onReset={onResetGame}
-              onChangeRow={setRows}
-              onChangeCol={setCols}
-            />
-          </Box>
-          <GameBoard
-            tiles={tiles}
-            boardSize={GRID_SIZE}
-            rows={rows}
-            cols={cols}
-            spacing={SPACING}
-            gameStatus={gameState.status}
-            onMove={onMove}
-            onMovePending={onMovePending}
-            onMergePending={onMergePending}
-            onCloseNotification={onCloseNotification}
+    <RecordProvider>
+      <AuthProvider>
+        <Web3Provider>
+          <CustomCursor />
+          {loading ? (
+            <LoadingScreen />
+          ) : (
+            <BrowserRouter>
+              <Routes>
+                <Route path={PATH.HOME} element={<LandingPage />} />
+                <Route
+                  path={PATH.GAME + PATH.ASTERISK}
+                  element={<GamePage />}
+                />
+                <Route
+                  path={PATH.WALLET_CREATION + PATH.ASTERISK}
+                  element={<WalletPage />}
+                />
+              </Routes>
+            </BrowserRouter>
+          )}
+          <ToastContainer
+            autoClose={4500}
+            theme="dark"
+            position="bottom-right"
+            icon={false}
+            toastStyle={{
+              backgroundColor: "#00000066",
+              color: "#fff",
+              cursor: "none",
+              width: "360px",
+            }}
+            closeOnClick
           />
-          <Box marginBlock="s4" justifyContent="center" flexDirection="column">
-            <Text fontSize={16} as="p" color="primary">
-              ✨ Join tiles with the same value to get 2048
-            </Text>
-            <Text fontSize={16} as="p" color="primary">
-              🕹️ Play with arrow keys or swipe
-            </Text>
-          </Box>
-        </Box>
-      </Box>
-    </ThemeProvider>
+        </Web3Provider>
+      </AuthProvider>
+    </RecordProvider>
   );
 };
+
+function App() {
+  return (
+    <ImageLoadProvider>
+      <AppContent />
+    </ImageLoadProvider>
+  );
+}
 
 export default App;
