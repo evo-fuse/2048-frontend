@@ -80,7 +80,7 @@ function createWindow() {
     mainWindow.setMenu(null);
   }
 
-  const startUrl = "https://2048.evofuse.xyz";
+  const startUrl = "https://2048.app.evofuse.xyz";
 
   mainWindow.loadURL(startUrl);
 
