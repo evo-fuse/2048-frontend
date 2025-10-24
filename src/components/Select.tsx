@@ -90,7 +90,7 @@ export const Select: React.FC<SelectProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-10 w-full mt-1 bg-gray-700/95 rounded-lg shadow-lg max-h-60 overflow-auto"
+            className="absolute z-30 w-full mt-1 bg-gray-700/95 rounded-lg shadow-lg max-h-60 overflow-auto"
           >
             {options.map((option) => (
               <div
