@@ -289,6 +289,80 @@ const useGameBoard = ({ rows, cols, gameState, addScore }: GameBoardParams) => {
     pendingStackRef.current = [];
     setTiles(newTiles);
   }
+  const breakTile = useCallback((tile: Location) => {
+    if (pendingStackRef.current.length > 0 || pauseRef.current) {
+      return;
+    }
+    
+    const { r, c } = tile;
+    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+      return;
+    }
+
+    const targetTile = gridMapRef.current.grid[r][c];
+    if (!targetTile) {
+      return;
+    }
+
+    const newGrid = gridMapRef.current.grid.map(row => [...row]);
+    newGrid[r][c] = undefined;
+
+    const updatedTiles = gridMapRef.current.tiles.filter(t => t.r !== r || t.c !== c);
+    gridMapRef.current = { grid: newGrid, tiles: updatedTiles };
+    setTiles(sortTiles(updatedTiles));
+    addScore((targetTile.value * 2 - 2) * -1);
+  }, [gridMapRef, addScore, rows, cols]);
+
+  const upgradeTile = useCallback((tile: Location) => {
+    console.log('upgradeTile', tile);
+    if (pendingStackRef.current.length > 0 || pauseRef.current) {
+      return;
+    }
+    const { r, c } = tile;
+    if (r < 0 || r >= rows || c < 0 || c >= cols) {
+      return;
+    }
+
+    const targetTile = gridMapRef.current.grid[r][c];
+    if (!targetTile) {
+      return;
+    }
+
+    const newGrid = gridMapRef.current.grid.map(row => [...row]);
+    newGrid[r][c] = { 
+      ...targetTile,
+      value: targetTile.value * 2,
+      isNew: true,
+      canMerge: false,
+      isMerging: false,
+    };
+
+    const updatedTiles = gridMapRef.current.tiles.map(t => t.r === r && t.c === c ? { ...t, value: targetTile.value * 2 } : t);
+    gridMapRef.current = { grid: newGrid, tiles: updatedTiles };
+    setTiles(sortTiles(updatedTiles));
+  }, [gridMapRef, rows, cols]);
+
+  const handleSwapTile = useCallback((swapTile: Location, position: Location) => {
+    console.log('handleSwapTile', swapTile, position);
+    if (pendingStackRef.current.length > 0 || pauseRef.current) {
+      return;
+    }
+    const newGrid = gridMapRef.current.grid.map(row => [...row]);
+    const temp = {...(newGrid[swapTile.r][swapTile.c] as Tile)};
+    if(!temp) {
+      return;
+    }
+    newGrid[swapTile.r][swapTile.c] = {...(newGrid[swapTile.r][swapTile.c] as Tile), value: newGrid[position.r][position.c]?.value ?? 0, id: getId(nextTileIndex())};
+    newGrid[position.r][position.c] = {...(newGrid[position.r][position.c] as Tile), value: temp.value, id: getId(nextTileIndex())};
+    let updatedTiles: Tile[] = [];
+    newGrid.forEach(row => row.forEach(t => {
+      if(t !== undefined) {
+        updatedTiles.push(t as Tile);
+      }
+    }));
+    gridMapRef.current = { grid: newGrid, tiles: updatedTiles };
+    setTiles(sortTiles(updatedTiles));
+  }, [gridMapRef, rows, cols]);
 
   return {
     tiles,
@@ -296,6 +370,9 @@ const useGameBoard = ({ rows, cols, gameState, addScore }: GameBoardParams) => {
     onMove,
     onMovePending,
     onMergePending,
+    breakTile,
+    upgradeTile,
+    handleSwapTile,
   };
 };
 

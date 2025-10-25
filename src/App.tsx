@@ -8,6 +8,7 @@ import Switch from "./components/Switch";
 import Text from "./components/Text";
 import ThemeSkeleton from "./components/Skeleton";
 import { PreloadingModal } from "./components/Modal";
+import ItemBar from "./components/ItemBar";
 import useGameBoard from "./hooks/useGameBoard";
 import useGameScore from "./hooks/useGameScore";
 import useGameState, { GameStatus } from "./hooks/useGameState";
@@ -17,7 +18,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import { ThemeName } from "./themes/types";
 import useTheme from "./hooks/useTheme";
 import { canGameContinue, isWin } from "./utils/rules";
-import { useGameContext } from "./context/GameContext";
+import { Item, useGameContext } from "./context/GameContext";
 import { preloadThemeImages } from "./utils/imagePreloader";
 
 export type Configuration = {
@@ -55,7 +56,7 @@ const App: FC = () => {
 
   const { total, best, addScore, setTotal } = useGameScore(config.bestScore);
 
-  const { tiles, grid, onMove, onMovePending, onMergePending } = useGameBoard({
+  const { tiles, grid, onMove, onMovePending, onMergePending, breakTile, upgradeTile, handleSwapTile } = useGameBoard({
     rows,
     cols,
     gameState,
@@ -90,7 +91,7 @@ const App: FC = () => {
     setConfig({ rows, cols, bestScore: best, theme: themeName });
   }, [rows, cols, best, themeName, setConfig]);
 
-  const { themes, getThemes, setThemes, selectedTheme, setSelectedTheme } =
+  const { themes, getThemes, setThemes, selectedTheme, setSelectedTheme, setItem } =
     useGameContext();
     
   // Handle theme selection and preload images
@@ -118,7 +119,6 @@ const App: FC = () => {
     setIsLoadingThemes(true);
     getThemes()
       .then((data) => {
-        console.log("data", data);
         setThemes(data);
         setIsLoadingThemes(false);
       })
@@ -237,6 +237,14 @@ const App: FC = () => {
             onMovePending={onMovePending}
             onMergePending={onMergePending}
             onCloseNotification={onCloseNotification}
+            breakTile={breakTile}
+            upgradeTile={upgradeTile}
+            handleSwapTile={handleSwapTile}
+          />
+          <ItemBar
+            onBreak={() => setItem(Item.BREAK)}
+            onUpgrade={() => setItem(Item.UPGRADE)}
+            onSwap={() => setItem(Item.SWAP)}
           />
           <Box marginBlock="s4" justifyContent="center" flexDirection="column">
             <Text fontSize={16} as="p" color="primary">

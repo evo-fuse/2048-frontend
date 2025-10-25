@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import useArrowKeyPress from '../../hooks/useArrowKeyPress';
-import type { Tile } from '../../hooks/useGameBoard';
+import type { Location, Tile } from '../../hooks/useGameBoard';
 import type { GameStatus } from '../../hooks/useGameState';
 import useSwipe from '../../hooks/useSwipe';
 import { calcLocation, calcTileSize } from '../../utils/common';
@@ -21,6 +21,9 @@ export interface GameBoardProps {
   onMovePending: () => void;
   onMergePending: () => void;
   onCloseNotification: (currentStatus: GameStatus) => void;
+  breakTile: (tile: Location) => void;
+  upgradeTile: (tile: Location) => void;
+  handleSwapTile: (swapTile: Location, position: Location) => void;
 }
 
 const GameBoard: FC<GameBoardProps> = ({
@@ -34,6 +37,9 @@ const GameBoard: FC<GameBoardProps> = ({
   onMovePending,
   onMergePending,
   onCloseNotification,
+  breakTile,
+  upgradeTile,
+  handleSwapTile,
 }) => {
   const [{ width: tileWidth, height: tileHeight }, setTileSize] = useState(() =>
     calcTileSize(boardSize, rows, cols, spacing),
@@ -75,6 +81,9 @@ const GameBoard: FC<GameBoardProps> = ({
             value={value}
             isNew={isNew}
             isMerging={isMerging}
+            breakTile={breakTile}
+            upgradeTile={upgradeTile}
+            handleSwapTile={handleSwapTile}
           />
         ))}
       </Box>

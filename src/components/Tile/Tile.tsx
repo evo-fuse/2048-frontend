@@ -1,12 +1,16 @@
-import { FC } from "react";
+import { FC, useCallback, useMemo } from "react";
 import StyledTile, { StyledTileProps } from "./StyledTile";
 import StyledTileValue from "./StyledTileValue";
-import { useGameContext } from "../../context/GameContext";
+import { Item, useGameContext } from "../../context/GameContext";
 import { ImageTheme } from "themes/types";
+import { Location } from "hooks/useGameBoard";
 
 export interface TileProps extends StyledTileProps {
   isNew?: boolean;
   isMerging?: boolean;
+  breakTile: (position: Location) => void;
+  upgradeTile: (position: Location) => void;
+  handleSwapTile: (swapTile: Location, position: Location) => void;
 }
 
 const Tile: FC<TileProps> = ({
@@ -17,18 +21,41 @@ const Tile: FC<TileProps> = ({
   height,
   isNew = false,
   isMerging = false,
+  breakTile,
+  upgradeTile,
+  handleSwapTile,
 }) => {
-  const { selectedTheme } = useGameContext();
+  const { selectedTheme, item, setItem, swapTile, setSwapTile } = useGameContext();
+  const position = useMemo(() => {
+    return {
+      r: Math.floor((y - 8) / height),
+      c: Math.floor((x - 8) / width),
+    };
+  }, [x, y, width, height]);
+  const handleClickTile = useCallback(() => {
+    if (item === Item.NONE) return;
+    if (item === Item.BREAK) {
+      breakTile(position);
+      setItem(Item.NONE);
+    } else if (item === Item.UPGRADE) {
+      upgradeTile(position);
+      setItem(Item.NONE);
+    } else if (item === Item.SWAP) {
+      if (swapTile === null) {
+        setSwapTile(position);
+      } else {
+        handleSwapTile(swapTile, position);
+        setSwapTile(null);
+        setItem(Item.NONE);
+      }
+    }
+  }, [item, position, breakTile, upgradeTile, swapTile]);
   return (
     <>
       {selectedTheme ? (
         <div
+          className="absolute top-0 left-0 flex justify-center"
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            display: "flex",
-            justifyContent: "center",
             transition: "transform 0.15s ease-in-out",
             width,
             height,
@@ -36,6 +63,7 @@ const Tile: FC<TileProps> = ({
           }}
         >
           <img
+            onClick={handleClickTile}
             src={
               selectedTheme[
                 value as keyof Omit<
@@ -54,14 +82,8 @@ const Tile: FC<TileProps> = ({
                 >
               ]?.sm
             }
+            className="w-full h-full font-inherit flex text-center flex-col justify-center transition-all duration-100"
             style={{
-              width: "100%",
-              height: "100%",
-              fontSize: "inherit",
-              display: "flex",
-              textAlign: "center",
-              flexDirection: "column",
-              justifyContent: "center",
               animationName: isMerging ? "pop" : isNew ? "expand" : "",
               animationDuration: "0.18s",
               animationFillMode: "forwards",

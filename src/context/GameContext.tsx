@@ -1,7 +1,15 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { ImageTheme } from '../themes/types';
 import api from '../utils/api';
+import { Location } from '../hooks/useGameBoard';
 
+
+export enum Item {
+  NONE = 'none',
+  BREAK = 'break',
+  UPGRADE = 'upgrade',
+  SWAP = 'swap',
+}
 
 interface GameContextType {
     themes: ImageTheme[];
@@ -9,6 +17,10 @@ interface GameContextType {
     getThemes: () => Promise<ImageTheme[]>;
     selectedTheme: ImageTheme | null;
     setSelectedTheme: (theme: ImageTheme) => void;
+    item: Item;
+    setItem: (item: Item) => void;
+    swapTile: Location | null;
+    setSwapTile: (swapTile: Location | null) => void;
 }
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -29,6 +41,8 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     const data = [...premiumResponse.data, ...publicResponse.data];
     return data;
   };
+  const [item, setItem] = useState<Item>(Item.NONE);
+  const [swapTile, setSwapTile] = useState<Location | null>(null);
 
   const value = {
     themes,
@@ -36,6 +50,10 @@ export const GameProvider: React.FC<GameProviderProps> = ({ children }) => {
     getThemes,
     selectedTheme,
     setSelectedTheme,
+    item,
+    setItem,
+    swapTile,
+    setSwapTile,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
