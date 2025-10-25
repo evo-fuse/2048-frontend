@@ -1,11 +1,11 @@
 {
-  "name": "evofuse2048",
+  "name": "EvoFuse2048",
   "private": true,
   "version": "1.1.0",
   "main": "electron/main.js",
   "type": "module",
-  "description": "King Over Road",
-  "author": "King Over Road",
+  "description": "PC app version of Web3 Puzzle game EvoFuse2048 for hardcore gamers.",
+  "author": "Giant Troll",
   "scripts": {
     "dev": "vite --host",
     "build": "tsc -b && vite build",
