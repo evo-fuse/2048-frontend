@@ -68,7 +68,45 @@ const Tile: FC<TileProps> = ({
   const handleMouseLeave = useCallback(() => setIsHover(false), []);
 
   const renderTileContent = (width: number, height: number) => {
-    if (selectedTheme === "Basic" || tileValue > 8192) {
+    const isBasic =
+      selectedTheme === "Basic" ||
+      tileValue > 8192 ||
+      !(
+        selectedTheme &&
+        selectedTheme[tileValue as
+          | 2
+          | 4
+          | 8
+          | 16
+          | 32
+          | 64
+          | 128
+          | 256
+          | 512
+          | 1024
+          | 2048
+          | 4096
+          | 8192
+        ] &&
+        selectedTheme[
+          tileValue as
+            | 2
+            | 4
+            | 8
+            | 16
+            | 32
+            | 64
+            | 128
+            | 256
+            | 512
+            | 1024
+            | 2048
+            | 4096
+            | 8192
+        ].sm
+      );
+
+    if (isBasic) {
       return (
         <StyledTileValue
           value={tileValue}
