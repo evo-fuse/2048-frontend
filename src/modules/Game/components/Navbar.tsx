@@ -6,6 +6,7 @@ import {
   IoGameControllerOutline,
 } from "react-icons/io5";
 import { VscSignOut } from "react-icons/vsc";
+import { LuDices } from "react-icons/lu";
 import { IconType } from "react-icons";
 import { PATH } from "../../../const";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +40,11 @@ const navItems = [
     Icon: IoStorefrontOutline,
     label: "Shop",
     path: `${PATH.GAME}${PATH.SHOP}`,
+  },
+  {
+    Icon: LuDices,
+    label: "Betting",
+    path: `${PATH.GAME}${PATH.DICE}`,
   },
   {
     Icon: IoColorPaletteOutline,

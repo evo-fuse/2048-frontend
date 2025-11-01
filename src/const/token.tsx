@@ -35,12 +35,14 @@ export const CONTRACT_ABI = {
 }
 
 export const BASEURL = {
-  ETH: 'https://api.etherscan.io/api',
-  POL: 'https://api.polygonscan.com/api',
+  ETH: 'https://api.etherscan.io/v2/api',
+  POL: 'https://api.polygonscan.com/v2/api',
   BNB: 'https://api.bscscan.com/api',
   ARB: 'https://api.arbiscan.io/api',
   FUSE: 'https://explorer.fuse.io/api/v2',
 };
+
+const NOTOK = "NOTOK";
 
 export const ETH: TToken = {
   unit: 'ETH',
@@ -48,7 +50,7 @@ export const ETH: TToken = {
   name: 'eth',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ETH}?module=account&action=balance&apikey=${API_KEY.ETH}&address=${address}`,
+      `${BASEURL.ETH}?module=account&chainid=1&action=balance&apikey=${API_KEY.ETH}&address=${address}&tag=latest`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -60,9 +62,10 @@ export const POL: TToken = {
   name: 'pol',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.POL}?module=account&action=balance&apikey=${API_KEY.POL}&address=${address}`,
+      `${BASEURL.ETH}?apikey=${API_KEY.ETH}&chainid=137&module=account&action=balance&address=${address}&tag=latest`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -72,7 +75,7 @@ export const BNB: TToken = {
   name: 'bnb',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.BNB}?module=account&action=balance&apikey=${API_KEY.BNB}&address=${address}`,
+      `${BASEURL.ETH}?apikey=${API_KEY.ETH}&chainid=56&module=account&action=balance&address=${address}&tag=latest`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -84,7 +87,7 @@ export const ARB: TToken = {
   name: 'arb',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ARB}?module=account&action=balance&apikey=${API_KEY.ARB}&address=${address}`,
+      `${BASEURL.ETH}?apikey=${API_KEY.ETH}&chainid=42161&module=account&action=balance&address=${address}&tag=latest`,
     );
     return (Number(response.data.result) / 10 ** 18).toFixed(5);
   },
@@ -104,9 +107,10 @@ export const PUSDT: TToken = {
   name: 'pusdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.POL}?module=account&action=tokenbalance&apikey=${API_KEY.POL}&contractaddress=${CONTRACT_ADDRESS.PUSDT}&address=${address}`,
+      `${BASEURL.ETH}?chainid=137&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.PUSDT}&address=${address}&apikey=${API_KEY.ETH}`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -124,9 +128,10 @@ export const BUSDT: TToken = {
   name: 'busdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.BNB}?module=account&action=tokenbalance&apikey=${API_KEY.BNB}&contractaddress=${CONTRACT_ADDRESS.BUSDT}&address=${address}`,
+      `${BASEURL.ETH}?chainid=56&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.BUSDT}&address=${address}&apikey=${API_KEY.ETH}`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -144,9 +149,10 @@ export const EUSDT: TToken = {
   name: 'eusdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ETH}?module=account&action=tokenbalance&apikey=${API_KEY.ETH}&contractaddress=${CONTRACT_ADDRESS.EUSDT}&address=${address}`,
+      `${BASEURL.ETH}?chainid=1&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.EUSDT}&address=${address}&apikey=${API_KEY.ETH}`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -164,9 +170,10 @@ export const PUSDC: TToken = {
   name: 'pusdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.POL}?module=account&action=tokenbalance&apikey=${API_KEY.POL}&contractaddress=${CONTRACT_ADDRESS.PUSDC}&address=${address}`,
+      `${BASEURL.ETH}?chainid=137&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.PUSDC}&address=${address}&apikey=${API_KEY.ETH}&tag=latest`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -184,9 +191,10 @@ export const BUSDC: TToken = {
   name: 'busdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.BNB}?module=account&action=tokenbalance&apikey=${API_KEY.BNB}&contractaddress=${CONTRACT_ADDRESS.BUSDC}&address=${address}`,
+      `${BASEURL.ETH}?chainid=56&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.BUSDC}&address=${address}&apikey=${API_KEY.ETH}`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -204,9 +212,10 @@ export const EUSDC: TToken = {
   name: 'eusdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ETH}?module=account&action=tokenbalance&apikey=${API_KEY.ETH}&contractaddress=${CONTRACT_ADDRESS.EUSDC}&address=${address}`,
+      `${BASEURL.ETH}?chainid=1&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.EUSDC}&address=${address}&apikey=${API_KEY.ETH}`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -224,9 +233,10 @@ export const AUSDT: TToken = {
   name: 'ausdt',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ARB}?module=account&action=tokenbalance&apikey=${API_KEY.ARB}&contractaddress=${CONTRACT_ADDRESS.AUSDT}&address=${address}`,
+      `${BASEURL.ETH}?chainid=42161&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.AUSDT}&address=${address}&apikey=${API_KEY.ETH}`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 
@@ -244,9 +254,10 @@ export const AUSDC: TToken = {
   name: 'eusdc',
   balance: async (address: string) => {
     const response = await axios.get(
-      `${BASEURL.ARB}?module=account&action=tokenbalance&apikey=${API_KEY.ARB}&contractaddress=${CONTRACT_ADDRESS.AUSDC}&address=${address}`,
+      `${BASEURL.ETH}?chainid=42161&module=account&action=tokenbalance&contractaddress=${CONTRACT_ADDRESS.AUSDC}&address=${address}&apikey=${API_KEY.ETH}`,
     );
-    return (Number(response.data.result) / 10 ** 18).toFixed(5);
+    const amount = isNaN(response.data.result) ? "0" : response.data.result;
+    return (Number(amount) / 10 ** 18).toFixed(5);
   },
 };
 

@@ -4,3 +4,4 @@ export * from "./Wallet";
 export * from "./Shop";
 export * from "./Theme";
 export * from "./Record";
+export * from "./Betting";
