@@ -117,7 +117,6 @@ export const GameControls = ({
     onStartGame,
     onRestart,
     onOpenHelp,
-    calculateReward,
     getUserBalanceKey
 }: GameControlsProps) => {
     const updatedBalance = currentBalance + rewardAmount;

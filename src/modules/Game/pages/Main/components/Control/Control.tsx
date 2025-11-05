@@ -17,7 +17,6 @@ export interface ControlProps {
 }
 
 const Control: FC<ControlProps> = ({
-  rows,
   cols,
   onReset,
   onChangeGrid,
