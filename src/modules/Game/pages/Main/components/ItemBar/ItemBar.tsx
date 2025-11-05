@@ -23,7 +23,7 @@ export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
   const { isOpen, onOpen, onClose } = useOpen();
 
   return (
-    <div className="flex justify-evenly gap-3 p-3 bg-black/40 rounded-lg mt-4">
+    <div className="flex justify-evenly mt-4">
       <ItemButton
         item={{
           id: "hammer",
@@ -51,6 +51,7 @@ export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
               : setCursor(Images.UPGRADE);
           }
         }}
+        direction="bottom"
       />
       <ItemButton
         item={{

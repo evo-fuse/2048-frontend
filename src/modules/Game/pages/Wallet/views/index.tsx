@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Select } from "../../../../../components";
 import { Images } from "../../../../../assets/images";
 import { useAuthContext } from "../../../../../context";
@@ -9,11 +9,11 @@ import {
   HiOutlineClipboardDocumentCheck,
   HiOutlineArrowPathRoundedSquare,
   HiOutlineKey,
-  HiOutlineDocumentDuplicate,
   HiOutlineWallet,
 } from "react-icons/hi2";
+import { MdOutlineMessage } from "react-icons/md";
 import { useClipboard, useOpen } from "../../../../../hooks";
-import { PasswordModal } from "../components";
+import { PasswordModal, HexagonButton } from "../components";
 import { WalletItem } from "../../../../../types";
 import { useWeb3Context } from "../../../../../context/Web3Context";
 
@@ -43,34 +43,36 @@ export const WalletView: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const fetchBalance = async () => {
-      setIsLoading(true);
-      try {
-        const nativeBalance = await tokenList[mainNet].native.balance(
-          user?.address ?? ""
-        );
-        const usdtBalance = await tokenList[mainNet].usdt.balance(
-          user?.address ?? ""
-        );
-        const usdcBalance = await tokenList[mainNet].usdc.balance(
-          user?.address ?? ""
-        );
-        setBalance({
-          native: nativeBalance,
-          usdt: usdtBalance,
-          usdc: usdcBalance,
-        });
-      } catch (error) {
-        console.error("Error fetching balance:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchBalance();
+  const { userBalance, getBalance } = useWeb3Context();
+
+  // Extract fetchBalance function to avoid duplication
+  const fetchBalance = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const nativeBalance = await tokenList[mainNet].native.balance(
+        user?.address ?? ""
+      );
+      const usdtBalance = await tokenList[mainNet].usdt.balance(
+        user?.address ?? ""
+      );
+      const usdcBalance = await tokenList[mainNet].usdc.balance(
+        user?.address ?? ""
+      );
+      setBalance({
+        native: nativeBalance,
+        usdt: usdtBalance,
+        usdc: usdcBalance,
+      });
+    } catch (error) {
+      console.error("Error fetching balance:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [mainNet, tokenList, user?.address]);
 
-  const { userBalance, getBalance } = useWeb3Context();
+  useEffect(() => {
+    fetchBalance();
+  }, [fetchBalance]);
 
   useEffect(() => {
     getBalance();
@@ -84,33 +86,10 @@ export const WalletView: React.FC = () => {
     <HiOutlineClipboardDocumentCheck size={20} color="#4ade80" />
   );
 
-  const handleRefresh = () => {
+  const handleRefresh = useCallback(() => {
     getBalance();
-    const fetchBalance = async () => {
-      setIsLoading(true);
-      try {
-        const nativeBalance = await tokenList[mainNet].native.balance(
-          user?.address ?? ""
-        );
-        const usdtBalance = await tokenList[mainNet].usdt.balance(
-          user?.address ?? ""
-        );
-        const usdcBalance = await tokenList[mainNet].usdc.balance(
-          user?.address ?? ""
-        );
-        setBalance({
-          native: nativeBalance,
-          usdt: usdtBalance,
-          usdc: usdcBalance,
-        });
-      } catch (error) {
-        console.error("Error fetching balance:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchBalance();
-  };
+  }, [getBalance, fetchBalance]);
 
   return (
     <div className="w-full h-full text-white flex gap-4">
@@ -306,48 +285,31 @@ export const WalletView: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.3 }}
             className="flex flex-col gap-3 pb-4"
           >
-            <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
-              Wallet Actions
-            </label>
-            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center justify-center gap-2 p-6 transition bg-gray-800/60 text-white rounded-lg border border-white/10 shadow-md hover:bg-gray-700/60"
-                onClick={() => {
-                  setTitle(WalletItem.Import);
-                  onOpen();
-                }}
-              >
-                <HiOutlineWallet size={28} />
-                <span className="text-base font-medium">Import</span>
-              </motion.button>
-
-              <motion.button
+            <div className="w-full flex justify-center">
+              <HexagonButton
+                icon={<HiOutlineKey size={32} />}
                 onClick={() => {
                   setTitle(WalletItem.ShowPrivateKey);
                   onOpen();
                 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center justify-center gap-2 p-6 transition bg-gray-800/60 text-white rounded-lg border border-white/10 shadow-md hover:bg-gray-700/60"
-              >
-                <HiOutlineKey size={28} />
-                <span className="text-base font-medium">Private Key</span>
-              </motion.button>
-
-              <motion.button
+                direction="left"
+              />
+              <HexagonButton
+                icon={<HiOutlineWallet size={32} />}
+                onClick={() => {
+                  setTitle(WalletItem.Import);
+                  onOpen();
+                }}
+                direction="center"
+              />
+              <HexagonButton
+                icon={<MdOutlineMessage size={32} />}
                 onClick={() => {
                   setTitle(WalletItem.ShowSeed);
                   onOpen();
                 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex flex-col items-center justify-center gap-2 p-6 transition bg-gray-800/60 text-white rounded-lg border border-white/10 shadow-md hover:bg-gray-700/60"
-              >
-                <HiOutlineDocumentDuplicate size={28} />
-                <span className="text-base font-medium">Seed Phrase</span>
-              </motion.button>
+                direction="right"
+              />
             </div>
           </motion.div>
         </div>

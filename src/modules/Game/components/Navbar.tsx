@@ -13,7 +13,7 @@ import { useAuthContext } from "../../../context";
 import { useGameContext } from "../context/GameContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlCamrecorder } from "react-icons/sl";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Hex } from "./Hex";
 import { FaUnlock, FaLock } from "react-icons/fa";
 
@@ -69,6 +69,14 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
   navigate,
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const hexRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (checked) {
+      hexRef.current && (hexRef.current.style.filter = "drop-shadow(0 0 12px rgba(34, 211, 238, 1))");
+    } else {
+      hexRef.current && (hexRef.current.style.filter = "drop-shadow(0 0 12px rgba(34, 211, 238, 0))");
+    }
+  }, [checked]);
 
   return (
     <div className="relative">
@@ -92,7 +100,12 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
       </AnimatePresence>
 
       {/* Hexagon Border with Glow */}
-      <div className="relative">
+      <div
+        ref={hexRef}
+        className="relative transition-all duration-150"
+        onMouseEnter={() => { !checked && hexRef.current && (hexRef.current.style.filter = "drop-shadow(0 0 12px rgba(34, 211, 238, 1))") }}
+        onMouseLeave={() => { !checked && hexRef.current && (hexRef.current.style.filter = "drop-shadow(0 0 12px rgba(34, 211, 238, 0))") }}
+      >
         {/* Outer Layer - Cyan gradient */}
         <Hex
           className={`relative flex items-center justify-center gap-4 py-2 ${checked ? 'bg-cyan-400' : 'bg-gray-600'
@@ -115,7 +128,7 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
           >
             {/* Third Layer - Cyan border */}
             <Hex
-              className={`flex items-center justify-center ${checked ? 'bg-cyan-500/75' : 'bg-white/30'
+              className={`flex items-center justify-center ${checked ? 'bg-cyan-200' : 'bg-white/30'
                 }`}
               width={112}
             >
@@ -126,42 +139,44 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
               >
                 {checked ? (
                   /* Active State - Cyan inner layer */
-                  <Hex
-                    className="bg-cyan-500 flex items-center justify-center"
-                    width={88}
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{
-                      scale: 1,
-                      rotate: 0,
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "backOut",
-                    }}
-                  >
-                    {/* Innermost Layer - Dark center */}
+                  <div style={{ filter: "drop-shadow(0 0 8px rgba(254, 240, 138, 0.5))" }}>
                     <Hex
-                      className="bg-gray-800 flex items-center justify-center"
-                      width={80}
+                      className="bg-yellow-200 flex items-center justify-center"
+                      width={88}
+                      initial={{ scale: 0, rotate: -180 }}
+                      animate={{
+                        scale: 1,
+                        rotate: 0,
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        ease: "backOut",
+                      }}
                     >
-                      {/* Icon with hover animation only */}
-                      <motion.div
-                        whileHover={{
-                          rotate: [0, -10, 10, -10, 10, 0],
-                          scale: 1.15,
-                        }}
-                        transition={{ duration: 0.5 }}
+                      {/* Innermost Layer - Dark center */}
+                      <Hex
+                        className="bg-gray-800 flex items-center justify-center"
+                        width={80}
                       >
-                        <Icon
-                          size={36}
-                          className="text-white drop-shadow-lg"
-                          style={{
-                            filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.8))",
+                        {/* Icon with hover animation only */}
+                        <motion.div
+                          whileHover={{
+                            rotate: [0, -10, 10, -10, 10, 0],
+                            scale: 1.15,
                           }}
-                        />
-                      </motion.div>
+                          transition={{ duration: 0.5 }}
+                        >
+                          <Icon
+                            size={36}
+                            className="text-white drop-shadow-lg"
+                            style={{
+                              filter: "drop-shadow(0 0 8px rgba(6, 182, 212, 0.8))",
+                            }}
+                          />
+                        </motion.div>
+                      </Hex>
                     </Hex>
-                  </Hex>
+                  </div>
                 ) : (
                   /* Inactive State - Simple icon with hover only */
                   <motion.div

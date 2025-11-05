@@ -1,7 +1,10 @@
+import { Images } from "../assets/images";
+import { useAuthContext } from "../context";
 import { useState, useEffect } from "react";
 import { GiArrowCursor } from "react-icons/gi";
 
 export const CustomCursor = () => {
+  const { cursor } = useAuthContext();
   const [position, setPosition] = useState(() => {
     // Initialize with current mouse position if available, otherwise default to (0,0)
     return {
@@ -63,14 +66,21 @@ export const CustomCursor = () => {
       />
 
       {/* Arrow cursor using GiArrowCursor icon */}
-      <GiArrowCursor
-        className="relative text-cyan-500"
-        style={{
-          fontSize: "28px",
-          filter: "drop-shadow(0 0 4px rgba(6, 182, 212, 0.6)) drop-shadow(0 0 8px rgba(6, 182, 212, 0.3))",
-          color: "rgba(6, 182, 212, 0.9)",
-        }}
-      />
+      {cursor === Images.HAMMER || cursor === Images.UPGRADE
+        ? (<img
+          src={cursor}
+          alt="cursor"
+          className="min-w-12 min-h-16 max-w-12 max-h-min-h-16"
+        />
+        ) : (<GiArrowCursor
+          className="relative text-cyan-500"
+          style={{
+            fontSize: "28px",
+            filter: "drop-shadow(0 0 1px rgba(255, 255, 255, 1)) drop-shadow(0 0 8px rgba(6, 182, 212, 0.3))",
+            color: "rgba(6, 182, 212, 0.9)",
+          }}
+          size={40}
+        />)}
     </div>
   );
 };

@@ -230,22 +230,34 @@ export const DepositView = () => {
                         <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 cursor-none disabled:opacity-50 disabled:cursor-not-allowed group"
+                            className="flex items-center justify-center bg-cyan-500 hover:bg-cyan-400 font-bold p-4 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 cursor-none disabled:opacity-50 disabled:cursor-none group"
                             onClick={handleDeposit}
                             disabled={isLoading}
+                            style={{ clipPath: "polygon(15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px), 0 15px)" }}
                         >
-                            <TbMoneybag size={24} className="group-hover:scale-110 transition-transform" />
-                            <span className="text-lg">{isLoading ? "Processing..." : "Deposit Now"}</span>
+                            <div
+                                style={{ clipPath: "polygon(6.4px 0, calc(100% - 6.4px) 0, 100% 6.4px, 100% calc(100% - 6.4px), calc(100% - 6.4px) 100%, 6.4px 100%, 0 calc(100% - 6.4px), 0 6.4px)" }}
+                                className="text-white flex items-center justify-center gap-3 w-full h-full bg-cyan-700 p-4"
+                            >
+                                <TbMoneybag size={24} className="group-hover:scale-110 transition-transform" />
+                                <span className="text-lg">{isLoading ? "Processing..." : "Deposit Now"}</span>
+                            </div>
                         </motion.button>
 
                         <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="flex items-center justify-center gap-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-gray-500/30 cursor-none group border border-white/10"
+                            className="flex items-center justify-center bg-gray-500 hover:bg-gray-400 font-bold p-4 transition-all duration-300 shadow-lg hover:shadow-gray-500/50 cursor-none disabled:opacity-50 disabled:cursor-none group"
                             onClick={() => navigate(PATH.GAME + PATH.BETTING)}
+                            style={{ clipPath: "polygon(15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px), 0 15px)" }}
                         >
-                            <LuDices size={24} className="group-hover:rotate-12 transition-transform" />
-                            <span className="text-lg">Go to Play</span>
+                            <div
+                                style={{ clipPath: "polygon(6.4px 0, calc(100% - 6.4px) 0, 100% 6.4px, 100% calc(100% - 6.4px), calc(100% - 6.4px) 100%, 6.4px 100%, 0 calc(100% - 6.4px), 0 6.4px)" }}
+                                className="text-white flex items-center justify-center gap-3 w-full h-full bg-gray-700 p-4"
+                            >
+                                <LuDices size={24} className="group-hover:rotate-12 transition-transform" />
+                                <span className="text-lg">Go to Play</span>
+                            </div>
                         </motion.button>
                     </motion.div>
                 </div>

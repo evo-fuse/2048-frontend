@@ -1,4 +1,4 @@
-import { ForwardRefComponent, HTMLMotionProps, motion } from "framer-motion";
+import { HTMLMotionProps, motion } from "framer-motion";
 
 const ROOT_3 = Math.sqrt(3);
 
