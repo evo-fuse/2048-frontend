@@ -49,7 +49,7 @@ export const MainView: FC = () => {
   } = useGameContext();
   const { handleUser, setUser, handleGetWalletAddress } = useAuthContext();
   const { isOpen, onOpen, onClose } = useOpen();
-  const [pendingFunction, setPendingFunction] = useState<Function>(() => {});
+  const [pendingFunction, setPendingFunction] = useState<Function>(() => { });
 
   useEffect(() => {
     handleUser().then((data) => {
@@ -84,30 +84,18 @@ export const MainView: FC = () => {
   const [rows, setRows] = useScaleControl(config.rows);
   const [cols, setCols] = useScaleControl(config.cols);
 
-  const onChangeRows = useCallback(
+  const onChangeGrid = useCallback(
     (value: number) => {
       onOpen();
       setPendingFunction(() => {
         return () => {
           setRows(value);
-          setInitialSetup(true);
-        };
-      });
-    },
-    [setRows, setInitialSetup]
-  );
-
-  const onChangeCols = useCallback(
-    (value: number) => {
-      onOpen();
-      setPendingFunction(() => {
-        return () => {
           setCols(value);
           setInitialSetup(true);
         };
       });
     },
-    [setCols, setInitialSetup]
+    [setRows, setCols, setInitialSetup]
   );
 
   const { total, best, addScore, setTotal } = useGameScore(
@@ -237,7 +225,7 @@ export const MainView: FC = () => {
               justifycontent="space-between"
               marginblockstart="s2"
             >
-              <Box className="text-5xl font-bold">EvoFuse 2048</Box>
+              <Box className="text-4xl font-bold">EvoFuse 2048</Box>
               <Box justifycontent="center">
                 <ScoreBoard total={total} title="score" />
                 <ScoreBoard total={best} title="best" />
@@ -249,8 +237,7 @@ export const MainView: FC = () => {
                 cols={cols}
                 tiles={tiles}
                 onReset={onResetGame}
-                onChangeRow={onChangeRows}
-                onChangeCol={onChangeCols}
+                onChangeGrid={onChangeGrid}
               />
             </Box>
 

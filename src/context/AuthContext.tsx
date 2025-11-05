@@ -29,6 +29,12 @@ type AuthContextType = {
     themeData: FormData,
     onProgress: (status: { status: string; progress?: number; message: string }) => void
   ) => Promise<any>;
+  handleWithdrawRequest: (withdrawalData: {
+    network: string;
+    token: string;
+    amount: number;
+    toAddress: string;
+  }) => Promise<any>;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -136,16 +142,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        
+
         const chunk = decoder.decode(value);
         const lines = chunk.split('\n\n');
-        
+
         for (const line of lines) {
           if (line.startsWith('data: ')) {
             try {
               const data = JSON.parse(line.substring(6));
               onProgress(data);
-              
+
               if (data.status === 'complete') {
                 theme = data.theme;
               }
@@ -155,16 +161,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
       }
-      
+
       return theme;
     } catch (error) {
       console.error("Error creating theme:", error);
-      onProgress({ 
-        status: 'error', 
-        message: error instanceof Error ? error.message : 'Failed to create theme' 
+      onProgress({
+        status: 'error',
+        message: error instanceof Error ? error.message : 'Failed to create theme'
       });
       throw error;
     }
+  };
+
+  const handleWithdrawRequest = async (withdrawalData: {
+    network: string;
+    token: string;
+    amount: number;
+    toAddress: string;
+  }) => {
+    const { data } = await api({}).post("/balance/withdraw", withdrawalData);
+    return data;
   };
 
   useEffect(() => {
@@ -199,6 +215,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     signupUser,
     handleDisconnectWallet,
     handleCreateTheme,
+    handleWithdrawRequest,
   };
 
   return (

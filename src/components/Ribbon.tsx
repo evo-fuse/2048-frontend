@@ -17,7 +17,7 @@ export const Ribbon: React.FC<RibbonProps> = ({
     green: ["bg-green-500", "bg-green-800"],
     yellow: ["bg-yellow-500", "bg-yellow-800"],
     purple: ["bg-purple-500", "bg-purple-800"],
-    orange: ["bg-orange-500", "bg-orange-800"],
+    cyan: ["bg-cyan-500", "bg-cyan-800"],
     pink: ["bg-pink-500", "bg-pink-800"],
   };
   return (

@@ -13,11 +13,10 @@ export const TabButton: React.FC<TabButtonProps> = ({
 }) => (
   <button
     onClick={onClick}
-    className={`text-2xl font-bold px-8 py-6 transition-colors ${
-      active
-        ? "text-[#EC9050] border-b-2 border-[#EC9050]"
+    className={`text-2xl font-bold px-8 py-6 transition-colors ${active
+        ? "text-cyan-400 border-b-2 border-cyan-400"
         : "text-white/70 hover:text-white"
-    }`}
+      }`}
   >
     {children}
   </button>

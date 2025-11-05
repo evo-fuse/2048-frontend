@@ -46,58 +46,53 @@ export const ShopView: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4 w-full h-full items-center justify-center p-8">
-      <div className="w-full h-full overflow-hidden bg-black/20 border border-white/10 rounded-lg">
-        {/* User's coin balance display */}
-        <div className="flex justify-between items-center px-4 py-2 bg-gray-800/50 border-b border-white/10">
-          <h2 className="text-xl font-bold text-white">Shop</h2>
-          <div className="flex items-center gap-2">
-            <img src={Images.DWAT} className="w-6 h-6 rounded-full" />
-            <span className="text-white font-bold">{userBalance} DWAT</span>
-          </div>
-        </div>
+    <>
+      {/* User's coin balance display */}
+      <div className="absolute top-12 right-14 flex items-center gap-2">
+        <img src={Images.DWAT} className="w-6 h-6 rounded-full" />
+        <span className="text-white font-bold text-2xl">{userBalance} DWAT</span>
+      </div>
 
-        <Tabs
-          tabs={[
-            { id: "Grid", label: "Grid" },
-            { id: "Items", label: "Items" },
-            { id: "Themes", label: "Themes" },
-          ]}
+      <Tabs
+        tabs={[
+          { id: "Grid", label: "Grid" },
+          { id: "Items", label: "Items" },
+          { id: "Themes", label: "Themes" },
+        ]}
+        selectedTab={selectedTab}
+        setSelectedTab={setSelectedTab}
+        className="mb-4"
+        tabsContainerClassName="border-b border-white/10 text-white"
+      />
+
+      <div className="relative w-full h-[calc(100vh-180px)]">
+        <GridTabPanel
           selectedTab={selectedTab}
-          setSelectedTab={setSelectedTab}
-          className="mb-4"
-          tabsContainerClassName="border-b border-gray-200 text-white"
+          user={user}
+          userBalance={Number(userBalance)}
+          handleUpdateUser={handleUpdateUser}
+          setUser={setUser}
+          buyItemsWithGameTokens={buyItemsWithGameTokens}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
         />
 
-        <div className="relative w-full h-[calc(100vh-180px)]">
-          <GridTabPanel
-            selectedTab={selectedTab}
-            user={user}
-            userBalance={Number(userBalance)}
-            handleUpdateUser={handleUpdateUser}
-            setUser={setUser}
-            buyItemsWithGameTokens={buyItemsWithGameTokens}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
+        <ItemsTabPanel
+          selectedTab={selectedTab}
+          user={user}
+          userBalance={Number(userBalance)}
+          handleUpdateUser={handleUpdateUser}
+          setUser={setUser}
+          buyItemsWithGameTokens={buyItemsWithGameTokens}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
 
-          <ItemsTabPanel
-            selectedTab={selectedTab}
-            user={user}
-            userBalance={Number(userBalance)}
-            handleUpdateUser={handleUpdateUser}
-            setUser={setUser}
-            buyItemsWithGameTokens={buyItemsWithGameTokens}
-            isLoading={isLoading}
-            setIsLoading={setIsLoading}
-          />
-
-          <ThemesTabPanel
-            selectedTab={selectedTab}
-            themes={themes}
-          />
-        </div>
+        <ThemesTabPanel
+          selectedTab={selectedTab}
+          themes={themes}
+        />
       </div>
-    </div>
+    </>
   );
 };

@@ -1,3 +1,4 @@
+import { Images } from "../assets/images";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 
@@ -14,11 +15,11 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
   }, []);
   return (
     <div className="bg-gray-800 w-full h-full overflow-hidden flex justify-center">
-      {/* <img
-        src={Bg}
+      <img
+        src={Images.BACKGROUND}
         className="fixed top-0 left-0 w-screen h-full object-cover"
         alt="Fantasy Background"
-      /> */}
+      />
       <div className="relative z-10 w-[1760px] flex flex-col justify-start items-center mt-0">
         <motion.div
           className="w-full flex flex-col h-full"

@@ -27,5 +27,30 @@ declare global {
         accept: Record<string, string[]>;
       }>;
     }) => Promise<FileSystemFileHandle>;
+    ethers?: {
+      utils?: {
+        formatEther?: (wei: string | number | bigint) => string;
+        parseEther?: (eth: string) => string;
+        formatUnits?: (value: string | number | bigint, unitName?: string | number) => string;
+        parseUnits?: (value: string, unitName?: string | number) => string;
+        isAddress?: (address: string) => boolean;
+        getAddress?: (address: string) => string;
+      };
+      providers?: {
+        Web3Provider?: new (provider: any) => any;
+        JsonRpcProvider?: new (url: string) => any;
+      };
+      Contract?: new (
+        address: string,
+        abi: any,
+        signerOrProvider?: any
+      ) => any;
+      BigNumber?: {
+        from: (value: string | number | bigint) => any;
+        toBigInt: (value: any) => bigint;
+      };
+      Wallet?: new (privateKey: string, provider?: any) => any;
+      getDefaultProvider?: (network?: string) => any;
+    };
   }
 } 

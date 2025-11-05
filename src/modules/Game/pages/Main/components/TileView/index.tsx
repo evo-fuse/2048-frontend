@@ -42,15 +42,14 @@ export const TileView: React.FC<TileViewProps> = ({ value }) => {
   if (selectedTheme === "Basic" || value > 8192) return <></>;
 
   return (
-    <div className="min-w-[556px] max-w-min h-full max-h-min bg-black/20 rounded-lg border border-white/20 p-8">
+    <div className="min-w-[556px] max-w-min h-full max-h-min">
       <div className="w-[512px] h-[512px] relative">
         {/* Small image (shown initially) */}
         <img
           src={selectedTheme[value as keyof TileViewTheme]?.sm}
           alt="tile"
-          className={`w-[512px] h-[512px] absolute top-0 left-0 transition-opacity duration-300 ${
-            isLargeImageLoaded ? "opacity-0" : "opacity-100"
-          }`}
+          className={`w-[512px] h-[512px] absolute top-0 left-0 transition-opacity duration-300 ${isLargeImageLoaded ? "opacity-0" : "opacity-100"
+            }`}
           style={{ objectFit: "contain" }}
         />
 
@@ -58,9 +57,8 @@ export const TileView: React.FC<TileViewProps> = ({ value }) => {
         <img
           src={selectedTheme[value as keyof TileViewTheme]?.lg}
           alt="tile"
-          className={`w-[512px] h-[512px] absolute top-0 left-0 transition-opacity duration-300 ${
-            isLargeImageLoaded ? "opacity-100" : "opacity-0"
-          }`}
+          className={`w-[512px] h-[512px] absolute top-0 left-0 transition-opacity duration-300 ${isLargeImageLoaded ? "opacity-100" : "opacity-0"
+            }`}
           style={{ objectFit: "contain" }}
         />
       </div>

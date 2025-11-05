@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Images } from "../assets/images";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -13,11 +14,11 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   // }, []);
   return (
     <div className="bg-gray-800 w-full h-full overflow-hidden flex justify-center">
-      {/* <img
-        src={Bg}
+      <img
+        src={Images.BACKGROUND}
         className="fixed top-0 left-0 w-screen h-full object-cover"
         alt="Fantasy Background"
-      /> */}
+      />
       <div className="fixed w-screen h-screen top-0 left-0 bg-black/70" />
       <div
         className="relative z-10 w-[1600px] flex flex-col justify-start items-center mt-0"

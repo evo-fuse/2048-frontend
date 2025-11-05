@@ -20,7 +20,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
   isOpen,
   onClose,
   maxTile,
-  total,
+  total = 0,
   pendingFunction,
   status,
 }) => {
@@ -30,6 +30,8 @@ const RewardModal: React.FC<RewardModalProps> = ({
   const click = useRef<boolean>(false);
   const estimatedReward: number =
     maxTile >= 1024 ? Math.floor(total / 100 + maxTile / 10) : 0;
+
+  console.log("estimatedReward", estimatedReward, maxTile, total);
 
   const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
 
