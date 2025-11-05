@@ -41,7 +41,7 @@ const WalletConnect: React.FC<WalletConnectProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={handleModalClose}
-      title={title || "To Buy Items, Connect Wallet"}
+      title={title || "Connect Wallet"}
       closeOnOutsideClick
     >
       <div className="w-full px-4 pb-4 flex flex-col gap-4">

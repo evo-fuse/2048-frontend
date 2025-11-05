@@ -87,10 +87,10 @@ export const ImportExistingWalletView: React.FC = () => {
 
         {/* Validation messages */}
         {seed.join(" ").trim().split(" ").length < 12 ? (
-          <p className="text-orange-400 font-medium text-sm">Enter Seed Phrase</p>
+          <p className="text-cyan-400 font-medium text-sm">Enter Seed Phrase</p>
         ) : (
           !isValid && (
-            <p className="text-orange-400 font-medium text-sm">
+            <p className="text-cyan-400 font-medium text-sm">
               Invalid Seed Phrase
             </p>
           )

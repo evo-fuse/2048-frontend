@@ -170,7 +170,7 @@ export const ThemeView = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4 w-full h-full items-start justify-start p-8">
+    <>
       <AnimatePresence>{isLoading && <LoadingModal />}</AnimatePresence>
       <CreateThemeModal
         isOpen={showCreateModal}
@@ -185,10 +185,7 @@ export const ThemeView = () => {
         isSelected={selectedThemeForDetail === selectedTheme}
       />
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="flex flex-col items-start justify-start flex-wrap w-full h-full gap-2 text-white p-4 rounded-lg bg-black/20 border border-white/10"
+        className="flex flex-col items-start justify-start flex-wrap w-full h-full gap-2 text-white"
       >
         {/* Tab Navigation */}
         <div className="flex items-center gap-2 border-b border-white/10 w-full">
@@ -327,6 +324,6 @@ export const ThemeView = () => {
           )}
         </div>
       </motion.div>
-    </div>
+    </>
   );
 };

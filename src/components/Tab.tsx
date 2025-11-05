@@ -25,16 +25,15 @@ export const Tabs = ({
 }: TabProps) => {
   return (
     <div className={`flex flex-col ${className}`}>
-      <div className={`flex relative gap-4 p-2 ${tabsContainerClassName}`} role="tablist">
+      <div className={`flex relative gap-4 ${tabsContainerClassName}`} role="tablist">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setSelectedTab(tab.id)}
-            className={`relative px-4 py-2 text-sm font-bold transition-colors
-              ${
-                selectedTab === tab.id
-                  ? 'text-orange-400'
-                  : 'text-white/60 hover:text-orange-500'
+            className={`relative px-8 py-6 text-2xl font-bold transition-colors
+              ${selectedTab === tab.id
+                ? 'text-cyan-400'
+                : 'text-white/60 hover:text-cyan-500'
               }`}
             role="tab"
             aria-selected={selectedTab === tab.id}
@@ -71,9 +70,9 @@ export const TabPanel = ({
   className = ''
 }: TabPanelProps) => {
   const isActive = selectedTab === id;
-  
+
   return (
-    <div 
+    <div
       className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300 overflow-auto ${isActive ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'} ${className}`}
       id={`panel-${id}`}
       role="tabpanel"

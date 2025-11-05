@@ -65,8 +65,8 @@ export const Select: React.FC<SelectProps> = ({
     >
       <div
         onClick={toggleDropdown}
-        className={`border border-gray-500 cursor-none flex items-center justify-between px-2 py-2 bg-gray-700/80 rounded-lg min-w-48 relative z-20 ${
-          disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-600/80'
+        className={`border border-gray-500 cursor-none flex items-center justify-between px-2 py-2 bg-gray-700 rounded-lg min-w-48 relative z-20 ${
+          disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-600'
         }`}
       >
         <span className={`text-white ${!selectedOption ? 'text-gray-400' : ''}`}>
@@ -90,14 +90,14 @@ export const Select: React.FC<SelectProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute z-10 w-full mt-1 bg-gray-700/95 rounded-lg shadow-lg max-h-60 overflow-auto"
+            className="absolute z-30 w-full mt-1 bg-gray-700 rounded-lg shadow-lg max-h-60 overflow-auto"
           >
             {options.map((option) => (
               <div
                 key={option.value}
                 onClick={() => handleOptionClick(option)}
-                className={`px-4 py-2 cursor-none hover:bg-gray-600/80 ${
-                  selectedOption?.value === option.value ? 'bg-gray-600/80 text-orange-400' : 'text-white'
+                className={`px-4 py-2 cursor-none hover:bg-gray-600 ${
+                  selectedOption?.value === option.value ? 'bg-gray-600 text-cyan-400' : 'text-white'
                 }`}
               >
                 {option.label}

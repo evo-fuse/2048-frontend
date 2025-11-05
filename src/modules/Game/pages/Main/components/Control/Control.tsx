@@ -6,21 +6,20 @@ import { useAuthContext, useRecordContext } from "../../../../../../context";
 import { ControlButton } from "./ControlButton";
 import { IoStop, IoPlay } from "react-icons/io5";
 import { Tile } from "../../hooks/useGameBoard";
+import { IoRefreshOutline } from "react-icons/io5";
+
 export interface ControlProps {
   rows: number;
   cols: number;
   onReset: () => void;
-  onChangeRow: (newRow: number) => void;
-  onChangeCol: (newCol: number) => void;
+  onChangeGrid: (newRow: number) => void;
   tiles: Tile[];
 }
 
 const Control: FC<ControlProps> = ({
-  rows,
   cols,
   onReset,
-  onChangeRow,
-  onChangeCol,
+  onChangeGrid,
   tiles,
 }) => {
   const { user } = useAuthContext();
@@ -44,9 +43,10 @@ const Control: FC<ControlProps> = ({
     <Box inlinesize="100%" justifycontent="space-between">
       <div className="flex items-center gap-2">
         <button
-          className="bg-gray-800/40 hover:bg-gray-300/20 transition border border-white/10 rounded-lg p-2"
+          className="bg-gray-800/40 hover:bg-gray-300/20 transition border border-white/10 rounded-lg p-2 flex items-center gap-2"
           onClick={onReset}
         >
+          <IoRefreshOutline />
           <Text fontSize={16} texttransform="capitalize">
             new game
           </Text>
@@ -71,34 +71,12 @@ const Control: FC<ControlProps> = ({
       <Box>
         <Box margininlineend="s6" flexdirection="column">
           <Text texttransform="uppercase" fontSize={13} color="white">
-            rows
+            Grid
           </Text>
           <Box padding="s2">
             <ControlButton
               value="-"
-              onClick={() => onChangeRow(-1)}
-              disabled={rows === MIN_SCALE}
-            />
-            <Box margininline="s3">
-              <Text fontSize={16} color="white">
-                {rows}
-              </Text>
-            </Box>
-            <ControlButton
-              value="+"
-              onClick={() => onChangeRow(1)}
-              disabled={rows === MAX_SCALE || rows === user?.rows}
-            />
-          </Box>
-        </Box>
-        <Box flexdirection="column">
-          <Text texttransform="uppercase" fontSize={13} color="white">
-            cols
-          </Text>
-          <Box padding="s2">
-            <ControlButton
-              value="-"
-              onClick={() => onChangeCol(-1)}
+              onClick={() => { onChangeGrid(-1); }}
               disabled={cols === MIN_SCALE}
             />
             <Box margininline="s3">
@@ -108,7 +86,7 @@ const Control: FC<ControlProps> = ({
             </Box>
             <ControlButton
               value="+"
-              onClick={() => onChangeCol(1)}
+              onClick={() => { onChangeGrid(1); }}
               disabled={cols === MAX_SCALE || cols === user?.cols}
             />
           </Box>

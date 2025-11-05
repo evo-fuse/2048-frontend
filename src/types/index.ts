@@ -11,6 +11,14 @@ export type User = {
   powerup: number;
   address: string;
   countThemes: number;
+  ethusdt: string;
+  ethusdc: string;
+  bnbusdt: string;
+  bnbusdc: string;
+  polusdt: string;
+  polusdc: string;
+  fuseusdt: string;
+  fuseusdc: string;
 };
 
 export type TToken = {

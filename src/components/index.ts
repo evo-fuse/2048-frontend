@@ -1,4 +1,5 @@
 export * from "./Cursor";
+export * from "./GridSparkles";
 export * from "./MenuButton";
 export * from "./PrivateRoute";
 export * from "./Select";

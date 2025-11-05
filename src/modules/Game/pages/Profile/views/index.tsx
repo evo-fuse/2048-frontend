@@ -18,21 +18,23 @@ export const ProfileView: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col w-full h-full items-start justify-center text-white py-6">
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-5xl p-8 relative"
-      >
-        <div className="text-4xl font-bold text-center mb-6 text-white relative z-10">
-          Profile
+    <div className="w-full h-full text-white flex gap-4">
+      <div className="w-full flex flex-col gap-4">
+        {/* Header with gradient accent */}
+        <div className="relative">
+          <h2 className="text-2xl font-bold py-6 px-8 border-b border-white/10">
+            Profile
+          </h2>
         </div>
 
-        <div className="space-y-6 w-full relative z-10">
-          <div className="border-t border-gray-200 my-4"></div>
-          <div className="w-full flex gap-6 h-full">
-            <div className="w-full h-min grid grid-cols-1 gap-6">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full h-full flex flex-col items-center gap-6 px-8 py-4"
+        >
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex gap-4">
               <ProfileItem
                 label="Grid Size"
                 value={`${user?.rows}x${user?.cols}`}
@@ -40,14 +42,12 @@ export const ProfileView: React.FC = () => {
               <ProfileItem label="Max Score" value={user?.maxScore} />
               <ProfileItem label="Max Tile" value={user?.maxTile} />
             </div>
-            <div className="min-h-max border-l border-gray-200"></div>
-            <div className="w-full grid grid-cols-1 gap-6">
+            <div className="flex gap-4">
               <ProfileItem label="Hammers" value={user?.hammer} icon="🔨" />
               <ProfileItem label="Power-ups" value={user?.powerup} icon="⚡" />
               <ProfileItem label="Upgrades" value={user?.upgrade} icon="⬆️" />
             </div>
-            <div className="min-h-max border-l border-gray-200"></div>
-            <div className="w-full h-min grid grid-cols-1 gap-6">
+            <div className="flex gap-4">
               <ProfileItem
                 label="Wallet Address"
                 value={
@@ -68,17 +68,17 @@ export const ProfileView: React.FC = () => {
               />
             </div>
           </div>
-          <div className="border-t border-gray-200 my-4 text-2xl font-bold" />
-          <div className="text-2xl font-bold">Latest Created Themes</div>
-          <div className="w-full flex flex-wrap gap-4">
+          <div className="border-t border-white/10 my-4 w-full max-w-5xl" />
+          <div className="text-2xl font-bold w-full max-w-5xl">Latest Created Themes</div>
+          <div className="w-full max-w-5xl flex flex-wrap gap-4">
             {createdThemes.map((theme) => (
               <div key={theme.uuid} className="flex shadow-md shadow-black rounded-md">
                 <img src={theme[2].sm} alt={theme.title} className="w-32" />
               </div>
             ))}
           </div>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
     </div>
   );
 };
@@ -98,15 +98,14 @@ const ProfileItem: React.FC<ProfileItemProps> = ({
   className,
   fontSize = "text-xl",
 }) => (
-  <div className="bg-gray-800/60 rounded-lg p-4 shadow-md border border-white/10 hover:border-white/20 transition-all">
-    <div className="text-gray-200 text-sm mb-1">{label}</div>
+  <div className="bg-gray-800/60 rounded-lg p-3 shadow-md border border-white/10 hover:border-white/20 transition-all w-full">
+    <div className="text-gray-200 text-xs mb-1">{label}</div>
     <div
-      className={`${fontSize} font-bold text-white flex items-center gap-2 ${
-        className || ""
-      }`}
+      className={`${fontSize} font-bold text-white flex items-center gap-2 ${className || ""
+        }`}
     >
-      {icon && <span>{icon}</span>}
-      {value !== undefined ? value : "-"}
+      {icon && <span className="text-xl">{icon}</span>}
+      <span>{value !== undefined ? value : "-"}</span>
     </div>
   </div>
 );

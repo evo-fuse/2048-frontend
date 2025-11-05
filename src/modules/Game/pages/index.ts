@@ -4,3 +4,7 @@ export * from "./Wallet";
 export * from "./Shop";
 export * from "./Theme";
 export * from "./Record";
+export * from "./Deposit";
+export * from "./Betting";
+export * from "./BlockBingo";
+export * from "./Withdraw";

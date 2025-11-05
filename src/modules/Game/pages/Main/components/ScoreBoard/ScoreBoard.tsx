@@ -8,7 +8,7 @@ export interface ScoreBoardProps {
   total: number;
 }
 
-const ScoreBoard: FC<ScoreBoardProps> = ({ total, title }) => {
+const ScoreBoard: FC<ScoreBoardProps> = ({ total = 0, title }) => {
   const { powerup } = useGameContext();
   const totalRef = useRef(total);
   const [score, setScore] = useState(() => total - totalRef.current);
@@ -19,7 +19,7 @@ const ScoreBoard: FC<ScoreBoardProps> = ({ total, title }) => {
   }, [total]);
 
   return (
-    <div className={`${powerup > 0 ? "bg-orange-400/80": "bg-black/40"} relative border border-white/20 rounded-lg p-2 box-border flex flex-col items-center justify-center w-[92px] mx-2`}>
+    <div className={`${powerup > 0 ? "bg-cyan-400/80": "bg-black/40"} relative border border-white/20 rounded-lg p-2 box-border flex flex-col items-center justify-center w-[92px] mx-2`}>
       <Text
         fontSize={12}
         texttransform="uppercase"

@@ -20,7 +20,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
   isOpen,
   onClose,
   maxTile,
-  total,
+  total = 0,
   pendingFunction,
   status,
 }) => {
@@ -30,6 +30,8 @@ const RewardModal: React.FC<RewardModalProps> = ({
   const click = useRef<boolean>(false);
   const estimatedReward: number =
     maxTile >= 1024 ? Math.floor(total / 100 + maxTile / 10) : 0;
+
+  console.log("estimatedReward", estimatedReward, maxTile, total);
 
   const hasReward: boolean = useMemo(() => maxTile >= 2048, [maxTile]);
 
@@ -92,9 +94,8 @@ const RewardModal: React.FC<RewardModalProps> = ({
     >
       <div className="w-full p-6 rounded-lg flex flex-col items-center">
         <div
-          className={`flex flex-col items-center gap-5 w-full transition-all duration-500 ${
-            animate ? "scale-100 opacity-100" : "scale-95 opacity-0"
-          }`}
+          className={`flex flex-col items-center gap-5 w-full transition-all duration-500 ${animate ? "scale-100 opacity-100" : "scale-95 opacity-0"
+            }`}
         >
           {/* Trophy icon - only show when there's a reward */}
           {hasReward && <div className="text-yellow-300 text-5xl mb-2">🏆</div>}
@@ -121,17 +122,15 @@ const RewardModal: React.FC<RewardModalProps> = ({
 
           {/* Reward section */}
           <div
-            className={`mt-4 p-5 bg-gray-700/60 backdrop-blur-md border border-white/20 rounded-lg shadow-lg transform transition-all duration-700 ${
-              animate ? "scale-100 rotate-0" : "scale-90 rotate-3"
-            } w-full`}
+            className={`mt-4 p-5 bg-gray-700/60 backdrop-blur-md border border-white/20 rounded-lg shadow-lg transform transition-all duration-700 ${animate ? "scale-100 rotate-0" : "scale-90 rotate-3"
+              } w-full`}
           >
             <div className="flex flex-col items-center justify-center gap-2 text-white text-center">
               <div className="text-xl">Estimated Reward:</div>
               <div className="text-3xl font-bold flex items-center">
                 <span
-                  className={`transition-all duration-1000 ${
-                    animate ? "opacity-100" : "opacity-0"
-                  }`}
+                  className={`transition-all duration-1000 ${animate ? "opacity-100" : "opacity-0"
+                    }`}
                 >
                   {estimatedReward}
                 </span>
@@ -151,13 +150,11 @@ const RewardModal: React.FC<RewardModalProps> = ({
                   {[...Array(Math.min(5, estimatedReward))].map((_, i) => (
                     <div
                       key={i}
-                      className={`text-yellow-300 text-xl transition-all duration-500 delay-${
-                        i * 100
-                      } ${
-                        animate
+                      className={`text-yellow-300 text-xl transition-all duration-500 delay-${i * 100
+                        } ${animate
                           ? "opacity-100 translate-y-0"
                           : "opacity-0 translate-y-4"
-                      }`}
+                        }`}
                     >
                       💰
                     </div>
@@ -178,11 +175,10 @@ const RewardModal: React.FC<RewardModalProps> = ({
             <button
               onClick={handleNewGame}
               disabled={loading || click.current}
-              className={`px-6 py-3 flex items-center justify-center ${
-                loading || click.current
+              className={`px-6 py-3 flex items-center justify-center ${loading || click.current
                   ? "bg-gray-500 cursor-not-allowed opacity-70"
                   : "bg-gray-600 hover:bg-gray-700"
-              } text-white text-nowrap rounded-md transition-all shadow-lg border border-white/10 font-medium`}
+                } text-white text-nowrap rounded-md transition-all shadow-lg border border-white/10 font-medium`}
             >
               {loading ? (
                 <FaSpinner className="animate-spin" />

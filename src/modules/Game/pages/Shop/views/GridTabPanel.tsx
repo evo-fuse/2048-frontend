@@ -1,6 +1,6 @@
 import React from "react";
 import { TabPanel } from "../../../../../components/Tab";
-import { FaArrowDown, FaArrowRight } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import { GridUpgradeItem } from "../components";
 import { User } from "../../../../../types";
 
@@ -28,7 +28,7 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
   const gridRows = user?.rows || 4;
   const gridCols = user?.cols || 4;
 
-  const handleBuyGridCols = async () => {
+  const handleBuyGrid = async () => {
     try {
       setIsLoading(true);
       const price = 2 ** ((user?.cols || 4) + 1) * 100;
@@ -40,33 +40,11 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
       await buyItemsWithGameTokens(price);
       await handleUpdateUser({
         cols: (user.cols || 4) + 1,
-      });
-      setUser({
-        ...user,
-        cols: (user.cols || 4) + 1,
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleBuyGridRows = async () => {
-    try {
-      setIsLoading(true);
-      const price = 2 ** ((user?.rows || 4) + 1) * 100;
-
-      if (!user || userBalance < price) {
-        return;
-      }
-
-      await buyItemsWithGameTokens(price);
-      await handleUpdateUser({
         rows: (user.rows || 4) + 1,
       });
       setUser({
         ...user,
+        cols: (user.cols || 4) + 1,
         rows: (user.rows || 4) + 1,
       });
     } catch (error) {
@@ -87,27 +65,13 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
           {/* Grid Columns Upgrade */}
           <GridUpgradeItem
             icon={
-              <FaArrowRight className="absolute text-white" size={36} />
+              <FaArrowRight className="absolute text-white rotate-45" size={36} />
             }
-            title="Grid Columns"
+            title="ExpandGrid Size"
             price={2 ** ((user?.cols || 4) + 1) * 100}
             currentValue={gridCols}
             description="Add an additional column to your game grid."
-            onUpgrade={handleBuyGridCols}
-            userBalance={Number(userBalance)}
-            gridRows={gridRows}
-            gridCols={gridCols}
-            loading={isLoading}
-          />
-
-          {/* Grid Rows Upgrade */}
-          <GridUpgradeItem
-            icon={<FaArrowDown className="absolute text-white" size={36} />}
-            title="Grid Rows"
-            price={2 ** ((user?.rows || 4) + 1) * 100}
-            currentValue={gridRows}
-            description="Add an additional row to your game grid."
-            onUpgrade={handleBuyGridRows}
+            onUpgrade={handleBuyGrid}
             userBalance={Number(userBalance)}
             gridRows={gridRows}
             gridCols={gridCols}
