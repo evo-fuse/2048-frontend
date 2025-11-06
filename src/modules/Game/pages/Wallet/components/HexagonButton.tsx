@@ -8,7 +8,8 @@ export interface HexagonButtonProps {
   icon: ReactNode;
   onClick: () => void;
   direction?: HexagonDirection;
-  width?: number
+  width?: number;
+  tooltip?: string;
 }
 
 // Helper function to generate hexagon clipPath based on direction
@@ -26,7 +27,7 @@ const getHexagonClipPath = (size: number, direction: HexagonDirection): string =
 };
 
 // Reusable Hexagon Button Component
-export const HexagonButton: React.FC<HexagonButtonProps> = ({ icon, onClick, direction = "center", width = 320 }) => {
+export const HexagonButton: React.FC<HexagonButtonProps> = ({ icon, onClick, direction = "center", width = 320, tooltip }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const layers = useMemo(() => [
     { width: width, height: 64, offset: 32, bg: isHovered ? "bg-cyan-400" : "bg-gray-600" },
@@ -67,13 +68,21 @@ export const HexagonButton: React.FC<HexagonButtonProps> = ({ icon, onClick, dir
 
   return (
     <div
-      className="relative transition-all duration-300"
+      className="relative transition-all duration-300 flex flex-col items-center justify-center"
       style={{
         filter: isHovered
           ? "drop-shadow(0 0 12px rgba(34, 211, 238, 1))"
           : "drop-shadow(0 0 12px rgba(34, 211, 238, 0))"
       }}
     >
+      <motion.div className={`absolute border -top-12 text-sm z-20 p-2 rounded-md  transition-all duration-300
+        ${isHovered
+          ? "border-white/20 bg-gray-800 text-white"
+          : "border-white/0 bg-gray-800/0 text-white/0"
+        }`
+      }>
+        {tooltip}
+      </motion.div>
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.98 }}

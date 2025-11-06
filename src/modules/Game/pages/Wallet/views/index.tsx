@@ -294,15 +294,17 @@ export const WalletView: React.FC = () => {
                   onOpen();
                 }}
                 direction="left"
+                tooltip="Show Private Key"
               />
               <HexagonButton
-                width={160}
+                width={200}
                 icon={<HiOutlineWallet size={32} />}
                 onClick={() => {
                   setTitle(WalletItem.Import);
                   onOpen();
                 }}
                 direction="center"
+                tooltip="Import Wallet"
               />
               <HexagonButton
                 width={240}
@@ -312,6 +314,7 @@ export const WalletView: React.FC = () => {
                   onOpen();
                 }}
                 direction="right"
+                tooltip="Show Seed"
               />
             </div>
           </motion.div>
