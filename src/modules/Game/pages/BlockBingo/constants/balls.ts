@@ -19,7 +19,7 @@ export const MULTIPLIER_3_HORIZONTAL = 10;
 export const MULTIPLIER_3_DIAGONAL = 30;
 
 // Reward calculation threshold
-export const DIVIDE_THRESHOLD = 180;
+export const DIVIDE_THRESHOLD = 1800;
 
 export type GameState = "idle" | "playing" | "finished";
 
