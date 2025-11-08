@@ -290,7 +290,7 @@ export const GameControls = ({
                 {/* Betting Button */}
                 <IconButtonWithTooltip
                     icon={LuDices}
-                    tooltip="Play Other Betting"
+                    tooltip="Play Other Games"
                     onClick={handleBetting}
                     className="bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 border border-cyan-500/50"
                 />
