@@ -8,6 +8,8 @@ export interface HexagonButtonProps {
   icon: ReactNode;
   onClick: () => void;
   direction?: HexagonDirection;
+  width?: number;
+  tooltip?: string;
 }
 
 // Helper function to generate hexagon clipPath based on direction
@@ -25,18 +27,18 @@ const getHexagonClipPath = (size: number, direction: HexagonDirection): string =
 };
 
 // Reusable Hexagon Button Component
-export const HexagonButton: React.FC<HexagonButtonProps> = ({ icon, onClick, direction = "center" }) => {
+export const HexagonButton: React.FC<HexagonButtonProps> = ({ icon, onClick, direction = "center", width = 320, tooltip }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const layers = useMemo(() => [
-    { width: 320, height: 64, offset: 32, bg: isHovered ? "bg-cyan-400" : "bg-gray-600" },
-    { width: 304, height: 56, offset: 28, bg: "bg-gray-800" },
-    { width: 288, height: 48, offset: 24, bg: isHovered ? "bg-cyan-200" : "bg-white/30" },
-    { width: 272, height: 40, offset: 20, bg: "bg-gray-800" },
+    { width: width, height: 64, offset: 32, bg: isHovered ? "bg-cyan-400" : "bg-gray-600" },
+    { width: width - 8, height: 60, offset: 30, bg: "bg-gray-800" },
+    { width: width - 16, height: 56, offset: 28, bg: isHovered ? "bg-cyan-200" : "bg-white/30" },
+    { width: width - 24, height: 52, offset: 26, bg: "bg-gray-800" },
   ], [isHovered]);
 
   const getOffsetClass = (direction: HexagonDirection) => {
-    if (direction === "left") return "-left-[2px]";
-    if (direction === "right") return "left-[2px]";
+    if (direction === "left") return "-left-[1px]";
+    if (direction === "right") return "left-[1px]";
     return "";
   };
 
@@ -66,13 +68,21 @@ export const HexagonButton: React.FC<HexagonButtonProps> = ({ icon, onClick, dir
 
   return (
     <div
-      className="relative transition-all duration-300"
+      className="relative transition-all duration-300 flex flex-col items-center justify-center"
       style={{
         filter: isHovered
           ? "drop-shadow(0 0 12px rgba(34, 211, 238, 1))"
           : "drop-shadow(0 0 12px rgba(34, 211, 238, 0))"
       }}
     >
+      <motion.div className={`absolute border -top-12 text-sm z-20 p-2 rounded-md  transition-all duration-300
+        ${isHovered
+          ? "border-white/20 bg-gray-800 text-white"
+          : "border-white/0 bg-gray-800/0 text-white/0"
+        }`
+      }>
+        {tooltip}
+      </motion.div>
       <motion.button
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.98 }}

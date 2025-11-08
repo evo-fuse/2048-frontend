@@ -35,6 +35,7 @@ export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
             ? setCursor(Images.Cursor)
             : setCursor(Images.HAMMER);
         }}
+        direction="left"
       />
       <ItemButton
         item={{
@@ -51,7 +52,7 @@ export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
               : setCursor(Images.UPGRADE);
           }
         }}
-        direction="bottom"
+        direction="top"
       />
       <ItemButton
         item={{
@@ -73,6 +74,7 @@ export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
             setItemUsage({ ...itemUsage, powerup: true });
           }
         }}
+        direction="right"
       />
     </div>
   );

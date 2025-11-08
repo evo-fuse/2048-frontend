@@ -287,28 +287,34 @@ export const WalletView: React.FC = () => {
           >
             <div className="w-full flex justify-center">
               <HexagonButton
+                width={240}
                 icon={<HiOutlineKey size={32} />}
                 onClick={() => {
                   setTitle(WalletItem.ShowPrivateKey);
                   onOpen();
                 }}
                 direction="left"
+                tooltip="Show Private Key"
               />
               <HexagonButton
+                width={200}
                 icon={<HiOutlineWallet size={32} />}
                 onClick={() => {
                   setTitle(WalletItem.Import);
                   onOpen();
                 }}
                 direction="center"
+                tooltip="Import Wallet"
               />
               <HexagonButton
+                width={240}
                 icon={<MdOutlineMessage size={32} />}
                 onClick={() => {
                   setTitle(WalletItem.ShowSeed);
                   onOpen();
                 }}
                 direction="right"
+                tooltip="Show Seed"
               />
             </div>
           </motion.div>

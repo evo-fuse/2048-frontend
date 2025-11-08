@@ -6,7 +6,7 @@ interface ItemButtonProps {
   item: GameItem;
   onClick: () => void;
   loading?: boolean;
-  direction?: "top" | "bottom";
+  direction?: "top" | "right" | "left";
 }
 
 export const ItemButton: React.FC<ItemButtonProps> = ({
@@ -16,6 +16,16 @@ export const ItemButton: React.FC<ItemButtonProps> = ({
   direction = "top"
 }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const getExternalClipPath = {
+    "top": `polygon(0 0, 100% 0, calc(100% - 20px) 100%, 20px 100%)`,
+    "right": `polygon(20px 0, 100% 0, 100% 100%, 0 100%)`,
+    "left": `polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0 100%)`,
+  };
+  const getInternalClipPath = {
+    "top": `polygon(0 0, 100% 0, calc(100% - 16.65px) 100%, 16.65px 100%)`,
+    "right": `polygon(16.65px 0, 100% 0, 100% 100%, 0 100%)`,
+    "left": `polygon(0 0, calc(100% - 16.65px) 0, 100% 100%, 0 100%)`,
+  };
   return (
     <motion.div
       className="relative"
@@ -33,9 +43,7 @@ export const ItemButton: React.FC<ItemButtonProps> = ({
           ${isHovered ? "bg-cyan-600" : "bg-gray-600"}`
         }
         style={{
-          clipPath: direction === "top"
-            ? `polygon(20px 0, calc(100% - 20px) 0, 100% 100%, 0 100%)`
-            : `polygon(0 0, 100% 0, calc(100% - 20px) 100%, 20px 100%)`,
+          clipPath: getExternalClipPath[direction],
           width: 160,
           height: 60,
         }}
@@ -66,9 +74,7 @@ export const ItemButton: React.FC<ItemButtonProps> = ({
         <motion.button
           className={`${isHovered ? "bg-cyan-800" : "bg-gray-800"} relative flex items-center gap-2 justify-center transition-all duration-200 cursor-none`}
           style={{
-            clipPath: direction === "top"
-              ? `polygon(16.65px 0, calc(100% - 16.65px) 0, 100% 100%, 0 100%)`
-              : `polygon(0 0, 100% 0, calc(100% - 16.65px) 100%, 16.65px 100%)`,
+            clipPath: getInternalClipPath[direction],
             width: 144.6,
             height: 50,
           }}
