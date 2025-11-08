@@ -36,7 +36,7 @@ export const ImportExistingWalletView: React.FC = () => {
     setIsValid(ethers.Mnemonic.isValidMnemonic(seed.join(" ")));
   }, [seed]);
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 p-8">
+    <div className="w-full h-full flex flex-col items-center justify-center p-8">
       {/* Main glass container */}
       <div className="w-full max-w-2xl backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
         {/* Header section */}
@@ -120,8 +120,8 @@ export const ImportExistingWalletView: React.FC = () => {
                         curValue.length === 0
                           ? ""
                           : curValue.length < 8
-                          ? "Password length should be longer than 8."
-                          : "",
+                            ? "Password length should be longer than 8."
+                            : "",
                     },
                   });
                 }}
@@ -161,13 +161,12 @@ export const ImportExistingWalletView: React.FC = () => {
             pwd.password.value.length < 8 ||
             pwd.password.value !== pwd.cPassword.value
           }
-          className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-            !isValid ||
-            pwd.password.value.length < 8 ||
-            pwd.password.value !== pwd.cPassword.value
+          className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${!isValid ||
+              pwd.password.value.length < 8 ||
+              pwd.password.value !== pwd.cPassword.value
               ? "bg-white/10 text-white/50 cursor-not-allowed"
               : "bg-gradient-to-r from-gray-700 to-gray-900 shadow-lg shadow-gray-700/25 hover:shadow-gray-700/40"
-          }`}
+            }`}
         >
           Confirm
         </button>

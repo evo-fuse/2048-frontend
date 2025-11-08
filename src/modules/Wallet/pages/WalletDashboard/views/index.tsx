@@ -12,11 +12,10 @@ interface CheckBoxProps {
 const CheckBox: React.FC<CheckBoxProps> = ({ isOpen, onToggle }) => {
   return (
     <div
-      className={`w-3rem h-3rem border-2 rounded-md flex items-center justify-center transition-all duration-200 ${
-        isOpen
-          ? "bg-gray-700 border-gray-500"
-          : "bg-transparent border-gray-500"
-      }`}
+      className={`w-3rem h-3rem border-2 rounded-md flex items-center justify-center transition-all duration-200 ${isOpen
+        ? "bg-gray-700 border-gray-500"
+        : "bg-transparent border-gray-500"
+        }`}
       onClick={onToggle}
     >
       <svg
@@ -50,7 +49,7 @@ export const WalletDashboardView = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-800 p-8">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br p-8">
       {/* Main glass container */}
       <div className="w-full max-w-md backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
         {/* Header section */}
@@ -85,11 +84,10 @@ export const WalletDashboardView = () => {
           <button
             disabled={!isOpen}
             onClick={handleCreateNewWallet}
-            className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-              isOpen
-                ? "bg-gradient-to-r from-gray-700 to-gray-900 shadow-lg shadow-gray-700/25 hover:shadow-gray-700/40"
-                : "bg-white/10 text-white/50 cursor-not-allowed"
-            }`}
+            className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${isOpen
+              ? "bg-gradient-to-r from-gray-700 to-gray-900 shadow-lg shadow-gray-700/25 hover:shadow-gray-700/40"
+              : "bg-white/10 text-white/50 cursor-none"
+              }`}
           >
             Create New Wallet
           </button>
@@ -97,11 +95,10 @@ export const WalletDashboardView = () => {
           <button
             disabled={!isOpen}
             onClick={handleImportExistWallet}
-            className={`w-full h-14 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${
-              isOpen
-                ? "bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30"
-                : "bg-white/5 text-white/30 border border-white/10 cursor-not-allowed"
-            }`}
+            className={`w-full h-14 rounded-2xl font-semibold transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${isOpen
+              ? "bg-white/10 text-white border border-white/20 hover:bg-white/20 hover:border-white/30"
+              : "bg-white/5 text-white/30 border border-white/10 cursor-none"
+              }`}
           >
             Import Existing Wallet
           </button>
