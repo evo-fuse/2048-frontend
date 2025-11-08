@@ -89,22 +89,24 @@ const RecordModal: React.FC<RecordModalProps> = ({
     >
       <div className="w-full px-4 pb-4 flex flex-col gap-2">
         <div className="w-full flex items-center text-white">
-          Current Move: {activity.length}
+          Current Move: <span className="font-bold text-cyan-300 ml-2">{activity.length}</span>
         </div>
         <div className="w-full flex items-center text-white">
           Duration Time:{" "}
-          {activity.length > 0 &&
-            activity[activity.length - 1].timestamp - activity[0].timestamp}
-          ms
+          <span className="font-bold text-cyan-300 ml-2">
+            {activity.length > 0 &&
+              activity[activity.length - 1].timestamp - activity[0].timestamp}
+            ms
+          </span>
         </div>
         <div className="w-full flex items-center text-white">
-          Total Score: {total}
+          Total Score: <span className="font-bold text-cyan-300 ml-2">{total}</span>
         </div>
 
         <div className="w-full flex justify-center gap-4 mt-4">
           <button
             onClick={handleExportJson}
-            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-white/20 bg-white/10 hover:bg-white/40"
+            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-cyan-400/20 bg-cyan-900/20 hover:bg-cyan-800/40"
             disabled={activity.length === 0}
           >
             <IoMdDownload />
@@ -112,7 +114,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
           </button>
           <button
             onClick={handleUploadToServer}
-            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-white/20 bg-black/10 hover:bg-black/40"
+            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-cyan-400/20 bg-cyan-900/20 hover:bg-cyan-800/40"
             disabled={uploading || activity.length === 0}
           >
             <MdFileUpload />
