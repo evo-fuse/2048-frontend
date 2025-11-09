@@ -18,7 +18,7 @@ export const ShopItem: React.FC<ShopItemProps> = ({
   onQuantityChange,
 }) => {
   return (
-    <div className="bg-gray-800/30 rounded-lg p-4 border border-white/10">
+    <div className="bg-cyan-900/30 rounded-lg p-4 border border-cyan-400/20">
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
           <span className="text-xl">{icon}</span>
@@ -30,9 +30,9 @@ export const ShopItem: React.FC<ShopItemProps> = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="text-white">Quantity:</span>
-          <div className="flex items-center bg-gray-800 rounded-md">
+          <div className="flex items-center bg-cyan-800 rounded-md">
             <button
-              className="px-2 py-1 text-white hover:bg-gray-700 rounded-l-md"
+              className="px-2 py-1 text-white hover:bg-cyan-700 rounded-l-md"
               onClick={() => onQuantityChange(Math.max(0, quantity - 1))}
             >
               -
@@ -47,7 +47,7 @@ export const ShopItem: React.FC<ShopItemProps> = ({
               }}
             />
             <button
-              className="px-2 py-1 text-white hover:bg-gray-700 rounded-r-md"
+              className="px-2 py-1 text-white hover:bg-cyan-700 rounded-r-md"
               onClick={() => onQuantityChange(quantity + 1)}
             >
               +

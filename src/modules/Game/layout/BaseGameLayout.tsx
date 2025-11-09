@@ -4,6 +4,9 @@ import WalletConnect from "../components/WalletConnect";
 import { useGameContext } from "../context/GameContext";
 import { Images } from "../../../assets/images";
 import { GridSparkles } from "../../../components";
+import { useLocation } from "react-router-dom";
+import { PATH } from "../../../const";
+import { RiErrorWarningLine } from "react-icons/ri";
 
 interface BaseGameLayoutProps {
   children: React.ReactNode;
@@ -11,9 +14,24 @@ interface BaseGameLayoutProps {
 
 export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
   const { isOpenWalletConnect, onCloseWalletConnect } = useGameContext();
-  const { handleGetPrivateKey } = useAuthContext();
+  const { handleGetPrivateKey, privateKey } = useAuthContext();
+  const location = useLocation();
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-gray-800 overflow-x-hidden">
+      {!privateKey && (
+        <div className="fixed top-0 left-0 w-full h-6 bg-yellow-400 text-white flex items-center justify-center z-20">
+          <RiErrorWarningLine className="text-white size-4" />
+          <span className="text-white text-sm ml-2 font-bold">
+            {
+              location.pathname === `${PATH.GAME}${PATH.SHOP}`
+                ? "Hold your horses! 🐴 To go on a shopping spree, please connect your wallet first!"
+                : location.pathname === `${PATH.GAME}${PATH.DEPOSIT}`
+                  ? "Hold your horses! 🐴 To go on a deposit spree, please connect your wallet first!"
+                  : "Hold your horses! 🐴 To go on a game spree, please connect your wallet first!"
+            }
+          </span>
+        </div>
+      )}
       <img
         src={Images.BACKGROUND}
         className="fixed top-0 left-0 w-screen h-full object-cover"
