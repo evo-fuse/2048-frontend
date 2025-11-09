@@ -19,7 +19,7 @@ export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const isRestrictedRoute = ![
-    `${PATH.GAME}`,
+    `${PATH.GAME}/`,
     `${PATH.GAME}${PATH.PROFILE}`,
     `${PATH.GAME}${PATH.RECORD}`,
   ]

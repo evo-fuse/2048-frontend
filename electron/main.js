@@ -81,7 +81,7 @@ function createWindow() {
   }
 
   // const startUrl = "https://2048.app.evofuse.xyz";
-  const startUrl = "http://localhost:5175";
+  const startUrl = "https://2048-frontend-git-qa-evo-fuses-projects.vercel.app";
 
   mainWindow.loadURL(startUrl);
 
