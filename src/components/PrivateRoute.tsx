@@ -22,6 +22,7 @@ export const PrivateRoute = () => {
     handleGetWalletAddress,
     handleUser,
     setUser,
+    setExist,
   } = useAuthContext();
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,25 +31,24 @@ export const PrivateRoute = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const exist = await handleExistWallet();
-        if (exist) {
+        const existence = await handleExistWallet();
+        console.log("existence", existence);
+        if (existence) {
           const walletAddress = await handleGetWalletAddress();
           localStorage.setItem("token", walletAddress);
           const userData = await handleUser(walletAddress);
           setUser({ ...userData, address: walletAddress });
-          setIsLoading(false);
-        } else {
-          navigate(PATH.WALLET_CREATION, {
-            state: { from: location },
-            replace: true,
-          });
         }
+        setExist(existence);
       } catch (error) {
         console.error("Error fetching user data:", error);
         navigate(PATH.WALLET_CREATION, {
           state: { from: location },
           replace: true,
         });
+      }
+      finally {
+        setIsLoading(false);
       }
     };
 
@@ -72,9 +72,5 @@ export const PrivateRoute = () => {
     );
   }
 
-  return user ? (
-    <Outlet />
-  ) : (
-    <Navigate to={PATH.WALLET_CREATION} state={{ from: location }} replace />
-  );
+  return <Outlet />;
 };

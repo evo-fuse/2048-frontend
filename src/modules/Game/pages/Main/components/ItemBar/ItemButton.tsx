@@ -71,7 +71,7 @@ export const ItemButton: React.FC<ItemButtonProps> = ({
             </motion.div>
           )}
         </AnimatePresence>
-        <motion.button
+        <div
           className={`${isHovered ? "bg-cyan-800" : "bg-gray-800"} relative flex items-center gap-2 justify-center transition-all duration-200 cursor-none`}
           style={{
             clipPath: getInternalClipPath[direction],
@@ -85,7 +85,7 @@ export const ItemButton: React.FC<ItemButtonProps> = ({
           <div className="text-sm font-bold rounded-md">
             {item.quantity}
           </div>
-        </motion.button>
+        </div>
       </motion.button>
     </motion.div>
   );

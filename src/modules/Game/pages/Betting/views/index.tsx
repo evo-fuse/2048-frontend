@@ -7,6 +7,7 @@ import { TbMoneybag } from 'react-icons/tb';
 import { HiArrowTrendingDown } from 'react-icons/hi2';
 import { IoGameControllerOutline } from 'react-icons/io5';
 import { IconType } from 'react-icons';
+import { useAuthContext } from '../../../../../context';
 
 type GameType = 'BlockBingo' | 'Animal Bingo';
 
@@ -97,6 +98,7 @@ const ActionButtonWithTooltip: React.FC<ActionButtonWithTooltipProps> = ({
 export const BettingView: React.FC = () => {
     const navigate = useNavigate();
     const [selectedGame, setSelectedGame] = useState<GameType | null>(null);
+    const { exist } = useAuthContext();
 
     const handlePlay = useCallback(() => {
         if (!selectedGame) return;

@@ -77,6 +77,7 @@ export const RecordView: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
   const currentTimeRef = useRef<number>(0);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { tiles, onMovePending, onMergePending, breakTile, doubleTile } =
     useGameBoardForReplay({
@@ -240,11 +241,15 @@ export const RecordView: React.FC = () => {
               </span>
             </div>
             <div className="">
-              <div className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white py-1.5 px-3 rounded text-sm transition-all duration-200 font-medium">
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white py-1.5 px-3 rounded text-sm transition-all duration-200 font-medium cursor-none"
+              >
                 <TbFileSearch className="text-white" size={18} />
                 Browse
               </div>
               <input
+                ref={fileInputRef}
                 type="file"
                 accept=".json"
                 className="hidden"

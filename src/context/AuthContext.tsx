@@ -35,6 +35,8 @@ type AuthContextType = {
     amount: number;
     toAddress: string;
   }) => Promise<any>;
+  exist: boolean;
+  setExist: (exist: boolean) => void;
 };
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -45,6 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [cursor, setCursor] = useState<string>(Images.Cursor);
   const [privateKey, setPrivateKey] = useState<string>("");
+  const [exist, setExist] = useState<boolean>(false);
 
   const handleUser = async (address?: string) => {
     const { data } = await api({ token: address }).get("/auth");
@@ -216,6 +219,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     handleDisconnectWallet,
     handleCreateTheme,
     handleWithdrawRequest,
+    exist,
+    setExist,
   };
 
   return (
