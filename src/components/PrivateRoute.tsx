@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { PATH } from "../const";
 import { useAuthContext } from "../context";
 import { useEffect, useState } from "react";
@@ -17,7 +17,6 @@ import { motion } from "framer-motion";
  */
 export const PrivateRoute = () => {
   const {
-    user,
     handleExistWallet,
     handleGetWalletAddress,
     handleUser,
