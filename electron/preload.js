@@ -58,6 +58,10 @@ contextBridge.exposeInMainWorld(
       console.log("Exist wallet called");
       return ipcRenderer.invoke('exist-wallet');
     },
+    clearCache: () => {
+      console.log("Clear cache called");
+      return ipcRenderer.invoke('clear-cache');
+    },
   }
 );
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Theme } from "../../../../../types";
 import { Ribbon } from "../../../../../components";
 import { motion } from "framer-motion";
@@ -19,6 +19,23 @@ export const ThemeItem: React.FC<ThemeItemProps> = ({
 }) => {
   const isBasic = theme === "Basic";
   const { user } = useAuthContext();
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
+
+  // Reset loading state when theme changes
+  useEffect(() => {
+    if (!isBasic) {
+      setIsImageLoaded(false);
+      // Check if image is already loaded (cached) after render
+      const checkImageLoaded = () => {
+        if (imgRef.current?.complete) {
+          setIsImageLoaded(true);
+        }
+      };
+      // Use requestAnimationFrame to check after render
+      requestAnimationFrame(checkImageLoaded);
+    }
+  }, [theme, isBasic]);
 
   return (
     <div
@@ -37,19 +54,24 @@ export const ThemeItem: React.FC<ThemeItemProps> = ({
             initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
-            className="w-32 h-32 text-[#EC9050] bg-white rounded-lg flex items-center justify-center text-6xl"
+            className="w-32 h-32 text-cyan-500 bg-white rounded-lg flex items-center justify-center text-6xl"
           >
             2
           </motion.div>
         ) : (
-          <motion.img
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            src={theme[2].sm}
-            alt={theme.title}
-            className="w-32 h-32 rounded-lg shadow-md shadow-black"
-          />
+          <div className="relative w-32 h-32">
+            {!isImageLoaded && (
+              <div className="absolute inset-0 w-32 h-32 rounded-lg bg-white/10 animate-pulse" />
+            )}
+            <img
+              ref={imgRef}
+              src={theme[2].sm}
+              alt={theme.title}
+              className={`w-32 h-32 rounded-lg shadow-md shadow-black absolute inset-0 transition-opacity duration-300 ${isImageLoaded ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
+              onLoad={() => setIsImageLoaded(true)}
+              onError={() => setIsImageLoaded(true)}
+            />
+          </div>
         )}
         {isSelected && <Ribbon />}
         {!isBasic && theme.creator_id === user?.address && (

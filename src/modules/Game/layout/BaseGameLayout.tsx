@@ -23,14 +23,14 @@ export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
     `${PATH.GAME}${PATH.PROFILE}`,
     `${PATH.GAME}${PATH.RECORD}`,
   ]
-    .map(path => path.replace("/", ""))
-    .includes(location.pathname.replace("/", ""));
+    .map(path => path.replace(/\//g, ""))
+    .includes(location.pathname.replace(/\//g, ""));
 
   useEffect(() => { console.log(location.pathname) }, [location.pathname]);
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-gray-800 overflow-x-hidden">
       {!privateKey && (
-        <div className={`fixed top-0 left-0 w-full h-6 ${exist ? "bg-yellow-400" : "bg-red-400"} text-white flex items-center justify-center z-20`}>
+        <div className={`fixed top-0 left-0 w-full h-6 ${exist ? "bg-yellow-400" : "bg-red-500"} text-white flex items-center justify-center z-20`}>
           <RiErrorWarningLine className="text-white size-4" />
           <div className="text-white text-sm ml-2 font-bold">
             {

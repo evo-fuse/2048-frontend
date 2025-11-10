@@ -17,6 +17,7 @@ import { SlCamrecorder } from "react-icons/sl";
 import { useEffect, useRef, useState } from "react";
 import { Hex } from "./Hex";
 import { FaUnlock, FaLock } from "react-icons/fa";
+import { formatAddress } from "../../../utils/address";
 
 const navItems = [
   {
@@ -203,7 +204,7 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
 };
 
 export const Navbar: React.FC = () => {
-  const { privateKey, handleDisconnectWallet, user, exist } = useAuthContext();
+  const { privateKey, handleDisconnectWallet, exist } = useAuthContext();
   const { onOpenWalletConnect } = useGameContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -254,7 +255,7 @@ export const Navbar: React.FC = () => {
                 <div className="w-52 h-10 bg-gray-800 flex items-center">
                   <label className={`text-white relative ${privateKey ? "left-[64px]" : exist ? "left-[52px]" : "left-[90px]"}`}>
                     {privateKey
-                      ? user?.address?.substring(0, 8) + "..." + user?.address?.substring(user?.address?.length - 4)
+                      ? formatAddress(localStorage.getItem("token") || "")
                       : exist ? "Wallet disconnected" : "No Wallet"
                     }
                   </label>

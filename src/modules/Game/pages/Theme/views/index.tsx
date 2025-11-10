@@ -6,6 +6,7 @@ import {
   LoadingModal,
   TabButton,
   ThemeItem,
+  ThemeItemSkeleton,
   CreateThemeButton,
   CreateThemeModal,
   ThemeDetailModal,
@@ -218,13 +219,10 @@ export const ThemeView = () => {
         {/* Tab Content */}
         <div className="w-full overflow-hidden">
           {isFetchingThemes ? (
-            <div className="w-full h-64 flex items-center justify-center">
-              <div className="flex flex-col items-center gap-3">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
-                <p className="text-white/70 text-sm font-medium">
-                  Loading themes...
-                </p>
-              </div>
+            <div className="w-full grid grid-cols-7 items-start justify-start flex-wrap gap-4 pt-4">
+              {Array.from({ length: 14 }).map((_, index) => (
+                <ThemeItemSkeleton key={index} />
+              ))}
             </div>
           ) : (
             <AnimatePresence mode="wait" initial={false}>

@@ -80,8 +80,9 @@ function createWindow() {
     mainWindow.setMenu(null);
   }
 
-  // const startUrl = "https://2048.app.evofuse.xyz";
-  const startUrl = "https://2048-frontend-git-qa-evo-fuses-projects.vercel.app";
+  const startUrl = "https://2048.app.evofuse.xyz";
+  // const startUrl = "http://localhost:5175";
+  // const startUrl = "https://2048-frontend-git-qa-evo-fuses-projects.vercel.app";
 
   mainWindow.loadURL(startUrl);
 
@@ -167,6 +168,7 @@ const handleExistWallet = () => {
     fs.accessSync(walletPath);
     return true;
   } catch (error) {
+    console.error("Error checking wallet existence:", error);
     return false;
   }
 };
@@ -238,3 +240,32 @@ const handleGetSeed = (event, password) => {
 };
 
 ipcMain.handle("get-seed", handleGetSeed);
+
+const handleClearCache = async () => {
+  try {
+    if (mainWindow) {
+      const session = mainWindow.webContents.session;
+      await session.clearCache();
+      await session.clearStorageData({
+        storages: [
+          'appcache',
+          'cookies',
+          'filesystem',
+          'indexdb',
+          'localstorage',
+          'shadercache',
+          'websql',
+          'serviceworkers',
+          'cachestorage'
+        ]
+      });
+      return { success: true, message: 'Cache cleared successfully' };
+    }
+    return { success: false, message: 'No window available' };
+  } catch (error) {
+    console.error('Error clearing cache:', error);
+    return { success: false, message: error.message };
+  }
+};
+
+ipcMain.handle("clear-cache", handleClearCache);
