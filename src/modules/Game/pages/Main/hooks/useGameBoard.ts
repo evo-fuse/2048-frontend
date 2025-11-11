@@ -73,6 +73,9 @@ const createNewTilesInEmptyCells = (
 };
 
 const createTraversalMap = (rows: number, cols: number, dir: Vector) => {
+  if (!dir || typeof dir.r !== 'number' || typeof dir.c !== 'number') {
+    throw new Error('Invalid direction vector provided to createTraversalMap');
+  }
   const rowsMap = createIndexArray(rows);
   const colsMap = createIndexArray(cols);
   return {
@@ -257,7 +260,7 @@ const useGameBoard = ({
           ...activity,
           {
             vector: { ...dir },
-            tiles: [ ...gridMapRef.current.tiles ],
+            tiles: [...gridMapRef.current.tiles],
             timestamp: Date.now(),
           },
         ]);

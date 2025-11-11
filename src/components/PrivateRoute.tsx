@@ -1,5 +1,4 @@
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { PATH } from "../const";
+import { Outlet } from "react-router-dom";
 import { useAuthContext } from "../context";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -17,38 +16,31 @@ import { motion } from "framer-motion";
  */
 export const PrivateRoute = () => {
   const {
-    user,
     handleExistWallet,
     handleGetWalletAddress,
     handleUser,
     setUser,
+    setExist,
   } = useAuthContext();
-  const location = useLocation();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const exist = await handleExistWallet();
-        if (exist) {
+        const existence = await handleExistWallet();
+        setExist(existence);
+        console.log("existence", existence);
+        if (existence) {
           const walletAddress = await handleGetWalletAddress();
           localStorage.setItem("token", walletAddress);
           const userData = await handleUser(walletAddress);
-          setUser({ ...userData, address: walletAddress });
-          setIsLoading(false);
-        } else {
-          navigate(PATH.WALLET_CREATION, {
-            state: { from: location },
-            replace: true,
-          });
+          setUser({ ...userData });
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
-        navigate(PATH.WALLET_CREATION, {
-          state: { from: location },
-          replace: true,
-        });
+      }
+      finally {
+        setIsLoading(false);
       }
     };
 
@@ -72,9 +64,5 @@ export const PrivateRoute = () => {
     );
   }
 
-  return user ? (
-    <Outlet />
-  ) : (
-    <Navigate to={PATH.WALLET_CREATION} state={{ from: location }} replace />
-  );
+  return <Outlet />;
 };

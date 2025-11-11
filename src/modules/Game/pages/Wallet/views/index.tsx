@@ -297,7 +297,7 @@ export const WalletView: React.FC = () => {
                 tooltip="Show Private Key"
               />
               <HexagonButton
-                width={200}
+                width={160}
                 icon={<HiOutlineWallet size={32} />}
                 onClick={() => {
                   setTitle(WalletItem.Import);

@@ -1,11 +1,18 @@
 import { motion } from "framer-motion";
 import { Images } from "../assets/images";
+import { useNavigate, useLocation } from "react-router-dom";
+import { PATH } from "../const";
+import { IoArrowBack } from "react-icons/io5";
 
 interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isGameRoute = location.pathname === PATH.GAME || location.pathname.startsWith(`${PATH.GAME}/`);
+
   // const videoRef = useRef<HTMLVideoElement>(null);
   // useEffect(() => {
   //   if (videoRef.current) {
@@ -20,6 +27,20 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         alt="Fantasy Background"
       />
       <div className="fixed w-screen h-screen top-0 left-0 bg-black/70" />
+      {!isGameRoute && (
+        <motion.button
+          className="fixed top-8 left-8 z-20 px-6 py-3 bg-gray-800/80 hover:bg-gray-700/80 text-white font-bold rounded-lg border border-white/20 transition-all duration-300 cursor-none backdrop-blur-sm shadow-lg flex items-center gap-2"
+          onClick={() => navigate(PATH.GAME)}
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <IoArrowBack size={20} />
+          <span>Back to Game</span>
+        </motion.button>
+      )}
       <div
         className="relative z-10 w-[1600px] flex flex-col justify-start items-center mt-0"
       >
@@ -39,10 +60,10 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
 
 export const withMainLayout =
   (Page: React.FC): React.FC =>
-  () => {
-    return (
-      <MainLayout>
-        <Page />
-      </MainLayout>
-    );
-  };
+    () => {
+      return (
+        <MainLayout>
+          <Page />
+        </MainLayout>
+      );
+    };

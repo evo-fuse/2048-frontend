@@ -12,6 +12,8 @@ import { IoTime } from "react-icons/io5";
 import { Select } from "../../../../../components/Select";
 import { OnlineReplayExploreModal } from "../components/OnlineReplayExploreModal";
 import { useEffect, useState, useRef, useCallback } from "react";
+import { TbFileSearch } from "react-icons/tb";
+
 export const RecordView: React.FC = () => {
   const { replay, setReplay, setMetadata, metadata } = useRecordContext();
 
@@ -75,6 +77,7 @@ export const RecordView: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(0);
   const currentTimeRef = useRef<number>(0);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const { tiles, onMovePending, onMergePending, breakTile, doubleTile } =
     useGameBoardForReplay({
@@ -84,7 +87,7 @@ export const RecordView: React.FC = () => {
         status: "running",
         pause: false,
       },
-      addScore: () => {},
+      addScore: () => { },
       replay,
       index,
     });
@@ -222,11 +225,10 @@ export const RecordView: React.FC = () => {
             Explore Online Replay
           </button>
           <div
-            className={`w-full flex items-center justify-between p-3 border-2 border-dashed rounded-lg transition-all duration-300 ${
-              isDragOver
-                ? "border-gray-400 bg-gray-800/50 shadow-lg shadow-gray-500/20"
-                : "border-gray-600 hover:border-gray-400 bg-gray-900/30 hover:bg-gray-800/40"
-            }`}
+            className={`w-full flex items-center justify-between p-3 border-2 border-dashed rounded-lg transition-all duration-300 ${isDragOver
+              ? "border-gray-400 bg-gray-800/50 shadow-lg shadow-gray-500/20"
+              : "border-gray-600 hover:border-gray-400 bg-gray-900/30 hover:bg-gray-800/40"
+              }`}
             {...dragHandlers}
           >
             <div className="flex items-center gap-3">
@@ -234,21 +236,26 @@ export const RecordView: React.FC = () => {
                 {isDragOver
                   ? "Drop JSON file here"
                   : fileName
-                  ? `Selected: ${fileName}`
-                  : "Choose JSON file or drag & drop"}
+                    ? `Selected: ${fileName}`
+                    : "Choose JSON file or drag & drop"}
               </span>
             </div>
-            <label className="">
-              <span className="bg-gray-700 hover:bg-gray-600 text-white py-1.5 px-3 rounded text-sm transition-all duration-200 font-medium">
+            <div className="">
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white py-1.5 px-3 rounded text-sm transition-all duration-200 font-medium cursor-none"
+              >
+                <TbFileSearch className="text-white" size={18} />
                 Browse
-              </span>
+              </div>
               <input
+                ref={fileInputRef}
                 type="file"
                 accept=".json"
                 className="hidden"
                 {...fileInputHandlers}
               />
-            </label>
+            </div>
           </div>
 
           {error && (
@@ -358,7 +365,7 @@ export const RecordView: React.FC = () => {
                 rows={metadata?.rows || 4}
                 cols={metadata?.cols || 4}
                 spacing={SPACING}
-                onMove={() => {}}
+                onMove={() => { }}
                 onMovePending={onMovePending}
                 onMergePending={onMergePending}
                 breakTile={breakTile}

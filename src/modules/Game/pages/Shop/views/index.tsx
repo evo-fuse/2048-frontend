@@ -18,12 +18,18 @@ export const ShopView: React.FC = () => {
   const { themes, setThemes, getThemes } = useGameContext();
   const { userBalance, getBalance, buyItemsWithGameTokens } = useWeb3Context();
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingThemes, setIsLoadingThemes] = useState(true);
 
   useEffect(() => {
     getBalance();
-    getThemes("premium", true).then((data) => {
-      setThemes(data);
-    });
+    setIsLoadingThemes(true);
+    getThemes("premium", true)
+      .then((data) => {
+        setThemes(data);
+      })
+      .finally(() => {
+        setIsLoadingThemes(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -91,6 +97,7 @@ export const ShopView: React.FC = () => {
         <ThemesTabPanel
           selectedTab={selectedTab}
           themes={themes}
+          isLoadingThemes={isLoadingThemes}
         />
       </div>
     </>

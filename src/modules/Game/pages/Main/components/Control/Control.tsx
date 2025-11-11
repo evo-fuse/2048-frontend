@@ -87,7 +87,7 @@ const Control: FC<ControlProps> = ({
             <ControlButton
               value="+"
               onClick={() => { onChangeGrid(1); }}
-              disabled={cols === MAX_SCALE || cols === user?.cols}
+              disabled={cols === MAX_SCALE || cols === user?.cols || !user}
             />
           </Box>
         </Box>

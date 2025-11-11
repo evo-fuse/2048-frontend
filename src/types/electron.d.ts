@@ -19,6 +19,7 @@ declare global {
       getPrivateKey: (password: string) => string | null;
       getAddress: () => Promise<string | null>;
       existWallet: () => Promise<boolean>;
+      clearCache: () => Promise<{ success: boolean; message: string }>;
     };
     showSaveFilePicker: (options?: {
       suggestedName?: string;

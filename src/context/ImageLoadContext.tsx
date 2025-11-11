@@ -21,7 +21,7 @@ export const ImageLoadContext = createContext<ImageLoadContextType>({
 export const ImageLoadProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [loadedImages, setLoadedImages] = useState<Record<string, boolean>>({});
-  const totalImages = useMemo(() => Object.keys(Images).length, []);
+  const totalImages = useMemo(() => Object.keys(Images).length, [Images]);
   const loadedCount = useRef<number>(0);
   const [imageCache, setImageCache] = useState<Record<string, HTMLImageElement>>({});
 
@@ -68,13 +68,13 @@ export const ImageLoadProvider = ({ children }: { children: React.ReactNode }) =
   }, [totalImages]);
 
   return (
-    <ImageLoadContext.Provider 
-      value={{ 
-        loadedImages, 
-        imageCache, 
-        loading, 
-        loadedCount: loadedCount.current, 
-        totalImages 
+    <ImageLoadContext.Provider
+      value={{
+        loadedImages,
+        imageCache,
+        loading,
+        loadedCount: loadedCount.current,
+        totalImages
       }}
     >
       {children}

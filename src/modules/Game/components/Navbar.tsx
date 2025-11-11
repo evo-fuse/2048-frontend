@@ -5,6 +5,7 @@ import {
   IoColorPaletteOutline,
   IoGameControllerOutline,
 } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
 import { LuDices } from "react-icons/lu";
 import { IconType } from "react-icons";
 import { PATH } from "../../../const";
@@ -16,6 +17,7 @@ import { SlCamrecorder } from "react-icons/sl";
 import { useEffect, useRef, useState } from "react";
 import { Hex } from "./Hex";
 import { FaUnlock, FaLock } from "react-icons/fa";
+import { formatAddress } from "../../../utils/address";
 
 const navItems = [
   {
@@ -202,7 +204,7 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
 };
 
 export const Navbar: React.FC = () => {
-  const { privateKey, handleDisconnectWallet, user } = useAuthContext();
+  const { privateKey, handleDisconnectWallet, exist } = useAuthContext();
   const { onOpenWalletConnect } = useGameContext();
   const navigate = useNavigate();
   const location = useLocation();
@@ -221,12 +223,16 @@ export const Navbar: React.FC = () => {
     return bettingRoutes.some(route => pathname.includes(route));
   };
 
+  const onCreateWalletConnect = () => {
+    navigate(PATH.WALLET_CREATION);
+  };
+
   return (
     <div className="max-w-80 w-full flex flex-col items-center justify-start py-8 gap-4 relative z-20">
       <div className="flex flex-col w-full gap-8 items-center">
         <div className="flex items-center relative">
           <Hex
-            onClick={privateKey ? handleDisconnectWallet : onOpenWalletConnect}
+            onClick={privateKey ? handleDisconnectWallet : exist ? onOpenWalletConnect : onCreateWalletConnect}
             whileHover={{
               scale: 1.08,
               transition: { duration: 0.3 },
@@ -238,7 +244,7 @@ export const Navbar: React.FC = () => {
             <Hex width={88} className="bg-gray-800 flex items-center justify-center">
               <Hex width={80} className={`${privateKey ? "bg-cyan-500/75" : "bg-white/30"} flex items-center justify-center transition-all`}>
                 <Hex width={72} className="bg-gray-800 flex items-center justify-center">
-                  {privateKey ? <FaUnlock color="white" size={24} /> : <FaLock color="white" size={24} />}
+                  {privateKey ? <FaUnlock color="white" size={24} /> : exist ? <FaLock color="white" size={24} /> : <FaPlus color="white" size={24} />}
                 </Hex>
               </Hex>
             </Hex>
@@ -247,10 +253,10 @@ export const Navbar: React.FC = () => {
             <div className="w-52 h-14 bg-gray-800 flex items-center">
               <div className={`w-52 h-12 ${privateKey ? "bg-cyan-500/75" : "bg-white/30"} flex items-center transition-all`}>
                 <div className="w-52 h-10 bg-gray-800 flex items-center">
-                  <label className={`text-white relative ${privateKey ? "left-[64px]" : "left-[52px]"}`}>
+                  <label className={`text-white relative ${privateKey ? "left-[64px]" : exist ? "left-[52px]" : "left-[90px]"}`}>
                     {privateKey
-                      ? user?.address?.substring(0, 8) + "..." + user?.address?.substring(user?.address?.length - 4)
-                      : "Wallet disconnected"
+                      ? formatAddress(localStorage.getItem("token") || "")
+                      : exist ? "Wallet disconnected" : "No Wallet"
                     }
                   </label>
                 </div>

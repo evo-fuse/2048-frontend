@@ -1,6 +1,6 @@
 import { useAuthContext, useRecordContext } from "../../../../../../context";
 import Modal from "../../../../../../components/Modal";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { IoMdDownload } from "react-icons/io";
 import { MdFileUpload } from "react-icons/md";
 import api from "../../../../../../utils/api";
@@ -22,7 +22,16 @@ const RecordModal: React.FC<RecordModalProps> = ({
 }) => {
   const { activity, setActivity } = useRecordContext();
   const [uploading, setUploading] = useState(false);
-  const { user } = useAuthContext();
+  const { user, handleExistWallet } = useAuthContext();
+  const [walletExists, setWalletExists] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      handleExistWallet().then((exists) => {
+        setWalletExists(exists);
+      });
+    }
+  }, [isOpen, handleExistWallet]);
 
   const recordData = useMemo(
     () => ({
@@ -38,7 +47,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
       playHistory: activity,
       user,
     }),
-    [activity, total, rows, cols]
+    [activity, total, rows, cols, user]
   );
 
   const handleModalClose = () => {
@@ -114,8 +123,8 @@ const RecordModal: React.FC<RecordModalProps> = ({
           </button>
           <button
             onClick={handleUploadToServer}
-            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-cyan-400/20 bg-cyan-900/20 hover:bg-cyan-800/40"
-            disabled={uploading || activity.length === 0}
+            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-cyan-400/20 bg-cyan-900/20 hover:bg-cyan-800/40 disabled:opacity-50 cursor-none"
+            disabled={uploading || activity.length === 0 || !walletExists}
           >
             <MdFileUpload />
             {uploading ? "Uploading..." : "Save on Online"}

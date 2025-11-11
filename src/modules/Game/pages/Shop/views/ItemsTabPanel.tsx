@@ -6,6 +6,7 @@ import { Images } from "../../../../../assets/images";
 import { User } from "../../../../../types";
 import { useAuthContext } from "../../../../../context";
 import { useGameContext } from "../../../context/GameContext";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 interface ItemsTabPanelProps {
   selectedTab: string;
@@ -51,7 +52,7 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
   };
 
   const handlePurchaseItems = async () => {
-    if(!privateKey) {
+    if (!privateKey) {
       onOpenWalletConnect();
       return;
     }
@@ -131,10 +132,11 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
               <span className="text-white font-bold">{totalCost} dwat</span>
             </div>
             <button
-              className="cursor-none bg-white/20 hover:bg-white/30 text-white font-bold py-3 rounded-md transition-colors disabled:bg-gray-700 disabled:opacity-50"
+              className="flex items-center justify-center gap-2 cursor-none bg-cyan-500/80 hover:bg-cyan-400/80 text-white font-bold py-3 rounded-md transition-colors disabled:bg-cyan-700 disabled:opacity-50"
               disabled={totalCost === 0 || totalCost > userBalance || isLoading}
               onClick={handlePurchaseItems}
             >
+              <MdOutlineShoppingCart size={24} />
               {isLoading ? (
                 <div className="w-full flex items-center justify-center gap-2">
                   <FaSpinner className="animate-spin" />

@@ -63,11 +63,16 @@ export const SetPasswordView: React.FC = () => {
                             seedPhrase,
                             pwd.password.value,
                         ).then(async (walletData) => {
-                            const data = await signupUser(walletData.address);
-                            setUser({
-                                ...data,
-                            });
-                            navigate(PATH.GAME);
+                            try {
+                                const data = await signupUser(walletData.address);
+                                setUser({
+                                    ...data,
+                                });
+                            } catch (error) {
+                                console.error(error);
+                            } finally {
+                                navigate(PATH.GAME);
+                            }
                         })
                     }
                     disabled={!isPasswordValid}

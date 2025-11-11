@@ -37,7 +37,7 @@ export const ProfileView: React.FC = () => {
             <div className="flex gap-4">
               <ProfileItem
                 label="Grid Size"
-                value={`${user?.rows}x${user?.cols}`}
+                value={user?.rows && user?.cols ? `${user?.rows}x${user?.cols}` : "4 x 4"}
               />
               <ProfileItem label="Max Score" value={user?.maxScore} />
               <ProfileItem label="Max Tile" value={user?.maxTile} />
@@ -51,7 +51,7 @@ export const ProfileView: React.FC = () => {
               <ProfileItem
                 label="Wallet Address"
                 value={
-                  user?.address.slice(0, 8) + "..." + user?.address.slice(-6)
+                  user?.address ? user?.address.slice(0, 8) + "..." + user?.address.slice(-6) : "No Wallet"
                 }
                 icon={<IoWalletOutline />}
                 className="break-all"
