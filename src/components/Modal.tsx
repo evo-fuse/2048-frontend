@@ -80,7 +80,7 @@ const Modal: React.FC<ModalProps> = ({
                 <img src={Images.LOGO} alt="Logo" className="w-8 h-auto" />
                 <div className="flex justify-between items-center border-gray-700 bg-transparent w-full">
                   {title && (
-                    <h3 className="text-lg font-medium text-white">{title}</h3>
+                    <h3 className={`text-lg font-medium ${title === "Show Seed Phrase" ? "text-cyan-400" : "text-white"}`}>{title}</h3>
                   )}
                   {showCloseButton && (
                     <button
