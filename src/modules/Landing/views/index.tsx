@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { PATH } from "../../../const";
 import { FaBitcoin } from "react-icons/fa";
 import { SiEthereum, SiBinance } from "react-icons/si";
-import { Images } from "../../../assets/images";
 
 export const LandingView: React.FC = () => {
   const navigate = useNavigate();
