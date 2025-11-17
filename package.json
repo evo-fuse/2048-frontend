@@ -1,7 +1,7 @@
 {
   "name": "evofuse2048",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "electron/main.js",
   "type": "module",
   "description": "King Over Road",
@@ -19,7 +19,7 @@
     "eject": "react-scripts eject",
     "electron-dev": "concurrently \"npm run dev\" \"electron .\"",
     "electron": "electron .",
-    "electron-build": "tsc -b && vite build && electron-builder"
+    "electron-build": "electron-builder"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.864.0",
@@ -75,7 +75,6 @@
     "appId": "com.evofuse2048.app",
     "productName": "EvoFuse2048",
     "files": [
-      "dist/**/*",
       "electron/**/*"
     ],
     "extraResources": [
@@ -86,7 +85,10 @@
     ],
     "win": {
       "icon": "electron/icon.ico",
-      "target": ["nsis"]
+      "target": [
+        "nsis"
+      ],
+      "compression": "maximum"
     },
     "nsis": {
       "oneClick": false,

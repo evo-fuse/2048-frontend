@@ -10,8 +10,8 @@ import USDT from "./images/token/usdt.png";
 import HAMMER from "./images/Hammer.png";
 import UPGRADE from "./images/Upgrade.png";
 import POWER_UP from "./images/Powerup.png";
-import Logo from "./images/Logo.png";
 import DWAT from "./images/token_logo.png";
+import LOGO from "./images/Logo.png";
 import WalletLogo from "./images/wallet_logo.png";
 import BACKGROUND from "./images/background.png";
 import BASEBALL from "./images/sports/baseball.png";
@@ -38,7 +38,7 @@ export const Images = {
   HAMMER,
   UPGRADE,
   POWER_UP,
-  Logo,
+  LOGO,
   DWAT,
   WalletLogo,
   BACKGROUND,

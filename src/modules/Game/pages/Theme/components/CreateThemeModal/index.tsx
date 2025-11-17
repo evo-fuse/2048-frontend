@@ -120,7 +120,7 @@ export const CreateThemeModal = ({
     });
     setError(null);
     setUploadStatus(null);
-    
+
     // Clear file inputs
     fileInputRefs.current.forEach((input) => {
       if (input) {
@@ -172,7 +172,7 @@ export const CreateThemeModal = ({
         numberDisplay,
         ...(visibility === "premium" ? { price } : {}),
       });
-      
+
       // Reset form after successful submission
       resetForm();
     } catch (error) {
@@ -191,6 +191,7 @@ export const CreateThemeModal = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
+          key="create-theme-modal"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -293,6 +294,7 @@ export const CreateThemeModal = ({
       {/* Image Crop Modal */}
       {cropMode !== null && cropSrc && (
         <ImageCropModal
+          key="image-crop-modal"
           src={cropSrc}
           onApply={(file) => handleApplyCrop(file, cropMode)}
           onCancel={handleCropCancel}

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Images } from '../assets/images';
 
 interface ModalProps {
   isOpen: boolean;
@@ -75,31 +76,34 @@ const Modal: React.FC<ModalProps> = ({
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
             {(title || showCloseButton) && (
-              <div className="flex justify-between items-center p-4 border-gray-700 bg-transparent">
-                {title && (
-                  <h3 className="text-lg font-medium text-white">{title}</h3>
-                )}
-                {showCloseButton && (
-                  <button
-                    onClick={onClose}
-                    className="text-gray-400 hover:text-gray-300"
-                    aria-label="Close"
-                  >
-                    <svg
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+              <div className="flex items-center p-4 gap-2 w-full">
+                <img src={Images.LOGO} alt="Logo" className="w-8 h-auto" />
+                <div className="flex justify-between items-center border-gray-700 bg-transparent w-full">
+                  {title && (
+                    <h3 className="text-lg font-medium text-white">{title}</h3>
+                  )}
+                  {showCloseButton && (
+                    <button
+                      onClick={onClose}
+                      className="text-gray-400 hover:text-gray-300"
+                      aria-label="Close"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
-                )}
+                      <svg
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                </div>
               </div>
             )}
             <div className="">{children}</div>
