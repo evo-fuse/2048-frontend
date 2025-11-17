@@ -29,7 +29,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <div className="fixed w-screen h-screen top-0 left-0 bg-black/70" />
       {!isGameRoute && (
         <motion.button
-          className="fixed top-8 left-8 z-20 px-6 py-3 bg-gray-800/80 hover:bg-gray-700/80 text-white font-bold rounded-lg border border-white/20 transition-all duration-300 cursor-none backdrop-blur-sm shadow-lg flex items-center gap-2"
+          className="fixed top-8 left-8 z-20 p-3 border-2 border-white/20 text-white font-bold rounded-full transition-all duration-300 cursor-none flex items-center gap-2"
           onClick={() => navigate(PATH.GAME)}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -38,7 +38,6 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           whileTap={{ scale: 0.95 }}
         >
           <IoArrowBack size={20} />
-          <span>Back to Game</span>
         </motion.button>
       )}
       <div
