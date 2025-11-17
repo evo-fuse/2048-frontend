@@ -18,10 +18,10 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
   const [error, setError] = useState("");
   const { onClick, content } = useClipboard(
     seed,
-    <div className="text-white flex items-center gap-2">
+    <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-600 hover:text-cyan-500 transition-colors shadow-lg shadow-cyan-500/30 cursor-pointer">
       <HiOutlineClipboardDocument size={24} /> Copy Seed Phrase
     </div>,
-    <div className="text-white flex items-center gap-2">
+    <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-500">
       <HiOutlineClipboardDocumentCheck size={24} /> Copied Seed Phrase
     </div>
   );
@@ -42,7 +42,7 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
             {seed.split(" ").map((item: string, idx: number) => (
               <div
                 key={`${item}-${idx}`}
-                className="text-white font-bold border border-white/10 rounded-md px-2 py-1"
+                className="text-cyan-200 font-bold border border-cyan-400/30 bg-cyan-900/20 rounded-md px-2 py-1"
               >
                 {idx + 1}. {item}
               </div>
@@ -50,13 +50,13 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
           </div>
           <div
             onClick={onClick}
-            className="flex items-center justify-end w-full text-white"
+            className="flex items-center justify-end w-full"
           >
             {content}
           </div>
           <button
             onClick={onClose}
-            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white"
+            className="w-full h-10 rounded-md bg-cyan-600 hover:bg-cyan-500 px-3 py-1 text-white transition-colors shadow-lg shadow-cyan-500/30 border border-cyan-400/30"
           >
             Close
           </button>
@@ -68,12 +68,12 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-10 rounded-md bg-transparent px-3 border border-white/10 py-1 text-white"
+            className="w-full h-10 rounded-md bg-cyan-900/20 px-3 border border-cyan-400/20 py-1 text-white placeholder-gray-400 focus:border-cyan-400/50 focus:bg-cyan-800/30 transition-colors"
           />
           {error && <div className="text-red-500 text-sm">{error}</div>}
           <button
             type="submit"
-            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white"
+            className="w-full h-10 rounded-md bg-cyan-600 hover:bg-cyan-500 px-3 py-1 text-white transition-all shadow-lg shadow-cyan-500/30 border border-cyan-400/30 font-medium"
           >
             Enter
           </button>
