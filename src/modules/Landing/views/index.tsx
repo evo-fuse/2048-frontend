@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { PATH } from "../../../const";
 import { FaBitcoin } from "react-icons/fa";
 import { SiEthereum, SiBinance } from "react-icons/si";
-import { Images } from "../../../assets/images";
 
 export const LandingView: React.FC = () => {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ export const LandingView: React.FC = () => {
     const rotationInterval = setInterval(() => {
       setRotation(prev => (prev + 0.1) % 360);
     }, 40);
-    
+
     return () => clearInterval(rotationInterval);
   }, []);
 
@@ -46,7 +45,7 @@ export const LandingView: React.FC = () => {
     512: "text-white",
     2048: "text-white",
   };
-  
+
   // Crypto icons data for floating elements
   const cryptoIcons = [
     { icon: FaBitcoin, color: "text-amber-500" },
@@ -104,14 +103,14 @@ export const LandingView: React.FC = () => {
                     number === 2048
                       ? "120px"
                       : number >= 128
-                      ? "100px"
-                      : "80px",
+                        ? "100px"
+                        : "80px",
                   height:
                     number === 2048
                       ? "120px"
                       : number >= 128
-                      ? "100px"
-                      : "80px",
+                        ? "100px"
+                        : "80px",
                   fontSize:
                     number === 2048 ? "36px" : number >= 128 ? "32px" : "28px",
                   fontWeight: "bold",
@@ -139,7 +138,7 @@ export const LandingView: React.FC = () => {
               </motion.div>
             );
           })}
-          
+
           {/* Floating crypto icons */}
           {cryptoIcons.map((crypto, index) => {
             // Calculate positions for crypto icons
@@ -148,16 +147,16 @@ export const LandingView: React.FC = () => {
             // Offset angle to position between tile numbers and add rotation
             // Rotate in opposite direction for visual interest
             const angle = angleStep * index + Math.PI / 6 - (rotation * Math.PI / 180);
-            
+
             // Use a different radius for crypto icons
             const radius = 35 + (index % 3) * 5;
-            
+
             // Calculate position
             const xPos = 50 + radius * Math.cos(angle);
             const yPos = 50 + radius * Math.sin(angle);
-            
+
             const IconComponent = crypto.icon;
-            
+
             return (
               <motion.div
                 key={`crypto-${index}`}
@@ -217,7 +216,7 @@ export const LandingView: React.FC = () => {
                   className="text-6xl md:text-8xl font-bold flex items-center gap-6 bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-300 bg-clip-text text-transparent leading-tight mb-2"
                   style={{ fontFamily: "Patrick Hand" }}
                 >
-                  EvoFuse <img src={Images.Logo} alt="Logo" className="w-40 h-40" />
+                  EvoFuse 2048
                 </div>
                 {/* Title glow effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-amber-300/20 via-yellow-200/20 to-amber-300/20 blur-3xl opacity-60"></div>

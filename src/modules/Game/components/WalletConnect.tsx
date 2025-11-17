@@ -43,6 +43,7 @@ const WalletConnect: React.FC<WalletConnectProps> = ({
       onClose={handleModalClose}
       title={title || "Connect Wallet"}
       closeOnOutsideClick
+      className="border-cyan-400/30 bg-cyan-950/80"
     >
       <div className="w-full px-4 pb-4 flex flex-col gap-4">
         <form className="flex flex-col gap-2" onSubmit={handlePrivateKey}>
@@ -51,14 +52,14 @@ const WalletConnect: React.FC<WalletConnectProps> = ({
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full h-10 rounded-md bg-transparent px-3 border border-white/10 py-1 text-white"
+            className="w-full h-10 rounded-md bg-cyan-900/20 px-3 border border-cyan-400/20 py-1 text-white placeholder-gray-400 focus:border-cyan-400/50 focus:bg-cyan-800/30 transition-colors"
           />
-          {error && <div className="text-red-500 text-sm">{error}</div>}
+          {error && <div className="text-red-400 text-sm">{error}</div>}
           <button
             type="submit"
-            className="w-full h-10 rounded-md bg-gray-600/60 px-3 py-1 text-white disabled:opacity-50 disabled:hover:bg-gray-600/60 hover:bg-gray-600/80 transition-colors cursor-none"
+            className="w-full h-10 rounded-md bg-cyan-600 hover:bg-cyan-500 px-3 py-1 text-white disabled:opacity-50 disabled:hover:bg-cyan-600 disabled:cursor-not-allowed transition-all shadow-lg shadow-cyan-500/30 border border-cyan-400/30 font-medium cursor-none"
           >
-            Enter
+            Unlock
           </button>
         </form>
       </div>
