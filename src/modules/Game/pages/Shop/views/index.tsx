@@ -8,6 +8,7 @@ import { ItemsTabPanel } from "./ItemsTabPanel";
 import { ThemesTabPanel } from "./ThemesTabPanel";
 import { Images } from "../../../../../assets/images";
 import useLocalStorage from "../../Main/hooks/useLocalStorage";
+import { IoGridOutline, IoHammer, IoColorPaletteOutline } from "react-icons/io5";
 
 export const ShopView: React.FC = () => {
   const [selectedTab, setSelectedTab] = useLocalStorage(
@@ -61,14 +62,14 @@ export const ShopView: React.FC = () => {
 
       <Tabs
         tabs={[
-          { id: "Grid", label: "Grid" },
-          { id: "Items", label: "Items" },
-          { id: "Themes", label: "Themes" },
+          { id: "Grid", label: "Grid", icon: IoGridOutline },
+          { id: "Items", label: "Items", icon: IoHammer },
+          { id: "Themes", label: "Themes", icon: IoColorPaletteOutline },
         ]}
         selectedTab={selectedTab}
         setSelectedTab={setSelectedTab}
         className="mb-4"
-        tabsContainerClassName="border-b border-white/10 text-white"
+        tabsContainerClassName="text-white"
       />
 
       <div className="relative w-full h-[calc(100vh-180px)]">
