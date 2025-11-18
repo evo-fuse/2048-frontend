@@ -24,9 +24,9 @@ export const TileImageCard: React.FC<TileImageCardProps> = ({
   };
 
   return (
-    <div className="border border-gray-600 rounded-lg p-4">
+    <div className="border border-cyan-500/30 rounded-lg p-4 bg-gray-800/30">
       <div className="flex justify-between items-center mb-2">
-        <span className="text-white font-bold">
+        <span className="text-cyan-100 font-bold">
           {tile.value}: {tile.value < 8192 ? "(required)" : "(optional)"}
         </span>
       </div>
@@ -36,7 +36,7 @@ export const TileImageCard: React.FC<TileImageCardProps> = ({
           onClick={() =>
             document.getElementById(`file-input-${tile.value}`)?.click()
           }
-          className="relative w-64 h-64 bg-gray-700 rounded-md flex items-center justify-center hover:bg-gray-600"
+          className="relative w-64 h-64 bg-gray-700/50 border border-cyan-500/30 rounded-md flex items-center justify-center hover:bg-gray-700/70 hover:border-cyan-400/50 transition-colors cursor-pointer"
         >
           {tile.image ? (
             <div className="relative w-full h-full">
@@ -69,7 +69,7 @@ export const TileImageCard: React.FC<TileImageCardProps> = ({
               )}
             </div>
           ) : (
-            <span className="text-white/50">Click to upload image</span>
+            <span className="text-cyan-200/60">Click to upload image</span>
           )}
         </div>
         <input
@@ -86,7 +86,7 @@ export const TileImageCard: React.FC<TileImageCardProps> = ({
         <textarea
           value={tile.description}
           onChange={(e) => onDescriptionChange(e.target.value)}
-          className="w-full bg-gray-700 text-white border border-gray-600 rounded-md p-2"
+          className="w-full bg-gray-700/50 text-white border border-cyan-500/30 rounded-md p-2 focus:border-cyan-400/50 focus:outline-none"
           placeholder="Image description"
         />
       </div>

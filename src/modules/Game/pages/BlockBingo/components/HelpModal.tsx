@@ -29,11 +29,11 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.9, opacity: 0 }}
                         transition={{ type: "spring", duration: 0.5 }}
-                        className="bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-cyan-500/30 rounded-2xl p-8 max-w-3xl w-full max-h-[80vh] overflow-y-auto shadow-2xl"
+                        className="bg-gradient-to-br from-gray-900 to-gray-800 border-2 border-cyan-500/30 rounded-2xl max-w-3xl w-full max-h-[80vh] flex flex-col shadow-2xl"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {/* Modal Header */}
-                        <div className="flex items-center justify-between mb-6 border-b border-cyan-500/30 pb-4">
+                        {/* Modal Header - Sticky */}
+                        <div className="sticky top-0 z-10 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-between p-8 pb-4 border-b border-cyan-500/30 rounded-t-2xl">
                             <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent">
                                 Help & Rules
                             </h2>
@@ -45,175 +45,167 @@ export const HelpModal = ({ isOpen, onClose }: HelpModalProps) => {
                             </button>
                         </div>
 
-                        <div className="space-y-6">
-                            {/* How to Play Section */}
-                            <div className="bg-white/5 border border-cyan-500/30 rounded-xl p-6">
-                                <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
-                                    <FaPlay size={20} />
-                                    How to Play
-                                </h3>
-                                <ul className="text-gray-300 space-y-2">
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaNetworkWired className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm">Select <strong>Network</strong> & <strong>Currency</strong></span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaWallet className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm">Check your <strong>Balance</strong></span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaCoins className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm">Set <strong>Bet Amount</strong></span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaPlay className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm">Click <strong>Start</strong></span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaDice className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm"><strong>3x5 grid</strong> - tiles flow continuously</span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaMousePointer className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm">Click columns to <strong>stop</strong> them</span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaStar className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm">Center <strong>3x3</strong> = scoring area</span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaTrophy className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm">Match balls to earn points</span>
-                                    </li>
-                                    <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
-                                        <FaDice className="text-cyan-400 text-xl flex-shrink-0" />
-                                        <span className="text-sm"><strong>10 attempts</strong> to win rewards!</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            {/* Tile Weights Section */}
-                            <div className="bg-white/5 border border-cyan-500/30 rounded-xl p-6">
-                                <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
-                                    <FaFootballBall size={20} />
-                                    Tile Weights
-                                </h3>
-
-                                <div className="grid grid-cols-2 gap-2">
-                                    {SPORTS_BALLS.sort((a, b) => b.weight - a.weight).map((ball) => (
-                                        <div
-                                            key={ball.id}
-                                            className="flex items-center justify-between p-2 bg-cyan-500/5 border border-cyan-500/20 rounded-lg hover:bg-cyan-500/10 transition-colors"
-                                        >
-                                            <div className="flex items-center gap-2">
-                                                <img src={ball.image} alt={ball.name} className="w-6 h-6" />
-                                                <span className="text-gray-300 text-xs">{ball.name}</span>
-                                            </div>
-                                            <span className="text-cyan-400 font-bold text-sm">{ball.weight}</span>
-                                        </div>
-                                    ))}
+                        <div className="overflow-y-auto flex-1 px-8 pb-8">
+                            <div className="space-y-6 pt-6">
+                                {/* How to Play Section */}
+                                <div className="bg-white/5 border border-cyan-500/30 rounded-xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                                        <FaPlay size={20} />
+                                        How to Play
+                                    </h3>
+                                    <ul className="text-gray-300 space-y-2">
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaNetworkWired className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm">Select <strong>Network</strong> & <strong>Currency</strong></span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaWallet className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm">Check your <strong>Balance</strong></span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaCoins className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm">Set <strong>Bet Amount</strong></span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaPlay className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm">Click <strong>Start</strong></span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaDice className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm"><strong>3x5 grid</strong> - tiles flow continuously</span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaMousePointer className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm">Click columns to <strong>stop</strong> them</span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaStar className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm">Center <strong>3x3</strong> = scoring area</span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaTrophy className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm">Match balls to earn points</span>
+                                        </li>
+                                        <li className="flex items-center gap-3 p-2 hover:bg-cyan-500/5 rounded-lg transition-colors">
+                                            <FaDice className="text-cyan-400 text-xl flex-shrink-0" />
+                                            <span className="text-sm"><strong>10 attempts</strong> to win rewards!</span>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
 
-                            {/* Scoring Rules Section */}
-                            <div className="bg-white/5 border border-cyan-500/30 rounded-xl p-6">
-                                <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
-                                    <FaTrophy size={20} />
-                                    Scoring Multipliers
-                                </h3>
+                                {/* Tile Weights Section */}
+                                <div className="bg-white/5 border border-cyan-500/30 rounded-xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                                        <FaFootballBall size={20} />
+                                        Tile Weights
+                                    </h3>
 
-                                <div className="space-y-4">
-                                    {/* Visual Grid Examples */}
-                                    <div className="space-y-3">
-                                        {/* 2 Horizontal Example */}
-                                        <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <span className="text-gray-300 text-sm font-semibold">2 Horizontal Match</span>
-                                                <span className="text-cyan-400 font-bold">Weight × {MULTIPLIER_2_HORIZONTAL}</span>
-                                            </div>
-                                            <div className="flex gap-1 justify-center">
-                                                <div className="grid grid-cols-3 gap-1">
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">⚽</div>
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">⚽</div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {SPORTS_BALLS.sort((a, b) => b.weight - a.weight).map((ball) => (
+                                            <div
+                                                key={ball.id}
+                                                className="flex items-center justify-between p-2 bg-cyan-500/5 border border-cyan-500/20 rounded-lg hover:bg-cyan-500/10 transition-colors"
+                                            >
+                                                <div className="flex items-center gap-2">
+                                                    <img src={ball.image} alt={ball.name} className="w-6 h-6" />
+                                                    <span className="text-gray-300 text-xs">{ball.name}</span>
                                                 </div>
+                                                <span className="text-cyan-400 font-bold text-sm">{ball.weight}</span>
                                             </div>
-                                        </div>
-
-                                        {/* 3 Horizontal Example */}
-                                        <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <span className="text-gray-300 text-sm font-semibold">3 Horizontal Match</span>
-                                                <span className="text-cyan-400 font-bold">Weight × {MULTIPLIER_3_HORIZONTAL}</span>
-                                            </div>
-                                            <div className="flex gap-1 justify-center">
-                                                <div className="grid grid-cols-3 gap-1">
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏀</div>
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏀</div>
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏀</div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* 3 Diagonal Example */}
-                                        <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
-                                            <div className="flex items-center justify-between mb-2">
-                                                <span className="text-gray-300 text-sm font-semibold">3 Diagonal Match</span>
-                                                <span className="text-cyan-400 font-bold">Weight × {MULTIPLIER_3_DIAGONAL}</span>
-                                            </div>
-                                            <div className="flex gap-1 justify-center">
-                                                <div className="grid grid-cols-3 gap-1">
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏈</div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏈</div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
-                                                    <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏈</div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        ))}
                                     </div>
+                                </div>
 
-                                    <div className="mt-6 p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
-                                        <div className="flex items-center gap-2 text-sm text-gray-300 mb-2 font-semibold">
-                                            <FaCalculator className="text-cyan-400" />
-                                            <span>Reward Formula</span>
+                                {/* Scoring Rules Section */}
+                                <div className="bg-white/5 border border-cyan-500/30 rounded-xl p-6">
+                                    <h3 className="text-2xl font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                                        <FaTrophy size={20} />
+                                        Scoring Multipliers
+                                    </h3>
+
+                                    <div className="space-y-4">
+                                        {/* Visual Grid Examples */}
+                                        <div className="space-y-3">
+                                            {/* 2 Horizontal Example */}
+                                            <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-gray-300 text-sm font-semibold">2 Horizontal Match</span>
+                                                    <span className="text-cyan-400 font-bold">Weight × {MULTIPLIER_2_HORIZONTAL}</span>
+                                                </div>
+                                                <div className="flex gap-1 justify-center">
+                                                    <div className="grid grid-cols-3 gap-1">
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">⚽</div>
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">⚽</div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* 3 Horizontal Example */}
+                                            <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-gray-300 text-sm font-semibold">3 Horizontal Match</span>
+                                                    <span className="text-cyan-400 font-bold">Weight × {MULTIPLIER_3_HORIZONTAL}</span>
+                                                </div>
+                                                <div className="flex gap-1 justify-center">
+                                                    <div className="grid grid-cols-3 gap-1">
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏀</div>
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏀</div>
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏀</div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* 3 Diagonal Example */}
+                                            <div className="p-3 bg-cyan-500/10 border border-cyan-500/20 rounded-lg">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-gray-300 text-sm font-semibold">3 Diagonal Match</span>
+                                                    <span className="text-cyan-400 font-bold">Weight × {MULTIPLIER_3_DIAGONAL}</span>
+                                                </div>
+                                                <div className="flex gap-1 justify-center">
+                                                    <div className="grid grid-cols-3 gap-1">
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏈</div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏈</div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-gray-800/50 border border-gray-700 rounded flex items-center justify-center"></div>
+                                                        <div className="w-10 h-10 bg-cyan-500/30 border-2 border-cyan-400 rounded flex items-center justify-center text-xl">🏈</div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="text-base text-cyan-400 font-mono font-bold">
-                                            (Bet × Score) / {DIVIDE_THRESHOLD}
+
+                                        <div className="mt-6 p-4 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+                                            <div className="flex items-center gap-2 text-sm text-gray-300 mb-2 font-semibold">
+                                                <FaCalculator className="text-cyan-400" />
+                                                <span>Reward Formula</span>
+                                            </div>
+                                            <div className="text-base text-cyan-400 font-mono font-bold">
+                                                (Bet × Score) / {DIVIDE_THRESHOLD}
+                                            </div>
+                                            <p className="text-xs text-gray-400 mt-2">
+                                                Score = Total from 10 attempts
+                                            </p>
                                         </div>
-                                        <p className="text-xs text-gray-400 mt-2">
-                                            Score = Total from 10 attempts
-                                        </p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        {/* Close Button */}
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={onClose}
-                            className="w-full mt-6 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg"
-                        >
-                            Got it!
-                        </motion.button>
                     </motion.div>
                 </motion.div>
             )}

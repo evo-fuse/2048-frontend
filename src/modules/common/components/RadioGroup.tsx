@@ -28,18 +28,17 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
               className="opacity-0 absolute h-5 w-5"
             />
             <div
-              className={`border-2 rounded-full h-5 w-5 flex items-center justify-center ${
-                value === option.value
-                  ? "border-blue-500"
-                  : "border-gray-400"
-              }`}
+              className={`border-2 rounded-full h-5 w-5 flex items-center justify-center ${value === option.value
+                ? "border-cyan-500"
+                : "border-cyan-500/40"
+                }`}
             >
               {value === option.value && (
-                <div className="bg-blue-500 rounded-full h-3 w-3"></div>
+                <div className="bg-cyan-500 rounded-full h-3 w-3"></div>
               )}
             </div>
           </div>
-          <span className="text-white">{option.label}</span>
+          <span className="text-cyan-100">{option.label}</span>
         </label>
       ))}
     </div>

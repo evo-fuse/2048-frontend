@@ -14,7 +14,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
 }) => {
   return (
     <FormSection label="Number Display">
-      <div className="space-y-4 bg-gray-700 p-4 rounded-md">
+      <div className="space-y-4 bg-gray-700/50 border border-cyan-500/30 p-4 rounded-md">
         <div className="flex items-center space-x-2">
           <input
             type="checkbox"
@@ -23,9 +23,9 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
             onChange={(e) =>
               setNumberDisplay({ ...numberDisplay, show: e.target.checked })
             }
-            className="bg-gray-700 border border-gray-600 rounded"
+            className="bg-gray-700/50 border border-cyan-500/30 rounded accent-cyan-500"
           />
-          <label htmlFor="show-numbers" className="text-white">
+          <label htmlFor="show-numbers" className="text-cyan-100">
             Show numbers on tiles
           </label>
         </div>
@@ -33,7 +33,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
         {numberDisplay.show && (
           <>
             <div>
-              <label className="block text-white mb-2">Number Position</label>
+              <label className="block text-cyan-100 mb-2">Number Position</label>
               <Select
                 value={numberDisplay.position}
                 onChange={(value) =>
@@ -55,11 +55,11 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
             </div>
             
             <div>
-              <label className="block text-white mb-2">Number Size (px)</label>
+              <label className="block text-cyan-100 mb-2">Number Size (px)</label>
               <div className="flex items-center space-x-3">
-                <span className="text-white text-xs">10px</span>
+                <span className="text-cyan-200 text-xs">10px</span>
                 <div className="relative flex-grow h-6 flex items-center">
-                  <div className="absolute w-full h-1 bg-gray-600 rounded"></div>
+                  <div className="absolute w-full h-1 bg-gray-600/50 rounded"></div>
                   <input
                     type="range"
                     min="10"
@@ -73,16 +73,16 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                         size: sizeValue,
                       });
                     }}
-                    className="appearance-none absolute w-full h-1 bg-transparent"
+                    className="appearance-none absolute w-full h-1 bg-transparent accent-cyan-500"
                   />
                 </div>
-                <span className="text-white text-base">96px</span>
+                <span className="text-cyan-200 text-base">96px</span>
               </div>
               <div className="mt-2 flex justify-center items-center gap-3">
-                <span className="text-gray-300">{numberDisplay.size}px</span>
+                <span className="text-cyan-200">{numberDisplay.size}px</span>
                 <div className="flex gap-2">
                   <button
-                    className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
+                    className="px-2 py-1 bg-gray-700/60 text-cyan-100 rounded hover:bg-gray-700/80 transition-colors border border-cyan-500/20"
                     onClick={() =>
                       setNumberDisplay({
                         ...numberDisplay,
@@ -93,7 +93,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                     -
                   </button>
                   <button
-                    className="px-2 py-1 bg-gray-700 text-white rounded hover:bg-gray-600"
+                    className="px-2 py-1 bg-gray-700/60 text-cyan-100 rounded hover:bg-gray-700/80 transition-colors border border-cyan-500/20"
                     onClick={() =>
                       setNumberDisplay({
                         ...numberDisplay,
@@ -108,7 +108,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
             </div>
 
             <div>
-              <label className="block text-white mb-2">Number Color</label>
+              <label className="block text-cyan-100 mb-2">Number Color</label>
               <div className="flex items-center space-x-2">
                 <input
                   type="color"
@@ -119,7 +119,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                       color: e.target.value,
                     })
                   }
-                  className="bg-gray-700 border border-gray-600 rounded h-10 w-10"
+                  className="bg-gray-700/50 border border-cyan-500/30 rounded h-10 w-10"
                 />
                 <input
                   type="text"
@@ -130,7 +130,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                       color: e.target.value,
                     })
                   }
-                  className="bg-gray-600 text-white border border-gray-500 rounded-md p-2"
+                  className="bg-gray-700/50 text-white border border-cyan-500/30 rounded-md p-2 focus:border-cyan-400/50 focus:outline-none"
                   placeholder="#ffffff"
                 />
               </div>

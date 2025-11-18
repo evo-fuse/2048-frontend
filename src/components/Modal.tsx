@@ -60,7 +60,7 @@ const Modal: React.FC<ModalProps> = ({
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#020c16]/90 backdrop-blur-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -69,23 +69,28 @@ const Modal: React.FC<ModalProps> = ({
         >
           <motion.div
             ref={modalRef}
-            className={`${maxWidth} w-full bg-gray-800/80 border border-white/20 rounded-lg shadow-xl overflow-hidden ${className}`}
+            className={`${maxWidth} w-full rounded-2xl border border-cyan-400/25 bg-gradient-to-b from-[#042035]/95 via-[#020f1c]/95 to-[#01070d]/95 shadow-[0_20px_50px_rgba(0,255,255,0.2)] overflow-hidden ${className}`}
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           >
             {(title || showCloseButton) && (
-              <div className="flex items-center p-4 gap-2 w-full">
-                <img src={Images.LOGO} alt="Logo" className="w-8 h-auto" />
-                <div className="flex justify-between items-center border-gray-700 bg-transparent w-full">
+              <div className="flex items-center gap-3 w-full px-5 py-4 bg-gradient-to-r from-cyan-900/40 to-transparent border-b border-cyan-400/20">
+                <img src={Images.LOGO} alt="Logo" className="w-9 h-auto drop-shadow-[0_0_12px_rgba(34,211,238,0.4)]" />
+                <div className="flex justify-between items-center w-full">
                   {title && (
-                    <h3 className={`text-lg font-medium ${title === "Show Seed Phrase" ? "text-cyan-400" : "text-white"}`}>{title}</h3>
+                    <h3
+                      className={`text-lg font-semibold tracking-wide drop-shadow-sm ${title === 'Show Seed Phrase' ? 'text-cyan-300' : 'text-cyan-50'
+                        }`}
+                    >
+                      {title}
+                    </h3>
                   )}
                   {showCloseButton && (
                     <button
                       onClick={onClose}
-                      className="text-gray-400 hover:text-gray-300"
+                      className="text-cyan-300/70 hover:text-cyan-100 transition-colors duration-150"
                       aria-label="Close"
                     >
                       <svg
@@ -106,7 +111,7 @@ const Modal: React.FC<ModalProps> = ({
                 </div>
               </div>
             )}
-            <div className="">{children}</div>
+            <div className="p-6 bg-cyan-500/5">{children}</div>
           </motion.div>
         </motion.div>
       )}

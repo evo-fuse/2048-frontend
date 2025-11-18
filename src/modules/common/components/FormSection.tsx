@@ -8,7 +8,7 @@ interface FormSectionProps {
 export const FormSection: React.FC<FormSectionProps> = ({ label, children }) => {
   return (
     <div>
-      <label className="block text-white mb-2">{label}</label>
+      <label className="block text-cyan-100 mb-2">{label}</label>
       {children}
     </div>
   );

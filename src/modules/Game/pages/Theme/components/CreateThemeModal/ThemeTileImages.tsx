@@ -36,10 +36,10 @@ export const ThemeTileImages: React.FC<ThemeTileImagesProps> = ({
               <div className="absolute top-14 right-6 flex items-center gap-2">
                 <button
                   type="button"
-                  className="p-0 rounded-full bg-gray-500/50 hover:bg-gray-300/50 transition-colors duration-300 z-20"
+                  className="p-0 rounded-full bg-gray-700/60 hover:bg-gray-700/80 transition-colors duration-300 z-20 border border-cyan-500/30"
                   onClick={() => onImageCancel(index)}
                 >
-                  <IoIosClose size={32} color="white" />
+                  <IoIosClose size={32} className="text-cyan-200" />
                 </button>
               </div>
             )}

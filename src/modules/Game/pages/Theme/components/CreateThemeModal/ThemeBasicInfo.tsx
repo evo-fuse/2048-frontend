@@ -36,7 +36,7 @@ export const ThemeBasicInfo: React.FC<ThemeBasicInfoProps> = ({
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full bg-gray-700 text-white border border-gray-600 rounded-md p-2"
+          className="w-full bg-gray-700/50 text-white border border-cyan-500/30 rounded-md p-2 focus:border-cyan-400/50 focus:outline-none"
           placeholder="Enter theme title"
         />
       </FormSection>
@@ -45,7 +45,7 @@ export const ThemeBasicInfo: React.FC<ThemeBasicInfoProps> = ({
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full bg-gray-700 text-white border border-gray-600 rounded-md p-2"
+          className="w-full bg-gray-700/50 text-white border border-cyan-500/30 rounded-md p-2 focus:border-cyan-400/50 focus:outline-none"
           placeholder="Enter theme description"
         />
       </FormSection>
@@ -66,10 +66,10 @@ export const ThemeBasicInfo: React.FC<ThemeBasicInfoProps> = ({
             step="0.01"
             value={price}
             onChange={(e) => setPrice(parseFloat(e.target.value))}
-            className="w-full bg-gray-700 text-white border border-gray-600 rounded-md p-2"
+            className="w-full bg-gray-700/50 text-white border border-cyan-500/30 rounded-md p-2 focus:border-cyan-400/50 focus:outline-none"
             placeholder="Enter price"
           />
-          <p className="mt-2 text-sm text-gray-400">
+          <p className="mt-2 text-sm text-cyan-300/70">
             Note: A 10% platform fee will be applied to all sales. Your net earnings will be ${(price * 0.9).toFixed(2)} per sale.
           </p>
         </FormSection>

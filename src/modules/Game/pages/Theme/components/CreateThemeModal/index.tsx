@@ -195,17 +195,17 @@ export const CreateThemeModal = ({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#020c16]/90 backdrop-blur-md"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="bg-gray-800 border border-white/10 rounded-lg px-6 pb-6 w-full relative max-w-7xl max-h-[90vh] overflow-y-auto"
+            className="border border-cyan-400/25 bg-gradient-to-b from-[#042035]/95 via-[#020f1c]/95 to-[#01070d]/95 shadow-[0_20px_50px_rgba(0,255,255,0.2)] rounded-2xl w-full relative max-w-7xl max-h-[90vh]"
           >
-            <ModalHeader title="Create New Theme" onClose={onClose} />
+            <ModalHeader title="Create New Theme" />
 
-            <div className="space-y-6">
+            <div className="flex flex-col gap-6 bg-cyan-500/5 p-6 h-[calc(90vh-186px)] overflow-y-auto">
               {/* Theme Basic Info */}
               <ThemeBasicInfo
                 title={title}
@@ -234,22 +234,8 @@ export const CreateThemeModal = ({
                 onImageCancel={handleImageCancel}
               />
 
-              {/* Submit Button */}
-              <ModalFooter
-                onCancel={onClose}
-                onSubmit={handleSubmit}
-                submitDisabled={
-                  isSubmitting ||
-                  !title.trim() ||
-                  tileImages
-                    .filter((tile) => tile.value <= 4096)
-                    .some((tile) => !tile.image)
-                }
-                submitLabel={isSubmitting ? "Creating..." : "Create Theme"}
-              />
-
               {error && (
-                <div className="mt-4 p-3 bg-red-900/50 border border-red-500 text-red-200 rounded-md">
+                <div className="mt-4 p-3 bg-red-900/50 border border-red-500/50 text-red-200 rounded-md">
                   <p className="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -268,21 +254,34 @@ export const CreateThemeModal = ({
                 </div>
               )}
             </div>
+            {/* Submit Button */}
+            <ModalFooter
+              onCancel={onClose}
+              onSubmit={handleSubmit}
+              submitDisabled={
+                isSubmitting ||
+                !title.trim() ||
+                tileImages
+                  .filter((tile) => tile.value <= 4096)
+                  .some((tile) => !tile.image)
+              }
+              submitLabel={isSubmitting ? "Creating..." : "Create Theme"}
+            />
           </motion.div>
           {uploadStatus && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-lg z-30 bottom-0">
-              <div className="bg-gray-800 border border-white/20 rounded-lg p-6 max-w-md w-full">
-                <h3 className="text-xl font-semibold text-white mb-4">
+              <div className="border border-cyan-400/25 bg-gradient-to-b from-[#042035]/95 via-[#020f1c]/95 to-[#01070d]/95 shadow-[0_20px_50px_rgba(0,255,255,0.2)] rounded-lg p-6 max-w-md w-full">
+                <h3 className="text-xl font-semibold text-cyan-100 mb-4">
                   Uploading Theme...
                 </h3>
-                <p className="text-gray-300 mb-4">{uploadStatus.message}</p>
-                <div className="w-full bg-gray-700 rounded-full h-4 mb-2">
+                <p className="text-cyan-200/80 mb-4">{uploadStatus.message}</p>
+                <div className="w-full bg-gray-700/50 rounded-full h-4 mb-2">
                   <div
-                    className="bg-blue-500 h-4 rounded-full transition-all duration-300 ease-in-out"
+                    className="bg-cyan-500 h-4 rounded-full transition-all duration-300 ease-in-out"
                     style={{ width: `${uploadStatus.progress || 0}%` }}
                   ></div>
                 </div>
-                <p className="text-right text-gray-400 text-sm">
+                <p className="text-right text-cyan-300/70 text-sm">
                   {uploadStatus.progress || 0}%
                 </p>
               </div>

@@ -7,6 +7,7 @@ import ReactCrop, {
 } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { ModalHeader } from "../../../../../common/components/ModalHeader";
+import { ModalFooter } from "../../../../../common/components/ModalFooter";
 
 // Helper function for centering the crop (moved from the main component)
 const centerAspectCrop = (
@@ -47,7 +48,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const [scale, setScale] = useState(1);
   const [rotate, setRotate] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
-  const previewCanvasRef = useRef<HTMLCanvasElement>(null);
 
   const onImageLoad = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement>) => {
@@ -117,14 +117,14 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   }, [completedCrop, rotate, scale, onApply, tileValue]);
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80">
-      <div className="bg-gray-800 border border-white/10 rounded-lg p-6 max-w-3xl w-full">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-[#020c16]/90 backdrop-blur-md">
+      <div className="border border-cyan-400/25 bg-gradient-to-b from-[#042035]/95 via-[#020f1c]/95 to-[#01070d]/95 shadow-[0_20px_50px_rgba(0,255,255,0.2)] rounded-2xl max-w-3xl w-full">
         <ModalHeader title="Crop Image" onClose={onCancel} />
 
-        <div className="mb-4 flex flex-col items-center">
-          <div className="mb-4 flex gap-4 text-white">
+        <div className="py-4 flex flex-col items-center bg-cyan-500/5">
+          <div className="mb-4 flex gap-4 text-cyan-100">
             <div>
-              <label htmlFor="scale-input">Scale: </label>
+              <label htmlFor="scale-input" className="text-cyan-200">Scale: </label>
               <input
                 id="scale-input"
                 type="number"
@@ -133,11 +133,11 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 max="5"
                 value={scale}
                 onChange={(e) => setScale(Number(e.target.value))}
-                className="bg-gray-700 border border-gray-600 rounded-md p-1 w-20"
+                className="bg-gray-700/50 border border-cyan-500/30 rounded-md p-1 w-20 text-white focus:border-cyan-400/50 focus:outline-none"
               />
             </div>
             <div>
-              <label htmlFor="rotate-input">Rotate: </label>
+              <label htmlFor="rotate-input" className="text-cyan-200">Rotate: </label>
               <input
                 id="rotate-input"
                 type="number"
@@ -150,7 +150,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                     )
                   )
                 }
-                className="bg-gray-700 border border-gray-600 rounded-md p-1 w-20"
+                className="bg-gray-700/50 border border-cyan-500/30 rounded-md p-1 w-20 text-white focus:border-cyan-400/50 focus:outline-none"
               />
             </div>
           </div>
@@ -160,7 +160,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             onChange={(_, percentCrop) => setCrop(percentCrop)}
             onComplete={handleCropComplete}
             aspect={1} // 1:1 aspect ratio for tiles
-            className="max-h-[60vh] bg-gray-900"
+            className="max-h-[60vh] bg-[#01070d]/50"
           >
             <img
               ref={imgRef}
@@ -174,33 +174,11 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             />
           </ReactCrop>
         </div>
-
-        <div className="flex justify-end space-x-2">
-          <button
-            onClick={onCancel}
-            className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={applyCurrentCrop}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500"
-            disabled={
-              !completedCrop?.width || !completedCrop?.height
-            }
-          >
-            Apply
-          </button>
-        </div>
-
-        {/* Hidden canvas for preview if needed */}
-        <canvas
-          ref={previewCanvasRef}
-          style={{
-            display: "none",
-            width: completedCrop?.width ?? 0,
-            height: completedCrop?.height ?? 0,
-          }}
+        <ModalFooter
+          onCancel={onCancel}
+          onSubmit={applyCurrentCrop}
+          submitDisabled={!completedCrop?.width || !completedCrop?.height}
+          submitLabel="Apply"
         />
       </div>
     </div>
