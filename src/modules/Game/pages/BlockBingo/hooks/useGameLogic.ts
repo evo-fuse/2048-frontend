@@ -31,6 +31,7 @@ export const useGameLogic = (user: User | null, network: string, currency: strin
     const [matchingTiles, setMatchingTiles] = useState<Set<string>>(new Set());
     const [currentBalance, setCurrentBalance] = useState<number>(0);
     const [rewardAmount, setRewardAmount] = useState<number>(0);
+    const [errorModal, setErrorModal] = useState<{ title: string; message: string } | null>(null);
     const animationFrameRef = useRef<number | undefined>(undefined);
 
     const getUserBalanceKey = useCallback((network: string, currency: string): keyof User => {
@@ -229,9 +230,16 @@ export const useGameLogic = (user: User | null, network: string, currency: strin
         }
     }, [attemptsLeft, calculateScore, initializeColumnSequences, depositAmount, user, currentBalance, network, currency, getUserBalanceKey, handleUpdateUser, handleUser, setUser]);
 
+    const closeErrorModal = useCallback(() => {
+        setErrorModal(null);
+    }, []);
+
     const handleStartGame = useCallback(() => {
         if (!depositAmount || Number(depositAmount) <= 0) {
-            Toast.error("Invalid Amount", "Please enter a valid deposit amount greater than 0");
+            setErrorModal({
+                title: "Invalid Amount",
+                message: "Please enter a valid deposit amount greater than 0."
+            });
             return;
         }
 
@@ -240,7 +248,10 @@ export const useGameLogic = (user: User | null, network: string, currency: strin
         const userBalance = Number(user?.[balanceKey] || 0);
 
         if (deposit > userBalance) {
-            Toast.error("Insufficient Balance", "You don't have enough balance to play with this amount");
+            setErrorModal({
+                title: "Insufficient Balance",
+                message: "You don't have enough balance to play with this amount."
+            });
             return;
         }
 
@@ -289,7 +300,9 @@ export const useGameLogic = (user: User | null, network: string, currency: strin
         handleStartGame,
         handleRestart,
         calculateReward,
-        getUserBalanceKey
+        getUserBalanceKey,
+        errorModal,
+        closeErrorModal
     };
 };
 

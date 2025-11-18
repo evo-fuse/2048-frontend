@@ -2,11 +2,11 @@ import React, { useState, useCallback, useMemo, useRef, useLayoutEffect } from '
 import { useNavigate } from 'react-router-dom';
 import { PATH } from '../../../../../const';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LiaDiceSolid } from 'react-icons/lia';
 import { TbMoneybag } from 'react-icons/tb';
 import { HiArrowTrendingDown } from 'react-icons/hi2';
 import { IoGameControllerOutline } from 'react-icons/io5';
 import { IconType } from 'react-icons';
+import { Images } from '../../../../../assets/images';
 
 type GameType = 'BlockBingo' | 'Animal Bingo';
 
@@ -118,18 +118,10 @@ export const BettingView: React.FC = () => {
     const isBlockBingoSelected = useMemo(() => selectedGame === 'BlockBingo', [selectedGame]);
 
     const gameButtonClasses = useMemo(() => {
-        const base = "relative p-4 3xs:p-5 2xs:p-5 xs:p-6 sm:p-6 md:p-7 lg:p-8 rounded-lg 3xs:rounded-xl 2xs:rounded-xl xs:rounded-xl border-2 transition-all duration-300 cursor-none";
+        const base = "relative p-0 rounded-2xl border-2 transition-all duration-300 cursor-none object-cover overflow-hidden";
         return isBlockBingoSelected
             ? `${base} border-cyan-500 bg-cyan-600/20 shadow-lg shadow-cyan-500/50`
             : `${base} border-gray-600 bg-gray-800/40 hover:border-gray-500 hover:bg-gray-800/60`;
-    }, [isBlockBingoSelected]);
-
-    const iconContainerClasses = useMemo(() => {
-        return isBlockBingoSelected ? 'bg-cyan-500/20' : 'bg-gray-700/50';
-    }, [isBlockBingoSelected]);
-
-    const iconClasses = useMemo(() => {
-        return isBlockBingoSelected ? 'text-cyan-400' : 'text-gray-400';
     }, [isBlockBingoSelected]);
 
     return (
@@ -162,25 +154,16 @@ export const BettingView: React.FC = () => {
                                 onClick={() => handleGameSelect('BlockBingo')}
                                 className={gameButtonClasses}
                             >
-                                <div className="flex flex-col items-center gap-2 3xs:gap-3 2xs:gap-3 xs:gap-4 sm:gap-4">
-                                    <div className={`${RESPONSIVE_SIZES.gameIcon} rounded-lg flex items-center justify-center ${iconContainerClasses}`}>
-                                        <LiaDiceSolid className={`${RESPONSIVE_SIZES.gameIconText} ${iconClasses}`} />
-                                    </div>
-                                    <div className="text-center">
-                                        <h3 className="text-base 3xs:text-lg 2xs:text-lg xs:text-xl sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl font-bold text-white mb-0.5 3xs:mb-1">
-                                            BlockBingo
-                                        </h3>
-                                    </div>
-                                    {isBlockBingoSelected && (
-                                        <motion.div
-                                            initial={{ scale: 0 }}
-                                            animate={{ scale: 1 }}
-                                            className="absolute top-1.5 3xs:top-2 2xs:top-2 right-1.5 3xs:right-2 2xs:right-2 w-5 h-5 3xs:w-6 3xs:h-6 2xs:w-6 2xs:h-6 bg-cyan-500 rounded-full flex items-center justify-center"
-                                        >
-                                            <span className="text-white text-[10px] 3xs:text-xs 2xs:text-xs">✓</span>
-                                        </motion.div>
-                                    )}
-                                </div>
+                                {isBlockBingoSelected && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute top-2.5 right-2.5 w-5 h-5 bg-cyan-500 rounded-full flex items-center justify-center"
+                                    >
+                                        <span className="text-white text-[10px]">✓</span>
+                                    </motion.div>
+                                )}
+                                <img src={Images.BLOCKBINGO} alt="BlockBingo" className="w-full h-full object-cover" />
                             </motion.button>
                         </div>
                     </motion.div>

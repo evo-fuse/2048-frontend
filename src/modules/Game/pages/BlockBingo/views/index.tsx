@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuthContext } from "../../../../../context";
-import { GameStats, GameGrid, GameControls, HelpModal } from "../components";
+import { GameStats, GameGrid, GameControls, HelpModal, ErrorModal } from "../components";
 import { useGameLogic } from "../hooks/useGameLogic";
 
 export const BlockBingoView = () => {
@@ -31,7 +31,9 @@ export const BlockBingoView = () => {
         handleStartGame,
         handleRestart,
         calculateReward,
-        getUserBalanceKey
+        getUserBalanceKey,
+        errorModal,
+        closeErrorModal
     } = useGameLogic(user, network, currency, depositAmount);
 
     // Save network and currency to localStorage when they change
@@ -101,6 +103,12 @@ export const BlockBingoView = () => {
             <HelpModal
                 isOpen={isHelpModalOpen}
                 onClose={() => setIsHelpModalOpen(false)}
+            />
+            <ErrorModal
+                isOpen={Boolean(errorModal)}
+                title={errorModal?.title}
+                message={errorModal?.message || ""}
+                onClose={closeErrorModal}
             />
         </>
     );
