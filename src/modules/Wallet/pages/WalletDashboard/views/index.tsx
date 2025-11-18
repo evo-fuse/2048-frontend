@@ -26,11 +26,11 @@ export const WalletDashboardView = () => {
         </div>
 
         {/* Wallet logo */}
-        <div className="w-24 h-24 bg-transparent rounded-2xl flex items-center justify-center">
+        <div className="w-36 h-36 bg-transparent rounded-2xl flex items-center justify-center">
           <img
             src={Images.WalletLogo}
             alt="wallet"
-            className="w-24 h-24 object-contain"
+            className="w-36 h-36 object-contain"
           />
         </div>
 

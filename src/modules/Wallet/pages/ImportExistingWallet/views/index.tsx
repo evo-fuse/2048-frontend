@@ -38,20 +38,20 @@ export const ImportExistingWalletView: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8">
       {/* Main glass container */}
-      <div className="w-full max-w-2xl backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
+      <div className="w-full max-w-2xl backdrop-blur-xl bg-cyan-500/10 border border-cyan-400/30 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
         {/* Header section */}
         <div className="w-full flex flex-col items-center justify-center gap-8">
           <div className="text-3xl font-bold text-white tracking-tight text-center">
             Access your wallet with your Secret Recovery Phrase
           </div>
-          <div className="w-24 h-24 bg-gradient-to-br from-gray-600 to-gray-800 rounded-2xl flex items-center justify-center shadow-lg">
-            <img src={Images.WalletLogo} alt="wallet" className="w-16 h-16 object-contain" />
+          <div className="w-36 h-36 rounded-2xl flex items-center justify-center">
+            <img src={Images.WalletLogo} alt="wallet" className="w-36 h-36 object-contain" />
           </div>
         </div>
 
         {/* Show/Hide toggle */}
         <div
-          className="flex items-center justify-end gap-2 text-white/80 hover:text-white transition-colors w-full"
+          className="flex items-center justify-end gap-2 text-cyan-300/80 hover:text-cyan-200 transition-colors w-full cursor-pointer"
           onClick={onToggle}
         >
           {isOpen ? (
@@ -79,7 +79,7 @@ export const ImportExistingWalletView: React.FC = () => {
                 )
               }
               type={isOpen ? "text" : "password"}
-              className="px-3 py-2 text-white text-sm rounded-xl text-center bg-white/10 border border-white/20 focus:border-white/40 focus:outline-none transition-all duration-200 placeholder-white/30"
+              className="px-3 py-2 text-white text-sm rounded-xl text-center bg-cyan-500/10 border border-cyan-400/30 focus:border-cyan-400/60 focus:outline-none transition-all duration-200 placeholder-cyan-300/40"
               placeholder={`${idx + 1}`}
             />
           ))}
@@ -162,10 +162,10 @@ export const ImportExistingWalletView: React.FC = () => {
             pwd.password.value !== pwd.cPassword.value
           }
           className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${!isValid ||
-              pwd.password.value.length < 8 ||
-              pwd.password.value !== pwd.cPassword.value
-              ? "bg-white/10 text-white/50 cursor-not-allowed"
-              : "bg-gradient-to-r from-gray-700 to-gray-900 shadow-lg shadow-gray-700/25 hover:shadow-gray-700/40"
+            pwd.password.value.length < 8 ||
+            pwd.password.value !== pwd.cPassword.value
+            ? "bg-cyan-500/10 text-cyan-300/50 cursor-not-allowed border border-cyan-400/20"
+            : "bg-gradient-to-r from-cyan-600 to-cyan-800 shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 border border-cyan-400/30"
             }`}
         >
           Confirm
