@@ -5,19 +5,15 @@ import {
   IoColorPaletteOutline,
   IoGameControllerOutline,
 } from "react-icons/io5";
-import { FaPlus } from "react-icons/fa";
 import { LuDices } from "react-icons/lu";
 import { IconType } from "react-icons";
 import { PATH } from "../../../const";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../../context";
-import { useGameContext } from "../context/GameContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { SlCamrecorder } from "react-icons/sl";
 import { useEffect, useRef, useState } from "react";
 import { Hex } from "./Hex";
-import { FaUnlock, FaLock } from "react-icons/fa";
-import { formatAddress } from "../../../utils/address";
+import { WalletConnectButton } from "./WalletConnectButton";
 
 const navItems = [
   {
@@ -204,8 +200,6 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
 };
 
 export const Navbar: React.FC = () => {
-  const { privateKey, handleDisconnectWallet, exist } = useAuthContext();
-  const { onOpenWalletConnect } = useGameContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -223,55 +217,10 @@ export const Navbar: React.FC = () => {
     return bettingRoutes.some(route => pathname.includes(route));
   };
 
-  const onCreateWalletConnect = () => {
-    navigate(PATH.WALLET_CREATION);
-  };
-
   return (
     <div className="max-w-80 w-full flex flex-col items-center justify-start py-8 gap-4 relative z-20">
       <div className="flex flex-col w-full gap-8 items-center">
-        <div className="flex items-center relative">
-          <Hex
-            onClick={privateKey ? handleDisconnectWallet : exist ? onOpenWalletConnect : onCreateWalletConnect}
-            whileHover={{
-              scale: 1.08,
-              transition: { duration: 0.3 },
-            }}
-            whileTap={{ scale: 0.95 }}
-            width={96}
-            className={`z-20 relative left-12 ${privateKey ? "bg-cyan-400" : "bg-gray-600"} flex items-center justify-center transition-all`}
-          >
-            <Hex width={88} className="bg-gray-800 flex items-center justify-center">
-              <Hex width={80} className={`${privateKey ? "bg-cyan-500/75" : "bg-white/30"} flex items-center justify-center transition-all`}>
-                <Hex width={72} className="bg-gray-800 flex items-center justify-center">
-                  {privateKey ? <FaUnlock color="white" size={24} /> : exist ? <FaLock color="white" size={24} /> : <FaPlus color="white" size={24} />}
-                </Hex>
-              </Hex>
-            </Hex>
-          </Hex>
-          <div className={`z-10 relative w-52 h-16 ${privateKey ? "bg-cyan-400" : "bg-gray-600"} flex items-center transition-all`}>
-            <div className="w-52 h-14 bg-gray-800 flex items-center">
-              <div className={`w-52 h-12 ${privateKey ? "bg-cyan-500/75" : "bg-white/30"} flex items-center transition-all`}>
-                <div className="w-52 h-10 bg-gray-800 flex items-center">
-                  <label className={`text-white relative ${privateKey ? "left-[64px]" : exist ? "left-[52px]" : "left-[90px]"}`}>
-                    {privateKey
-                      ? formatAddress(localStorage.getItem("token") || "")
-                      : exist ? "Wallet disconnected" : "No Wallet"
-                    }
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <Hex width={74} className={`relative right-12 z-0 ${privateKey ? "bg-cyan-400" : "bg-gray-600"} transition-all flex items-center justify-center`}>
-            <Hex width={64.66} className="bg-gray-800 flex items-center justify-center">
-              <Hex width={55.42} className={`${privateKey ? "bg-cyan-500/75" : "bg-white/30"} transition-all flex items-center justify-center`}>
-                <Hex width={46.18} className="bg-gray-800 flex items-center justify-center">
-                </Hex>
-              </Hex>
-            </Hex>
-          </Hex>
-        </div>
+        <WalletConnectButton />
         <div className="flex gap-4 relative max-w-60">
           <div className="top-[64px] flex flex-col gap-4 relative left-28">
             {navItems.map(({ Icon, label, path }, idx) => (
