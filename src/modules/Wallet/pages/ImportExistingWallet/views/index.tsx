@@ -1,4 +1,4 @@
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { FaRegEye, FaRegEyeSlash, FaArrowLeft } from "react-icons/fa";
 import { Images } from "../../../../../assets/images";
 import { useOpen } from "../../../../../hooks";
 import { useEffect, useState } from "react";
@@ -35,10 +35,20 @@ export const ImportExistingWalletView: React.FC = () => {
   useEffect(() => {
     setIsValid(ethers.Mnemonic.isValidMnemonic(seed.join(" ")));
   }, [seed]);
+  const handleBack = () => {
+    navigate(PATH.WALLET_CREATION);
+  };
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8">
       {/* Main glass container */}
       <div className="w-full max-w-2xl backdrop-blur-sm bg-cyan-500/10 border border-cyan-400/30 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
+        <div className="w-full flex relative z-20">
+          <FaArrowLeft
+            className="text-cyan-300/80 border-2 border-cyan-400/30 rounded-full p-1 hover:bg-cyan-500/20 hover:text-cyan-200 hover:-translate-x-1 transition"
+            size={28}
+            onClick={handleBack}
+          />
+        </div>
         {/* Header section */}
         <div className="w-full flex flex-col items-center justify-center gap-8">
           <div className="text-3xl font-bold text-white tracking-tight text-center">
