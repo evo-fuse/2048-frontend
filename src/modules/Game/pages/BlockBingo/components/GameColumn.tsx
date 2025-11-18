@@ -44,7 +44,7 @@ export const GameColumn = ({
         <motion.div
             key={colIndex}
             className={`flex-1 h-full border-2 rounded-xl overflow-hidden relative ${isPaused ? "border-green-500" : "border-white/30 hover:border-cyan-500"
-                } transition-all duration-300 cursor-pointer`}
+                } transition-all duration-300 cursor-none`}
             onClick={() => onColumnClick(colIndex)}
             whileHover={{ scale: gameState === "playing" && !isPaused ? 1.02 : 1 }}
             whileTap={{ scale: gameState === "playing" && !isPaused ? 0.98 : 1 }}
@@ -85,22 +85,22 @@ export const GameColumn = ({
                         const isScoringArea = rowIndex >= 1 && rowIndex <= 3;
                         const isTopRow = rowIndex === 0;
                         const isBottomRow = rowIndex === 4;
-                        
+
                         return (
                             <div
                                 key={rowIndex}
-                                className={`flex-1 flex items-center justify-center border-b border-white/10 relative ${isMatching 
-                                    ? 'bg-gradient-to-br from-yellow-500/30 to-orange-500/30' 
+                                className={`flex-1 flex items-center justify-center border-b border-white/10 relative ${isMatching
+                                    ? 'bg-gradient-to-br from-yellow-500/30 to-orange-500/30'
                                     : isScoringArea
-                                    ? 'bg-gray-900/70'
-                                    : 'bg-gray-900/30'
+                                        ? 'bg-gray-900/70'
+                                        : 'bg-gray-900/30'
                                     }`}
                             >
                                 {/* Blur overlay for top and bottom rows */}
                                 {(isTopRow || isBottomRow) && (
                                     <div className="absolute inset-0 backdrop-blur-sm bg-black/20 z-10" />
                                 )}
-                                
+
                                 {/* Scoring area indicator */}
                                 {isScoringArea && !isMatching && colIndex === 0 && rowIndex === 1 && (
                                     <div className="absolute left-0 top-0 bottom-0 w-1 bg-cyan-500/50" />
@@ -108,7 +108,7 @@ export const GameColumn = ({
                                 {isScoringArea && !isMatching && colIndex === 2 && rowIndex === 1 && (
                                     <div className="absolute right-0 top-0 bottom-0 w-1 bg-cyan-500/50" />
                                 )}
-                                
+
                                 <div className={`relative ${isMatching ? 'animate-pulse' : ''}`}>
                                     <img
                                         src={SPORTS_BALLS[grid[rowIndex][colIndex]].image}

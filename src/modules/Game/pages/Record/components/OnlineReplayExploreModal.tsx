@@ -21,12 +21,12 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
   const [todayRecords, setTodayRecords] = useState<Record[]>([]);
   const [maxScoreRecords, setMaxScoreRecords] = useState<Record[]>([]);
   const [myReplays, setMyReplays] = useState<Record[]>([]);
-  
+
   // Pagination states
   const [todayPagination, setTodayPagination] = useState<Pagination>({ limit: 10, offset: 0, total: 0, hasMore: false });
   const [maxScorePagination, setMaxScorePagination] = useState<Pagination>({ limit: 10, offset: 0, total: 0, hasMore: false });
   const [myReplaysPagination, setMyReplaysPagination] = useState<Pagination>({ limit: 10, offset: 0, total: 0, hasMore: false });
-  
+
 
   // API call for search endpoint
   const fetchSearchRecords = useCallback(async (startDate?: string, endDate?: string, limit = 10, offset = 0): Promise<RecordsSearchResponse> => {
@@ -52,7 +52,7 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
       const today = new Date().toISOString().split('T')[0];
       // Use search endpoint with startDate and endDate for today's records
       const response = await fetchSearchRecords(today, today, 10, offset);
-      
+
       if (append) {
         setTodayRecords(prev => [...prev, ...response.records]);
       } else {
@@ -72,7 +72,7 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
     try {
       // For max scores, we can use search without date range or with a wide date range
       const response = await fetchSearchRecords(undefined, undefined, 10, offset);
-      
+
       if (append) {
         setMaxScoreRecords(prev => [...prev, ...response.records]);
       } else {
@@ -92,7 +92,7 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
     try {
       // This would typically include user authentication
       const response = await fetchSearchRecords(undefined, undefined, 10, offset);
-      
+
       if (append) {
         setMyReplays(prev => [...prev, ...response.records]);
       } else {
@@ -147,13 +147,13 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
   // Handle record selection with loading state
   const handleRecordSelect = useCallback(async (record: Record) => {
     if (!record.uuid) return;
-    
+
     setSelectedRecordId(record.uuid);
-    
+
     try {
       // Simulate loading time - replace with actual data loading logic
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Call the parent's onSelectRecord function
       onSelectRecord(record);
       onClose();
@@ -209,11 +209,10 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
             <button
               key={key}
               onClick={() => setActiveSection(key as SectionType)}
-              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${
-                activeSection === key
+              className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeSection === key
                   ? 'text-white border-b-2 border-white bg-gray-800/50'
                   : 'text-gray-400 hover:text-white hover:bg-gray-800/30'
-              }`}
+                }`}
             >
               <Icon size={16} />
               {label}
@@ -235,11 +234,10 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
                 return (
                   <div
                     key={record.uuid}
-                    className={`p-4 rounded-lg border transition-colors ${
-                      isSelected
-                        ? 'bg-gray-700/70 border-gray-500 cursor-wait'
-                        : 'bg-gray-800/50 border-gray-600 hover:border-gray-500 cursor-pointer'
-                    }`}
+                    className={`p-4 rounded-lg border transition-colors ${isSelected
+                        ? 'bg-gray-700/70 border-gray-500 cursor-none'
+                        : 'bg-gray-800/50 border-gray-600 hover:border-gray-500 cursor-none'
+                      }`}
                     onClick={() => !isSelected && handleRecordSelect(record)}
                   >
                     {isSelected ? (

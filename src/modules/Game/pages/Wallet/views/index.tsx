@@ -131,7 +131,7 @@ export const WalletView: React.FC = () => {
               <motion.div
                 onClick={onClick}
                 whileHover={{ scale: 1.01, backgroundColor: "rgba(31, 41, 55, 0.8)" }}
-                className="text-white text-sm w-full font-medium bg-gray-800/60 px-4 py-3 rounded-lg border border-white/10 transition-all flex items-center justify-between cursor-pointer"
+                className="text-white text-sm w-full font-medium bg-gray-800/60 px-4 py-3 rounded-lg border border-white/10 transition-all flex items-center justify-between cursor-none"
               >
                 <span className="truncate mr-2">
                   {user?.address}

@@ -176,7 +176,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
               onClick={handleNewGame}
               disabled={loading || click.current}
               className={`px-6 py-3 flex items-center justify-center gap-2 ${loading || click.current
-                ? "bg-cyan-700/50 cursor-not-allowed opacity-70"
+                ? "bg-cyan-700/50 cursor-none opacity-70"
                 : "bg-cyan-600 hover:bg-cyan-500"
                 } text-white text-nowrap rounded-md transition-all shadow-lg shadow-cyan-500/30 border border-cyan-400/30 font-medium`}
             >

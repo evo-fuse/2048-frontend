@@ -18,7 +18,7 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
   const [error, setError] = useState("");
   const { onClick, content } = useClipboard(
     seed,
-    <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-600 hover:text-cyan-500 transition-colors shadow-lg shadow-cyan-500/30 cursor-pointer">
+    <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-600 hover:text-cyan-500 transition-colors shadow-lg shadow-cyan-500/30 cursor-none">
       <HiOutlineClipboardDocument size={24} /> Copy Seed Phrase
     </div>,
     <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-500">

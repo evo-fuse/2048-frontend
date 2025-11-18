@@ -51,7 +51,7 @@ export const ImportExistingWalletView: React.FC = () => {
 
         {/* Show/Hide toggle */}
         <div
-          className="flex items-center justify-end gap-2 text-cyan-300/80 hover:text-cyan-200 transition-colors w-full cursor-pointer"
+          className="flex items-center justify-end gap-2 text-cyan-300/80 hover:text-cyan-200 transition-colors w-full"
           onClick={onToggle}
         >
           {isOpen ? (
@@ -164,7 +164,7 @@ export const ImportExistingWalletView: React.FC = () => {
           className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${!isValid ||
             pwd.password.value.length < 8 ||
             pwd.password.value !== pwd.cPassword.value
-            ? "bg-cyan-500/10 text-cyan-300/50 cursor-not-allowed border border-cyan-400/20"
+            ? "bg-cyan-500/10 text-cyan-300/50 cursor-none border border-cyan-400/20"
             : "bg-gradient-to-r from-cyan-600 to-cyan-800 shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 border border-cyan-400/30"
             }`}
         >

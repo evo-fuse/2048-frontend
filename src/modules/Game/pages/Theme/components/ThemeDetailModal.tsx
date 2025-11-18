@@ -217,9 +217,9 @@ export const ThemeDetailModal: React.FC<ThemeDetailModalProps> = ({
                 onClick={handleApplyTheme}
                 disabled={isLoading || isSelected}
                 className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${isSelected
-                  ? "bg-green-700 text-white cursor-default"
+                  ? "bg-green-700 text-white cursor-none"
                   : isLoading
-                    ? "bg-blue-700 text-white cursor-wait"
+                    ? "bg-blue-700 text-white cursor-none"
                     : "bg-blue-600 text-white hover:bg-blue-500"
                   }`}
                 whileHover={!isLoading && !isSelected ? { scale: 1.05 } : {}}

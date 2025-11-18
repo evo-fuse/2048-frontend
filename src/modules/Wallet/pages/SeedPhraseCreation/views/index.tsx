@@ -54,7 +54,7 @@ export const SeedPhraseCreationView: React.FC = () => {
           disabled={!isCopied}
           className={`w-full h-14 rounded-2xl font-semibold text-white transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] ${isCopied
             ? "bg-gradient-to-r from-cyan-600 to-cyan-800 shadow-lg shadow-cyan-600/25 hover:shadow-cyan-600/40 border border-cyan-400/30"
-            : "bg-cyan-500/10 text-cyan-300/50 cursor-not-allowed border border-cyan-400/20"
+            : "bg-cyan-500/10 text-cyan-300/50 cursor-none border border-cyan-400/20"
             }`}
         >
           Continue
