@@ -38,7 +38,7 @@ export const ImportExistingWalletView: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8">
       {/* Main glass container */}
-      <div className="w-full max-w-2xl backdrop-blur-xl bg-cyan-500/10 border border-cyan-400/30 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
+      <div className="w-full max-w-2xl backdrop-blur-sm bg-cyan-500/10 border border-cyan-400/30 rounded-3xl shadow-2xl p-8 flex flex-col items-center gap-8">
         {/* Header section */}
         <div className="w-full flex flex-col items-center justify-center gap-8">
           <div className="text-3xl font-bold text-white tracking-tight text-center">

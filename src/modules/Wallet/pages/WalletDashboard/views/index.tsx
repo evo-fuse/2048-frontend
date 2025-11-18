@@ -14,7 +14,7 @@ export const WalletDashboardView = () => {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-8">
       {/* Main glass container */}
-      <div className="w-full max-w-md backdrop-blur-xl bg-cyan-500/10 border border-cyan-400/20 rounded-3xl shadow-2xl shadow-cyan-500/20 p-8 flex flex-col items-center gap-8">
+      <div className="w-full max-w-md backdrop-blur-sm bg-cyan-500/10 border border-cyan-400/20 rounded-3xl shadow-2xl shadow-cyan-500/20 p-8 flex flex-col items-center gap-8">
         {/* Header section */}
         <div className="text-center space-y-3">
           <div className="text-4xl font-bold text-white tracking-tight">

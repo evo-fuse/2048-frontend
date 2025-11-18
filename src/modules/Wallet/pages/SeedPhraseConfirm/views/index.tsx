@@ -33,7 +33,7 @@ export const SeedPhraseConfirmView: React.FC = () => {
   return (
     <div className="w-full h-full relative flex flex-col items-center justify-center">
       <motion.div
-        className="max-w-[520px] min-w-[520px] overflow-hidden rounded-3xl bg-cyan-500/10 backdrop-blur-xl border border-cyan-400/30 shadow-2xl flex flex-col items-center justify-center gap-6 px-12 py-10"
+        className="max-w-[520px] min-w-[520px] overflow-hidden rounded-3xl bg-cyan-500/10 backdrop-blur-sm border border-cyan-400/30 shadow-2xl flex flex-col items-center justify-center gap-6 px-12 py-10"
       >
         <div className="w-full flex relative z-20">
           <FaArrowLeft
