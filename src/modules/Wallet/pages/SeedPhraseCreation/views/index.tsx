@@ -6,6 +6,7 @@ import {
   HiOutlineClipboardDocument,
   HiOutlineClipboardDocumentCheck,
 } from "react-icons/hi2";
+import { FaArrowLeft } from "react-icons/fa";
 import { PATH } from "../../../../../const";
 
 export const SeedPhraseCreationView: React.FC = () => {
@@ -21,10 +22,20 @@ export const SeedPhraseCreationView: React.FC = () => {
     </div>
   );
   const handleNext = () => navigate(PATH.WALLET_CREATION + PATH.SEED_CONFIRM);
+  const handleBack = () => {
+    navigate(PATH.WALLET_CREATION);
+  };
 
   return (
     <div className="w-full h-full relative flex flex-col items-center justify-center p-8">
       <div className="max-w-[520px] min-w-[520px] overflow-hidden rounded-3xl bg-cyan-500/10 backdrop-blur-xl border border-cyan-400/30 shadow-2xl flex flex-col items-center justify-center gap-8 px-12 py-10">
+        <div className="w-full flex relative z-20">
+          <FaArrowLeft
+            className="text-cyan-300/80 border-2 border-cyan-400/30 rounded-full p-1 hover:bg-cyan-500/20 hover:text-cyan-200 hover:-translate-x-1 transition"
+            size={28}
+            onClick={handleBack}
+          />
+        </div>
         <div className="text-3xl text-white font-bold tracking-tight text-center">
           Write down your Secret Recovery Phrase
         </div>
