@@ -60,7 +60,7 @@ export const BaseGameLayout: React.FC<BaseGameLayoutProps> = ({ children }) => {
         <div className="flex flex-col gap-4 w-full h-full items-center justify-center p-8">
           <div className="relative w-full h-full overflow-hidden bg-black/20 border border-white/10 rounded-lg p-6">
             {!exist && isRestrictedRoute && (
-              <div className="flex flex-col gap-2 z-20 text-center text-white text-4xl absolute top-0 left-0 w-full h-full items-center justify-center bg-black/50 backdrop-blur-sm">
+              <div className="flex flex-col gap-2 z-50 text-center text-white text-4xl absolute top-0 left-0 w-full h-full items-center justify-center bg-black/50 backdrop-blur-sm">
                 <p>Some features are restricted for non-wallet users.</p>
                 <p>
                   Please create your wallet{" "}
