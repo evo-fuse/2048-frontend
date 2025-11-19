@@ -83,7 +83,7 @@ export const WalletView: React.FC = () => {
   const { content, onClick } = useClipboard(
     user?.address ?? "",
     <HiOutlineClipboardDocument size={20} />,
-    <HiOutlineClipboardDocumentCheck size={20} color="#4ade80" />
+    <HiOutlineClipboardDocumentCheck size={20} color="#22d3ee" />
   );
 
   const handleRefresh = useCallback(() => {
@@ -97,7 +97,7 @@ export const WalletView: React.FC = () => {
       <div className="w-full h-full flex flex-col gap-6">
         {/* Header with gradient accent */}
         <div className="relative flex items-center justify-between">
-          <h2 className="text-2xl font-bold py-6 px-8 border-b border-white/10 flex items-center gap-3 flex-1">
+          <h2 className="text-2xl font-bold py-6 px-8 border-b border-cyan-500/30 flex items-center gap-3 flex-1">
             <img
               src={Images.WalletLogo}
               alt="wallet"
@@ -109,7 +109,7 @@ export const WalletView: React.FC = () => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleRefresh}
-            className={`p-2 rounded-full bg-gray-700/60 text-white mr-8 ${isLoading ? 'animate-spin' : ''}`}
+            className={`p-2 rounded-full bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 mr-8 transition-colors ${isLoading ? 'animate-spin' : ''}`}
             disabled={isLoading}
           >
             <HiOutlineArrowPathRoundedSquare size={20} />
@@ -125,13 +125,13 @@ export const WalletView: React.FC = () => {
             className="grid grid-cols-1 md:grid-cols-2 gap-6"
           >
             <div className="flex flex-col gap-3">
-              <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+              <label className="text-sm font-semibold text-cyan-300 uppercase tracking-wider">
                 Your Address
               </label>
               <motion.div
                 onClick={onClick}
-                whileHover={{ scale: 1.01, backgroundColor: "rgba(31, 41, 55, 0.8)" }}
-                className="text-white text-sm w-full font-medium bg-gray-800/60 px-4 py-3 rounded-lg border border-white/10 transition-all flex items-center justify-between cursor-none"
+                whileHover={{ scale: 1.01, backgroundColor: "rgba(6, 182, 212, 0.15)" }}
+                className="text-white text-sm w-full font-medium bg-cyan-950/30 px-4 py-3 rounded-lg border border-cyan-400/30 transition-all flex items-center justify-between cursor-none"
               >
                 <span className="truncate mr-2">
                   {user?.address}
@@ -141,7 +141,7 @@ export const WalletView: React.FC = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-              <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+              <label className="text-sm font-semibold text-cyan-300 uppercase tracking-wider">
                 Network
               </label>
               <Select
@@ -197,29 +197,29 @@ export const WalletView: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="flex flex-col gap-3"
           >
-            <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+            <label className="text-sm font-semibold text-cyan-300 uppercase tracking-wider">
               Assets
             </label>
 
             {isLoading ? (
               <div className="w-full h-[200px] flex items-center justify-center">
-                <div className="animate-pulse text-white/50">Loading balances...</div>
+                <div className="animate-pulse text-cyan-400/70">Loading balances...</div>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {mainNet === "FUSE" && (
                   <motion.div
                     whileHover={{ scale: 1.02 }}
-                    className="w-full flex items-center justify-between bg-gray-800/60 p-4 rounded-lg border border-white/10 shadow-md"
+                    className="w-full flex items-center justify-between bg-cyan-950/30 p-4 rounded-lg border border-cyan-400/30 shadow-md shadow-cyan-500/10"
                   >
                     <div className="flex items-center gap-3">
                       <img src={Images.DWAT} className="w-8 h-8 rounded-full" />
                       <div className="flex flex-col">
                         <span className="text-white text-lg">DWAT</span>
-                        <span className="text-white/60 text-xs">Game Token</span>
+                        <span className="text-cyan-300/60 text-xs">Game Token</span>
                       </div>
                     </div>
-                    <div className="text-white text-xl font-bold">
+                    <div className="text-cyan-400 text-xl font-bold">
                       {userBalance || "0.00"}
                     </div>
                   </motion.div>
@@ -227,48 +227,48 @@ export const WalletView: React.FC = () => {
 
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="w-full flex items-center justify-between bg-gray-800/60 p-4 rounded-lg border border-white/10 shadow-md"
+                  className="w-full flex items-center justify-between bg-cyan-950/30 p-4 rounded-lg border border-cyan-400/30 shadow-md shadow-cyan-500/10"
                 >
                   <div className="flex items-center gap-3">
                     {tokenList[mainNet].native.icon}
                     <div className="flex flex-col">
                       <span className="text-white text-lg">{tokenList[mainNet].native.unit}</span>
-                      <span className="text-white/60 text-xs">Native Token</span>
+                      <span className="text-cyan-300/60 text-xs">Native Token</span>
                     </div>
                   </div>
-                  <div className="text-white text-xl font-bold">
+                  <div className="text-cyan-400 text-xl font-bold">
                     {balance.native || "0.00"}
                   </div>
                 </motion.div>
 
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="w-full flex items-center justify-between bg-gray-800/60 p-4 rounded-lg border border-white/10 shadow-md"
+                  className="w-full flex items-center justify-between bg-cyan-950/30 p-4 rounded-lg border border-cyan-400/30 shadow-md shadow-cyan-500/10"
                 >
                   <div className="flex items-center gap-3">
                     {tokenList[mainNet].usdt.icon}
                     <div className="flex flex-col">
                       <span className="text-white text-lg">{tokenList[mainNet].usdt.unit}</span>
-                      <span className="text-white/60 text-xs">Stablecoin</span>
+                      <span className="text-cyan-300/60 text-xs">Stablecoin</span>
                     </div>
                   </div>
-                  <div className="text-white text-xl font-bold">
+                  <div className="text-cyan-400 text-xl font-bold">
                     {balance.usdt || "0.00"}
                   </div>
                 </motion.div>
 
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="w-full flex items-center justify-between bg-gray-800/60 p-4 rounded-lg border border-white/10 shadow-md"
+                  className="w-full flex items-center justify-between bg-cyan-950/30 p-4 rounded-lg border border-cyan-400/30 shadow-md shadow-cyan-500/10"
                 >
                   <div className="flex items-center gap-3">
                     {tokenList[mainNet].usdc.icon}
                     <div className="flex flex-col">
                       <span className="text-white text-lg">{tokenList[mainNet].usdc.unit}</span>
-                      <span className="text-white/60 text-xs">Stablecoin</span>
+                      <span className="text-cyan-300/60 text-xs">Stablecoin</span>
                     </div>
                   </div>
-                  <div className="text-white text-xl font-bold">
+                  <div className="text-cyan-400 text-xl font-bold">
                     {balance.usdc || "0.00"}
                   </div>
                 </motion.div>
