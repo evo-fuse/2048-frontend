@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuthContext } from "../../../../../context";
 import { GameStats, GameGrid, GameControls, HelpModal, ErrorModal } from "../components";
 import { useGameLogic } from "../hooks/useGameLogic";
+import { Images } from "../../../../../assets/images";
 
 export const BlockBingoView = () => {
     const { user } = useAuthContext();
@@ -53,10 +54,13 @@ export const BlockBingoView = () => {
                 {/* Main Game Area */}
                 <div className="flex-1 flex flex-col gap-6">
                     {/* Header */}
-                    <div className="relative">
-                        <h2 className="text-2xl font-bold py-6 px-8 border-b border-white/10">
-                            Block Bingo
-                        </h2>
+                    <div className="flex w-full relative items-center justify-between border-b border-white/10">
+                        <div className="flex items-center gap-6 pl-8">
+                            <img src={Images.BLOCKBINGO} alt="BlockBingo" className="w-16 h-16 object-cover" />
+                            <h2 className="3xs:text-base sm:text-2xl font-bold py-6">
+                                Block Bingo
+                            </h2>
+                        </div>
                     </div>
 
                     {/* Game Stats */}

@@ -4,7 +4,6 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 import { Theme, TileImg } from "../../../../../types";
 import {
   LoadingModal,
-  TabButton,
   ThemeItem,
   ThemeItemSkeleton,
   CreateThemeButton,
@@ -12,6 +11,8 @@ import {
   ThemeDetailModal,
 } from "../components";
 import { ThemeFormData } from "../types";
+import { Tabs } from "../../../../../components/Tab";
+import { IoListOutline, IoStarOutline, IoGlobeOutline, IoLockClosedOutline } from "react-icons/io5";
 
 export const ThemeView = () => {
   const { themes, selectedTheme, setSelectedTheme, setThemes, getThemes } =
@@ -189,32 +190,18 @@ export const ThemeView = () => {
         className="flex flex-col items-start justify-start flex-wrap w-full h-full gap-2 text-white"
       >
         {/* Tab Navigation */}
-        <div className="flex items-center gap-2 border-b border-white/10 w-full">
-          <TabButton
-            active={activeTab === "mylist"}
-            onClick={() => handleTabChange("mylist")}
-          >
-            My List
-          </TabButton>
-          <TabButton
-            active={activeTab === "premium"}
-            onClick={() => handleTabChange("premium")}
-          >
-            Premium
-          </TabButton>
-          <TabButton
-            active={activeTab === "public"}
-            onClick={() => handleTabChange("public")}
-          >
-            Public
-          </TabButton>
-          <TabButton
-            active={activeTab === "private"}
-            onClick={() => handleTabChange("private")}
-          >
-            Private
-          </TabButton>
-        </div>
+        <Tabs
+          tabs={[
+            { id: "mylist", label: "My List", icon: IoListOutline },
+            { id: "premium", label: "Premium", icon: IoStarOutline },
+            { id: "public", label: "Public", icon: IoGlobeOutline },
+            { id: "private", label: "Private", icon: IoLockClosedOutline },
+          ]}
+          selectedTab={activeTab}
+          setSelectedTab={handleTabChange}
+          className="mb-2 3xs:mb-2.5 xs:mb-3 sm:mb-3.5 md:mb-4 lg:mb-4"
+          tabsContainerClassName="text-white overflow-x-auto flex-nowrap"
+        />
 
         {/* Tab Content */}
         <div className="w-full overflow-hidden">
