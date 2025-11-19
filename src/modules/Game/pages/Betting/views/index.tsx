@@ -118,10 +118,10 @@ export const BettingView: React.FC = () => {
     const isBlockBingoSelected = useMemo(() => selectedGame === 'BlockBingo', [selectedGame]);
 
     const gameButtonClasses = useMemo(() => {
-        const base = "relative p-0 rounded-2xl border-2 transition-all duration-300 cursor-none object-cover overflow-hidden";
+        const base = "relative p-0 rounded-2xl transition-all duration-300 cursor-none object-cover overflow-hidden";
         return isBlockBingoSelected
-            ? `${base} border-cyan-500 bg-cyan-600/20 shadow-lg shadow-cyan-500/50`
-            : `${base} border-gray-600 bg-gray-800/40 hover:border-gray-500 hover:bg-gray-800/60`;
+            ? `${base} bg-cyan-600/20 shadow-lg shadow-cyan-500/50`
+            : `${base} bg-gray-800/40 hover:bg-gray-800/60`;
     }, [isBlockBingoSelected]);
 
     return (
