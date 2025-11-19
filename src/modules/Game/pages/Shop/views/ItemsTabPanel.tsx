@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { TabPanel } from "../../../../../components/Tab";
 import { FaSpinner } from "react-icons/fa";
-import { ShopItem } from "../components";
+import { ShopItem, PurchaseSuccessModal } from "../components";
 import { Images } from "../../../../../assets/images";
 import { User } from "../../../../../types";
 import { useAuthContext } from "../../../../../context";
@@ -36,6 +36,8 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
     powerup: 0,
     upgrade: 0,
   });
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [purchasedItems, setPurchasedItems] = useState<Array<{ name: string; quantity: number }>>([]);
 
   const totalCost = useMemo(() => {
     return items.hammer * 50 + items.powerup * 150 + items.upgrade * 200;
@@ -69,7 +71,16 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
         ...updateItems,
       });
       setUser({ ...user, ...updateItems });
+
+      // Prepare purchased items for modal
+      const purchased = [];
+      if (items.hammer > 0) purchased.push({ name: "Hammers", quantity: items.hammer });
+      if (items.upgrade > 0) purchased.push({ name: "Tile Upgrades", quantity: items.upgrade });
+      if (items.powerup > 0) purchased.push({ name: "Power Boosts", quantity: items.powerup });
+      setPurchasedItems(purchased);
+
       setItems({ hammer: 0, powerup: 0, upgrade: 0 });
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error(error);
     } finally {
@@ -81,9 +92,9 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
     <TabPanel
       id="Items"
       selectedTab={selectedTab}
-      className="w-full px-2"
+      className="w-full"
     >
-      <div className="w-full h-full flex flex-col gap-2 px-4 py-2 overflow-auto">
+      <div className="w-full h-full flex flex-col gap-2 overflow-auto">
         <div className="w-full flex flex-col gap-5">
           {/* Hammers Section */}
           <ShopItem
@@ -136,19 +147,29 @@ export const ItemsTabPanel: React.FC<ItemsTabPanelProps> = ({
               disabled={totalCost === 0 || totalCost > userBalance || isLoading}
               onClick={handlePurchaseItems}
             >
-              <MdOutlineShoppingCart size={24} />
               {isLoading ? (
                 <div className="w-full flex items-center justify-center gap-2">
                   <FaSpinner className="animate-spin" />
+                  <MdOutlineShoppingCart size={24} />
                   Purchasing...
                 </div>
               ) : (
-                "Purchase Items"
+                <div className="w-full flex items-center justify-center gap-2">
+                  <MdOutlineShoppingCart size={24} />
+                  Purchase Items
+                </div>
               )}
             </button>
           </div>
         </div>
       </div>
+
+      <PurchaseSuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        title="Items Purchased Successfully!"
+        items={purchasedItems}
+      />
     </TabPanel>
   );
 }; 

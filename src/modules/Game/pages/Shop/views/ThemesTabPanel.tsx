@@ -127,10 +127,10 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
 
   return (
     <>
-      <TabPanel id="Themes" selectedTab={selectedTab} className="w-full px-2">
+      <TabPanel id="Themes" selectedTab={selectedTab} className="w-full">
         <div
           ref={scrollRef}
-          className="w-full h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6 px-4 py-2"
+          className="w-full h-full overflow-y-auto overflow-x-hidden flex flex-col gap-6"
           style={{
             scrollbarWidth: "none",
             msOverflowStyle: "none",
@@ -165,7 +165,7 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
                   {!theme.owned && (
                     <div className="w-full flex justify-end mt-auto">
                       <button
-                        className="max-w-min text-nowrap bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-4 rounded-md transition-colors cursor-none"
+                        className="max-w-min text-nowrap bg-cyan-500/80 hover:bg-cyan-400/80 text-white font-bold py-2 px-4 rounded-md transition-colors cursor-none"
                         onClick={() => handleBuyClick(theme)}
                       >
                         Buy {theme.price}$

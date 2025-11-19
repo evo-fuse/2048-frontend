@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { TabPanel } from "../../../../../components/Tab";
 import { FaArrowRight } from "react-icons/fa";
-import { GridUpgradeItem } from "../components";
+import { GridUpgradeItem, PurchaseSuccessModal } from "../components";
 import { User } from "../../../../../types";
 
 interface GridTabPanelProps {
@@ -27,6 +27,8 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
 }) => {
   const gridRows = user?.rows || 4;
   const gridCols = user?.cols || 4;
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [gridUpgradeInfo, setGridUpgradeInfo] = useState({ oldSize: "", newSize: "" });
 
   const handleBuyGrid = async () => {
     try {
@@ -38,15 +40,28 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
       }
 
       await buyItemsWithGameTokens(price);
+
+      const oldCols = user.cols || 4;
+      const oldRows = user.rows || 4;
+      const newCols = oldCols + 1;
+      const newRows = oldRows + 1;
+
       await handleUpdateUser({
-        cols: (user.cols || 4) + 1,
-        rows: (user.rows || 4) + 1,
+        cols: newCols,
+        rows: newRows,
       });
       setUser({
         ...user,
-        cols: (user.cols || 4) + 1,
-        rows: (user.rows || 4) + 1,
+        cols: newCols,
+        rows: newRows,
       });
+
+      // Set grid info for modal
+      setGridUpgradeInfo({
+        oldSize: `${oldRows}x${oldCols}`,
+        newSize: `${newRows}x${newCols}`,
+      });
+      setIsSuccessModalOpen(true);
     } catch (error) {
       console.error(error);
     } finally {
@@ -58,16 +73,16 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
     <TabPanel
       id="Grid"
       selectedTab={selectedTab}
-      className="w-full px-2"
+      className="w-full"
     >
-      <div className="w-full h-full flex flex-col gap-4 p-4 overflow-auto">
+      <div className="w-full h-full flex flex-col gap-4 overflow-auto">
         <div className="w-full flex flex-col gap-6">
           {/* Grid Columns Upgrade */}
           <GridUpgradeItem
             icon={
               <FaArrowRight className="absolute text-white rotate-45" size={36} />
             }
-            title="ExpandGrid Size"
+            title="Expand Grid Size"
             price={2 ** ((user?.cols || 4) + 1) * 100}
             currentValue={gridCols}
             description="Add an additional column to your game grid."
@@ -79,6 +94,13 @@ export const GridTabPanel: React.FC<GridTabPanelProps> = ({
           />
         </div>
       </div>
+
+      <PurchaseSuccessModal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        title="Grid Upgraded Successfully!"
+        gridInfo={gridUpgradeInfo}
+      />
     </TabPanel>
   );
 }; 

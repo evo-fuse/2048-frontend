@@ -310,7 +310,6 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
         })
         .then((receipt) => {
           console.log("Transaction receipt:", receipt);
-          Toast.success("Congratulations!", successMessage);
           resolve({
             transactionHash: receipt.transactionHash,
             from: receipt.from,
@@ -447,7 +446,6 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
           account.privateKey
         );
         await web3_2.eth.sendSignedTransaction(signedTx.rawTransaction!);
-        Toast.success("Congratulations!", "Paid successfully!");
       } catch (error: any) {
         console.error("Transaction failed:", error);
         if (error.message.includes("cannot pay gas")) {

@@ -55,7 +55,7 @@ export const ShopView: React.FC = () => {
   return (
     <>
       {/* User's coin balance display */}
-      <div className="absolute top-12 right-14 flex items-center gap-2">
+      <div className="absolute top-9 right-14 flex items-center gap-2">
         <img src={Images.DWAT} className="w-6 h-6 rounded-full" />
         <span className="text-white font-bold text-2xl">{userBalance} DWAT</span>
       </div>

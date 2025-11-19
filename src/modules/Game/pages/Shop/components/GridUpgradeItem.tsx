@@ -69,7 +69,7 @@ export const GridUpgradeItem: React.FC<GridUpgradeItemProps> = ({
       <div className="flex items-center justify-end">
         <button
           className={`${
-            canAfford ? "bg-white/20 hover:bg-white/30" : "bg-white/30 opacity-50"
+            canAfford ? "bg-cyan-500/80 hover:bg-cyan-400/80" : "bg-cyan-700 opacity-50"
           } 
             text-white rounded px-6 py-2 transition-colors font-bold cursor-none`}
           onClick={onUpgrade}

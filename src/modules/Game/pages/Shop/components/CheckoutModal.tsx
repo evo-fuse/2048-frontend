@@ -137,7 +137,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         </div>
 
         <button
-          className="w-full bg-white/20 hover:bg-white/30 text-white font-bold py-3 rounded-md transition-colors disabled:bg-gray-700 disabled:opacity-50 cursor-none"
+          className="w-full bg-cyan-500/80 hover:bg-cyan-400/80 text-white font-bold py-3 rounded-md transition-colors disabled:bg-cyan-700 disabled:opacity-50 cursor-none"
           onClick={handlePurchase}
           disabled={
             isLoading ||
