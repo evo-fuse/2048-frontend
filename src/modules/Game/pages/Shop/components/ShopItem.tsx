@@ -18,7 +18,7 @@ export const ShopItem: React.FC<ShopItemProps> = ({
   onQuantityChange,
 }) => {
   return (
-    <div className="bg-cyan-900/30 rounded-lg p-4 border border-cyan-400/20">
+    <div className="bg-gradient-to-br from-cyan-500/5 to-purple-500/5 backdrop-blur-sm rounded-lg p-4 border border-cyan-500/20">
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2">
           <span className="text-xl">{icon}</span>

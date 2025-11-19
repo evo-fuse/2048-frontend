@@ -242,7 +242,7 @@ const ProfileItem: React.FC<ProfileItemProps> = ({
   };
 
   return (
-    <div className={`bg-cyan-900/80 rounded-xl shadow-lg border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-xl transition-all duration-300 backdrop-blur-sm ${itemStyles.padding} group`}>
+    <div className={`bg-gradient-to-br from-cyan-500/5 to-purple-500/5 backdrop-blur-sm rounded-xl shadow-lg border border-cyan-500/20 hover:border-cyan-500/40 hover:shadow-xl transition-all duration-200 ${itemStyles.padding} group`}>
       <div className={`text-cyan-300 ${itemStyles.labelSize} font-medium uppercase tracking-wide mb-2`}>
         {label}
       </div>

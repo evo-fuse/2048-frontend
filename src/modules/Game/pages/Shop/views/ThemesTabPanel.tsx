@@ -37,7 +37,7 @@ const ThemeImage: React.FC<ThemeImageProps> = ({ src, alt, className }) => {
 
 const ThemeItemCardSkeleton: React.FC = () => {
   return (
-    <div className="relative w-full flex gap-3 bg-gray-800/40 p-4 rounded-lg border border-white/10">
+    <div className="relative w-full flex gap-3 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 backdrop-blur-sm p-4 rounded-lg border border-cyan-500/20">
       <div className="min-w-[128px] h-[128px] bg-white/10 rounded-lg animate-pulse" />
       <div className="flex flex-col gap-2 flex-1">
         <div className="h-6 w-32 bg-white/10 rounded animate-pulse" />
@@ -144,7 +144,7 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
             themes.map((theme) => (
               <motion.div
                 key={theme.uuid}
-                className="relative w-full flex gap-3 bg-gray-800/40 p-4 rounded-lg border border-white/10 hover:border-white/30 transition-all"
+                className="relative w-full flex gap-3 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 backdrop-blur-sm p-4 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 transition-all"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
                 style={{ pointerEvents: "auto" }}
