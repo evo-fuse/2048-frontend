@@ -3,6 +3,7 @@ import Modal from "../../../../../components/Modal";
 import { Theme, TileImg } from "../../../../../types";
 import { FaSpinner } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import { IoImageOutline } from "react-icons/io5";
 
 interface ThemeDetailModalProps {
   isOpen: boolean;
@@ -151,8 +152,26 @@ export const ThemeDetailModal: React.FC<ThemeDetailModalProps> = ({
                               />
                             </>
                           ) : (
-                            <div className="min-w-16 min-h-16 rounded-md bg-gray-700 flex items-center justify-center text-xs text-gray-400">
-                              No image
+                            <div className="w-full h-full min-h-full aspect-square rounded-md bg-gradient-to-br from-cyan-900/30 via-cyan-800/20 to-cyan-900/30 border-2 border-dashed border-cyan-400/30 flex flex-col items-center justify-center gap-1 2xs:gap-1.5 relative overflow-hidden">
+                              <motion.div
+                                className="absolute inset-0"
+                                style={{
+                                  background: "linear-gradient(90deg, transparent 0%, rgba(6,182,212,0.15) 50%, transparent 100%)",
+                                  transform: "translateX(-100%)",
+                                }}
+                                animate={{
+                                  transform: ["translateX(-100%)", "translateX(200%)"],
+                                }}
+                                transition={{
+                                  duration: 2,
+                                  repeat: Infinity,
+                                  ease: "linear",
+                                }}
+                              />
+                              <IoImageOutline className="text-cyan-300/50 z-10" size={20} />
+                              <span className="text-[8px] 2xs:text-[10px] xs:text-xs text-cyan-300/60 font-medium z-10">
+                                No image
+                              </span>
                             </div>
                           )}
                         </div>
@@ -206,21 +225,13 @@ export const ThemeDetailModal: React.FC<ThemeDetailModalProps> = ({
               transition={{ delay: 0.3, duration: 0.3 }}
             >
               <motion.button
-                onClick={onClose}
-                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Close
-              </motion.button>
-              <motion.button
                 onClick={handleApplyTheme}
                 disabled={isLoading || isSelected}
                 className={`px-4 py-2 rounded-md transition-colors flex items-center gap-2 ${isSelected
                   ? "bg-green-700 text-white cursor-none"
                   : isLoading
-                    ? "bg-blue-700 text-white cursor-none"
-                    : "bg-blue-600 text-white hover:bg-blue-500"
+                    ? "bg-cyan-700 text-white cursor-none"
+                    : "bg-cyan-600 text-white hover:bg-cyan-500"
                   }`}
                 whileHover={!isLoading && !isSelected ? { scale: 1.05 } : {}}
                 whileTap={!isLoading && !isSelected ? { scale: 0.95 } : {}}
