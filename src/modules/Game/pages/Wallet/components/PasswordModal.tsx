@@ -41,7 +41,6 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
         body: (
           <ShowPrivateKey
             handleGetPrivateKey={handleGetPrivateKey}
-            onClose={onClose}
           />
         ),
         width: "max-w-2xl",

@@ -6,12 +6,10 @@ import { useClipboard } from "../../../../../hooks";
 
 interface ShowPrivateKeyProps {
   handleGetPrivateKey: (password: string) => Promise<any>;
-  onClose: () => void;
 }
 
 export const ShowPrivateKey: React.FC<ShowPrivateKeyProps> = ({
   handleGetPrivateKey,
-  onClose,
 }) => {
   const [password, setPassword] = useState("");
   const [privateKey, setPrivateKey] = useState("");
@@ -19,14 +17,14 @@ export const ShowPrivateKey: React.FC<ShowPrivateKeyProps> = ({
 
   // Create the content outside the hook
   const normalContent = (
-    <div className="text-cyan-400 flex items-center gap-2">
-      <HiOutlineClipboardDocument size={24} />
+    <div className="text-white flex items-center gap-2">
+      <HiOutlineClipboardDocument size={24} /> Copy Private Key
     </div>
   );
 
   const copiedContent = (
-    <div className="text-cyan-400 flex items-center gap-2">
-      <HiOutlineClipboardDocumentCheck size={24} />
+    <div className="text-white flex items-center gap-2">
+      <HiOutlineClipboardDocumentCheck size={24} /> Copied Private Key
     </div>
   );
 
@@ -50,17 +48,15 @@ export const ShowPrivateKey: React.FC<ShowPrivateKeyProps> = ({
       {privateKey ? (
         <>
           <div
-            className="flex items-center justify-between text-cyan-100"
-            onClick={onClick}
+            className="flex items-center justify-center text-cyan-100 text-sm"
           >
             {privateKey}
-            {content}
           </div>
           <button
-            onClick={onClose}
-            className="w-full h-10 rounded-md bg-cyan-600/60 px-3 py-1 text-white disabled:opacity-50 disabled:hover:bg-cyan-600/60 hover:bg-cyan-600/80 transition-colors cursor-none"
+            onClick={onClick}
+            className="w-full h-10 rounded-md bg-cyan-600/60 px-3 py-1 text-white disabled:opacity-50 disabled:hover:bg-cyan-600/60 hover:bg-cyan-600/80 transition-colors cursor-none flex justify-center"
           >
-            Close
+            {content}
           </button>
         </>
       ) : (
