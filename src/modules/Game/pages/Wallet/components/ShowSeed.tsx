@@ -7,18 +7,16 @@ import { useClipboard } from "../../../../../hooks";
 
 interface ShowSeedProps {
   handleGetSeed: (password: string) => Promise<any>;
-  onClose: () => void;
 }
 export const ShowSeed: React.FC<ShowSeedProps> = ({
   handleGetSeed,
-  onClose,
 }) => {
   const [password, setPassword] = useState("");
   const [seed, setSeed] = useState("");
   const [error, setError] = useState("");
   const { onClick, content } = useClipboard(
     seed,
-    <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-600 hover:text-cyan-500 transition-colors shadow-lg shadow-cyan-500/30 cursor-none">
+    <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-600 hover:text-cyan-500 transition-colors cursor-none">
       <HiOutlineClipboardDocument size={24} /> Copy Seed Phrase
     </div>,
     <div className="flex items-center gap-2 px-4 py-2 rounded-md text-cyan-500">
@@ -54,12 +52,6 @@ export const ShowSeed: React.FC<ShowSeedProps> = ({
           >
             {content}
           </div>
-          <button
-            onClick={onClose}
-            className="w-full h-10 rounded-md bg-cyan-600 hover:bg-cyan-500 px-3 py-1 text-white transition-colors shadow-lg shadow-cyan-500/30 border border-cyan-400/30"
-          >
-            Close
-          </button>
         </>
       ) : (
         <form className="flex flex-col gap-2" onSubmit={handleSeed}>

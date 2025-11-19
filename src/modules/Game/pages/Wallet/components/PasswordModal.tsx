@@ -48,10 +48,7 @@ export const PasswordModal: React.FC<PasswordModalProps> = ({
       },
       [WalletItem.ShowSeed]: {
         body: (
-          <ShowSeed
-            handleGetSeed={handleGetSeed}
-            onClose={onClose}
-          />
+          <ShowSeed handleGetSeed={handleGetSeed} />
         ),
         width: "max-w-lg",
       },
