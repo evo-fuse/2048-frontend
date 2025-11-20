@@ -2,7 +2,7 @@ import { useAuthContext, useRecordContext } from "../../../../../../context";
 import Modal from "../../../../../../components/Modal";
 import { useMemo, useState, useEffect } from "react";
 import { IoMdDownload } from "react-icons/io";
-import { MdFileUpload } from "react-icons/md";
+import { MdCheck, MdFileUpload } from "react-icons/md";
 import api from "../../../../../../utils/api";
 
 interface RecordModalProps {
@@ -22,6 +22,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
 }) => {
   const { activity, setActivity } = useRecordContext();
   const [uploading, setUploading] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
   const { user, handleExistWallet } = useAuthContext();
   const [walletExists, setWalletExists] = useState(false);
 
@@ -30,6 +31,8 @@ const RecordModal: React.FC<RecordModalProps> = ({
       handleExistWallet().then((exists) => {
         setWalletExists(exists);
       });
+      // Reset upload success state when modal opens
+      setUploadSuccess(false);
     }
   }, [isOpen, handleExistWallet]);
 
@@ -80,7 +83,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
         ...recordData,
         playHistory: JSON.stringify(activity),
       });
-      alert("Recording uploaded successfully!");
+      setUploadSuccess(true);
     } catch (error) {
       console.error("Error uploading recording:", error);
       alert("Failed to upload recording. Please try again.");
@@ -124,10 +127,10 @@ const RecordModal: React.FC<RecordModalProps> = ({
           <button
             onClick={handleUploadToServer}
             className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-cyan-400/20 bg-cyan-900/20 hover:bg-cyan-800/40 disabled:opacity-50 cursor-none"
-            disabled={uploading || activity.length === 0 || !walletExists}
+            disabled={uploading || activity.length === 0 || !walletExists || uploadSuccess}
           >
-            <MdFileUpload />
-            {uploading ? "Uploading..." : "Save on Online"}
+            {uploadSuccess ? <MdCheck /> : <MdFileUpload />}
+            {uploading ? "Uploading..." : uploadSuccess ? "Saved" : "Save on Online"}
           </button>
         </div>
       </div>

@@ -145,7 +145,6 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
               <motion.div
                 key={theme.uuid}
                 className="relative w-full flex gap-3 bg-gradient-to-br from-cyan-500/5 to-purple-500/5 backdrop-blur-sm p-4 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 transition-all"
-                whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.2 }}
                 style={{ pointerEvents: "auto" }}
               >
