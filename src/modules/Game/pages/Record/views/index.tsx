@@ -16,6 +16,7 @@ import { TbFileSearch, TbWorld } from "react-icons/tb";
 import { SlCamrecorder } from "react-icons/sl";
 import { IoIosMove } from "react-icons/io";
 import { BsSpeedometer2 } from "react-icons/bs";
+import { FaUser, FaTrophy, FaClock, FaCalendar } from "react-icons/fa";
 
 export const RecordView: React.FC = () => {
   const { replay, setReplay, setMetadata, metadata } = useRecordContext();
@@ -389,31 +390,46 @@ export const RecordView: React.FC = () => {
               </h3>
               <div className="space-y-2">
                 <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
-                  <div className="text-xs text-cyan-300 mb-1">Player</div>
+                  <div className="text-xs text-cyan-300 mb-1 flex items-center gap-1.5">
+                    <FaUser className="text-cyan-400" size={12} />
+                    Player
+                  </div>
                   <div className="text-white text-xs font-medium truncate">
                     {metadata?.user.address}
                   </div>
                 </div>
                 <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
-                  <div className="text-xs text-cyan-300 mb-1">Score</div>
+                  <div className="text-xs text-cyan-300 mb-1 flex items-center gap-1.5">
+                    <FaTrophy className="text-cyan-400" size={12} />
+                    Score
+                  </div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.score.toLocaleString()}
                   </div>
                 </div>
                 <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
-                  <div className="text-xs text-cyan-300 mb-1">Moves</div>
+                  <div className="text-xs text-cyan-300 mb-1 flex items-center gap-1.5">
+                    <IoIosMove className="text-cyan-400" size={14} />
+                    Moves
+                  </div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.move}
                   </div>
                 </div>
                 <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
-                  <div className="text-xs text-cyan-300 mb-1">Duration</div>
+                  <div className="text-xs text-cyan-300 mb-1 flex items-center gap-1.5">
+                    <FaClock className="text-cyan-400" size={12} />
+                    Duration
+                  </div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.playTime}
                   </div>
                 </div>
                 <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
-                  <div className="text-xs text-cyan-300 mb-1">Date</div>
+                  <div className="text-xs text-cyan-300 mb-1 flex items-center gap-1.5">
+                    <FaCalendar className="text-cyan-400" size={12} />
+                    Date
+                  </div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.date}
                   </div>

@@ -9,26 +9,6 @@ import { FaUser, FaChartLine, FaBox, FaPalette, FaTrophy } from "react-icons/fa"
 import { PiTarget } from "react-icons/pi";
 import { BsGrid3X3Gap } from "react-icons/bs";
 import { useGameContext } from "../../../context";
-import { css } from "@emotion/css";
-
-const themesScrollbarStyles = css`
-  &::-webkit-scrollbar {
-    height: 4px;
-    background-color: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: rgba(6, 182, 212, 0.5);
-    border-radius: 4px;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(6, 182, 212, 0.7);
-  }
-
-  scrollbar-width: thin;
-  scrollbar-color: rgba(6, 182, 212, 0.5) transparent;
-`;
 
 type ScreenSize = 'mobile' | 'tablet' | 'laptop' | 'desktop';
 
@@ -58,7 +38,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ title, icon, children, 
 
 export const ProfileView: React.FC = () => {
   const { user } = useAuthContext();
-  const { createdThemes, getCreatedThemes } = useGameContext();
+  const { getCreatedThemes } = useGameContext();
   const { userBalance, getBalance } = useWeb3Context();
   const [screenSize, setScreenSize] = useState<ScreenSize>(getScreenSize(window.innerWidth));
 
@@ -129,7 +109,7 @@ export const ProfileView: React.FC = () => {
   );
 
   return (
-    <div className={`flex flex-col w-full h-full items-center justify-start text-white ${isMobile || isTablet ? `overflow-y-auto ${themesScrollbarStyles}` : 'overflow-hidden'}`}>
+    <div className={`flex flex-col w-full h-full items-center justify-start text-white ${isMobile || isTablet ? `overflow-y-auto` : 'overflow-hidden'}`}>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -165,7 +145,7 @@ export const ProfileView: React.FC = () => {
 
           {/* Laptop & Desktop Layout - Horizontal 3 Columns */}
           {!isMobile && !isTablet && (
-            <div className="grid grid-cols-3 gap-6 mb-6 flex-shrink-0">
+            <div className="grid grid-cols-3 gap-6 flex-shrink-0">
               <ProfileSection title="Game Statistics" icon={<FaChartLine />}>
                 <div className="flex flex-col space-y-4">{renderGameStats()}</div>
               </ProfileSection>
@@ -197,12 +177,20 @@ export const ProfileView: React.FC = () => {
             <FaPalette />
             Latest Created Themes
           </div>
-          <div className={`w-full flex flex-wrap ${styles.themeGap} ${isMobile ? '' : 'overflow-y-auto overflow-x-hidden'} pb-2 ${isMobile ? '' : 'flex-1 min-h-0'} ${themesScrollbarStyles}`}>
-            {createdThemes.map((theme, index) => (
+          <div className={`w-full flex flex-wrap ${styles.themeGap} ${isMobile ? '' : 'overflow-y-auto overflow-x-hidden'} pb-2 ${isMobile ? '' : 'flex-1 min-h-0'}`}>
+            {/* {createdThemes.map((theme, index) => (
               <img
                 key={`${theme.uuid}-${index}`}
                 src={theme[2].sm}
                 alt={theme.title}
+                className={`${styles.themeSize} object-cover rounded-md`}
+              />
+            ))} */}
+            {new Array(10).fill(0).map((_, index) => (
+              <img
+                key={`theme-${index}`}
+                src={`https://i.ibb.co/23YwLh4m/1.png`}
+                alt={`Theme ${index}`}
                 className={`${styles.themeSize} object-cover rounded-md`}
               />
             ))}

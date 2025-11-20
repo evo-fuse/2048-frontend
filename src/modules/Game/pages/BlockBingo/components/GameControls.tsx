@@ -135,8 +135,8 @@ export const GameControls = ({
     };
 
     return (
-        <div className="w-80 flex flex-col gap-6 h-full overflow-y-auto pr-2">
-            <div className="bg-gray-900/50 border border-white/10 rounded-xl p-6 flex flex-col gap-4 flex-shrink-0">
+        <div className="w-80 flex flex-col gap-6 h-full overflow-y-auto px-2">
+            <div className="bg-gray-900/50 border border-white/10 rounded-xl p-6 flex flex-col gap-4">
                 <h3 className="text-xl font-bold border-b border-white/10 pb-3">Game Controls</h3>
 
                 {gameState === "idle" && (
@@ -185,13 +185,10 @@ export const GameControls = ({
                                 <span>Bet Amount</span>
                             </div>
                             <input
-                                type="number"
                                 className="w-full px-4 py-3 rounded-lg bg-gray-800/80 border border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
                                 placeholder="0.00"
                                 value={depositAmount}
-                                onChange={(e) => onDepositAmountChange(e.target.value)}
-                                min="0"
-                                step="0.1"
+                                onChange={(e) => onDepositAmountChange(isNaN(Number(e.target.value)) ? depositAmount : e.target.value)}
                             />
                         </div>
 

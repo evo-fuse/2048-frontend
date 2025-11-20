@@ -20,7 +20,7 @@ export const CustomCursor = () => {
 
     const updatePosition = (e: Event) => {
       if (e instanceof MouseEvent) {
-        setPosition({ x: e.clientX, y: e.clientY });
+        setPosition({ x: e.clientX - 8, y: e.clientY });
       }
     };
 
