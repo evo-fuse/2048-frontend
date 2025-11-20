@@ -23,6 +23,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
   const { activity, setActivity } = useRecordContext();
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [exportSuccess, setExportSuccess] = useState(false);
   const { user, handleExistWallet } = useAuthContext();
   const [walletExists, setWalletExists] = useState(false);
 
@@ -33,6 +34,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
       });
       // Reset upload success state when modal opens
       setUploadSuccess(false);
+      setExportSuccess(false);
     }
   }, [isOpen, handleExistWallet]);
 
@@ -58,22 +60,55 @@ const RecordModal: React.FC<RecordModalProps> = ({
     onClose();
   };
 
-  const handleExportJson = () => {
+  const handleExportJson = async () => {
     const dataStr = JSON.stringify(recordData);
-    const dataUri =
-      "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
-
     const exportFileName = `game-recording-${new Date()
       .toISOString()
       .slice(0, 10)}.json`;
 
-    const linkElement = document.createElement("a");
-    linkElement.setAttribute("href", dataUri);
-    linkElement.setAttribute("download", exportFileName);
-    linkElement.style.display = "none";
-    document.body.appendChild(linkElement);
-    linkElement.click();
-    document.body.removeChild(linkElement);
+    // Try to use the File System Access API if available (modern browsers)
+    if ('showSaveFilePicker' in window) {
+      try {
+        const handle = await (window as any).showSaveFilePicker({
+          suggestedName: exportFileName,
+          types: [
+            {
+              description: 'JSON Files',
+              accept: { 'application/json': ['.json'] },
+            },
+          ],
+        });
+
+        const writable = await handle.createWritable();
+        await writable.write(dataStr);
+        await writable.close();
+
+        // Only show success if we actually saved the file
+        setExportSuccess(true);
+      } catch (error: any) {
+        // User cancelled the save dialog or an error occurred
+        if (error.name !== 'AbortError') {
+          console.error('Error saving file:', error);
+          alert('Failed to save file. Please try again.');
+        }
+        // Don't set exportSuccess if user cancelled
+      }
+    } else {
+      // Fallback for browsers that don't support File System Access API
+      const dataUri =
+        "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+
+      const linkElement = document.createElement("a");
+      linkElement.setAttribute("href", dataUri);
+      linkElement.setAttribute("download", exportFileName);
+      linkElement.style.display = "none";
+      document.body.appendChild(linkElement);
+      linkElement.click();
+      document.body.removeChild(linkElement);
+
+      // For fallback, we can't know if user saved or cancelled
+      // So we don't set exportSuccess to avoid misleading feedback
+    }
   };
 
   const handleUploadToServer = async () => {
@@ -118,11 +153,11 @@ const RecordModal: React.FC<RecordModalProps> = ({
         <div className="w-full flex justify-center gap-4 mt-4">
           <button
             onClick={handleExportJson}
-            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-cyan-400/20 bg-cyan-900/20 hover:bg-cyan-800/40"
-            disabled={activity.length === 0}
+            className="flex items-center gap-2 text-white py-2 px-4 rounded transition border-2 border-cyan-400/20 bg-cyan-900/20 hover:bg-cyan-800/40 disabled:opacity-50 cursor-none"
+            disabled={activity.length === 0 || exportSuccess}
           >
-            <IoMdDownload />
-            Export to Local
+            {exportSuccess ? <MdCheck /> : <IoMdDownload />}
+            {exportSuccess ? "Saved to Local" : "Export to Local"}
           </button>
           <button
             onClick={handleUploadToServer}
@@ -130,7 +165,7 @@ const RecordModal: React.FC<RecordModalProps> = ({
             disabled={uploading || activity.length === 0 || !walletExists || uploadSuccess}
           >
             {uploadSuccess ? <MdCheck /> : <MdFileUpload />}
-            {uploading ? "Uploading..." : uploadSuccess ? "Saved" : "Save on Online"}
+            {uploading ? "Uploading..." : uploadSuccess ? "Saved on Online" : "Save on Online"}
           </button>
         </div>
       </div>
