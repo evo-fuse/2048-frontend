@@ -185,7 +185,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
 
     const tokenContractInfo =
       contractByName[networkName][tokenType?.toLowerCase()];
-    
+
     return new web3Instance.eth.Contract(
       tokenContractInfo.abi,
       tokenContractInfo.address
@@ -292,7 +292,6 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
     transaction: any,
     privateKey: string,
     contract: any,
-    successMessage: string = "Payment successful!"
   ): Promise<any> => {
     const signedTx = await web3Instance.eth.accounts.signTransaction(
       transaction,
@@ -360,7 +359,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
       return null;
     }
 
-    const { divideBy = 100, gasLimit = 100000, successMessage = "Payment successful!" } = options;
+    const { divideBy = 100, gasLimit = 100000 } = options;
 
     try {
       const networkName = getNetworkFromToken(tokenType);
@@ -390,18 +389,17 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
         web3Instance,
         transaction,
         account.privateKey,
-        contract,
-        successMessage
+        contract
       );
     } catch (error: any) {
       console.log("Transaction failed:", error.message?.toString() || error);
-      
+
       if (error.message?.includes("not supported")) {
         Toast.error("Token not supported", error.message);
       } else {
         Toast.error("Payment failed", error.message || "Unknown error");
       }
-      
+
       throw error;
     }
   };
@@ -535,7 +533,7 @@ async function checkCommonERC20Errors(
       if (isPaused) {
         return "Token transfers are paused";
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // Check for blacklisting
     try {
@@ -545,7 +543,7 @@ async function checkCommonERC20Errors(
       if (isBlacklisted) {
         return "Sender address is blacklisted";
       }
-    } catch (e) {}
+    } catch (e) { }
 
     // Check for transfer restrictions
     try {
@@ -555,7 +553,7 @@ async function checkCommonERC20Errors(
       if (!canTransfer) {
         return "Transfer is restricted by the contract";
       }
-    } catch (e) {}
+    } catch (e) { }
 
     return null;
   } catch (error) {
