@@ -30,6 +30,9 @@ export interface RecordsSearchResponse {
   filters: {
     startDate?: string;
     endDate?: string;
+    myRecordsOnly?: boolean;
+    sortBy?: string;
+    sortOrder?: string;
   };
   records: Record[];
 }
@@ -48,6 +51,9 @@ export interface RecordsDateRangeResponse {
 export interface RecordsSearchParams {
   startDate?: string;
   endDate?: string;
+  sortBy?: string;
+  sortOrder?: string;
+  myRecordsOnly?: string;
   limit?: number;
   offset?: number;
 }

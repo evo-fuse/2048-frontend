@@ -23,7 +23,7 @@ const navItems = [
   },
   {
     Icon: SlCamrecorder,
-    label: "Record",
+    label: "Replay",
     path: `${PATH.GAME}${PATH.RECORD}`,
   },
   {
