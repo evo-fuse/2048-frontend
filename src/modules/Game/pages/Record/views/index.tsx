@@ -12,7 +12,10 @@ import { IoTime } from "react-icons/io5";
 import { Select } from "../../../../../components/Select";
 import { OnlineReplayExploreModal } from "../components/OnlineReplayExploreModal";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { TbFileSearch } from "react-icons/tb";
+import { TbFileSearch, TbWorld } from "react-icons/tb";
+import { SlCamrecorder } from "react-icons/sl";
+import { IoIosMove } from "react-icons/io";
+import { BsSpeedometer2 } from "react-icons/bs";
 
 export const RecordView: React.FC = () => {
   const { replay, setReplay, setMetadata, metadata } = useRecordContext();
@@ -207,27 +210,28 @@ export const RecordView: React.FC = () => {
 
   return (
     <ThemeProvider theme={{ borderradius: "14px", palette: defaultPalette }}>
-      <div className="w-full h-full flex flex-col items-center justify-center p-4 overflow-y-auto">
+      <div className="w-full h-full flex flex-col items-center justify-center overflow-y-auto">
         {/* Header Section */}
-        <div className="w-full max-w-4xl mb-4">
-          <h2 className="text-2xl font-bold mb-2 text-white text-center">
-            Upload Activity Track
+        <div className="w-full max-w-4xl mb-2 flex items-center justify-center gap-4">
+          <SlCamrecorder className="text-cyan-400" size={32} />
+          <h2 className="text-4xl font-bold mb-2 text-center text-cyan-400">
+            Game Replay
           </h2>
-          <div className="h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
         </div>
 
         {/* Upload Section - Inline */}
-        <div className="w-full max-w-4xl mb-4 flex items-center gap-4">
+        <div className="w-full max-w-4xl mb-2 flex items-center gap-4">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="text-nowrap text-white p-[14px] border-2 rounded-lg border-gray-600 text-sm min-h-max hover:border-gray-400 hover:bg-gray-800/30 transition-colors"
+            className="flex items-center gap-2 text-nowrap text-white p-[14px] border-2 rounded-lg border-cyan-600 text-sm min-h-max hover:border-cyan-400 hover:bg-cyan-800/30 transition-colors"
           >
-            Explore Online Replay
+            <TbWorld className="text-cyan-400" size={20} />
+            Online Replay
           </button>
           <div
             className={`w-full flex items-center justify-between p-3 border-2 border-dashed rounded-lg transition-all duration-300 ${isDragOver
-              ? "border-gray-400 bg-gray-800/50 shadow-lg shadow-gray-500/20"
-              : "border-gray-600 hover:border-gray-400 bg-gray-900/30 hover:bg-gray-800/40"
+              ? "border-cyan-400 bg-cyan-800/50 shadow-lg shadow-cyan-500/20"
+              : "border-cyan-600 hover:border-cyan-400 bg-gray-900/30 hover:bg-cyan-800/40"
               }`}
             {...dragHandlers}
           >
@@ -243,7 +247,7 @@ export const RecordView: React.FC = () => {
             <div className="">
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-white py-1.5 px-3 rounded text-sm transition-all duration-200 font-medium cursor-none"
+                className="flex items-center gap-2 bg-cyan-700 hover:bg-cyan-600 text-white py-1.5 px-3 rounded text-sm transition-all duration-200 font-medium cursor-none"
               >
                 <TbFileSearch className="text-white" size={18} />
                 Browse
@@ -267,11 +271,12 @@ export const RecordView: React.FC = () => {
 
         {/* Playback Controls - Above Game Board */}
         {replay.length > 0 && (
-          <div className="w-full max-w-4xl mb-3">
-            <div className="bg-gray-900/50 p-3 rounded-lg border border-gray-700 shadow-lg">
+          <div className="w-full max-w-4xl mb-2">
+            <div className="bg-gray-900/50 p-3 rounded-lg border border-cyan-700 shadow-lg shadow-cyan-900/30">
               <div className="flex items-center justify-between gap-4">
                 {/* Seek State Display */}
                 <div className="flex items-center gap-2">
+                  <IoIosMove className="text-white" size={20} />
                   <span className="text-white text-sm font-medium">Move:</span>
                   <span className="text-gray-300 text-sm">
                     {index + 1} / {replay.length}
@@ -282,6 +287,7 @@ export const RecordView: React.FC = () => {
                 <div className="flex items-center gap-2">
                   {/* Speed Control */}
                   <div className="flex items-center gap-1">
+                    <BsSpeedometer2 className="text-white" size={20} />
                     <span className="text-white text-xs">Speed:</span>
                     <Select
                       options={speedOptions}
@@ -297,7 +303,7 @@ export const RecordView: React.FC = () => {
                     {!isPlaying ? (
                       <button
                         onClick={startPlayback}
-                        className="p-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg"
+                        className="p-1.5 bg-cyan-700 hover:bg-cyan-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-cyan-500/30"
                         title="Play"
                       >
                         <IoPlay size={16} />
@@ -305,7 +311,7 @@ export const RecordView: React.FC = () => {
                     ) : (
                       <button
                         onClick={pausePlayback}
-                        className="p-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg"
+                        className="p-1.5 bg-cyan-700 hover:bg-cyan-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-cyan-500/30"
                         title="Pause"
                       >
                         <IoPause size={16} />
@@ -314,7 +320,7 @@ export const RecordView: React.FC = () => {
 
                     <button
                       onClick={resetPlayback}
-                      className="p-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg"
+                      className="p-1.5 bg-cyan-700 hover:bg-cyan-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-cyan-500/30"
                       title="Stop"
                     >
                       <IoStop size={16} />
@@ -328,7 +334,7 @@ export const RecordView: React.FC = () => {
                         stopPlayback();
                         setIndex(index - 1 < 0 ? 0 : index - 1);
                       }}
-                      className="p-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg"
+                      className="p-1.5 bg-cyan-700 hover:bg-cyan-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-cyan-500/30"
                       title="Previous"
                     >
                       <IoCaretBack size={16} />
@@ -342,7 +348,7 @@ export const RecordView: React.FC = () => {
                             : index + 1
                         );
                       }}
-                      className="p-1.5 bg-gray-700 hover:bg-gray-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg"
+                      className="p-1.5 bg-cyan-700 hover:bg-cyan-600 text-white rounded transition-all duration-200 shadow-md hover:shadow-lg hover:shadow-cyan-500/30"
                       title="Next"
                     >
                       <IoCaretForward size={16} />
@@ -358,7 +364,7 @@ export const RecordView: React.FC = () => {
         <div className="w-full max-w-4xl flex gap-3 mb-4">
           {/* Center - Game Board */}
           <div className="flex-1 flex justify-between min-w-0">
-            <div className="bg-gray-900/50 p-2 rounded-lg border border-gray-700 shadow-lg max-w-max">
+            <div className="bg-gray-900/50 p-2 rounded-lg border border-cyan-700 shadow-lg shadow-cyan-900/30 max-w-max">
               <GameBoard
                 tiles={tiles}
                 boardSize={GRID_SIZE}
@@ -376,38 +382,38 @@ export const RecordView: React.FC = () => {
           </div>
 
           <div className="w-64">
-            <div className="bg-gray-900/50 p-3 rounded-lg border border-gray-700 shadow-lg">
+            <div className="bg-gray-900/50 p-3 rounded-lg border border-cyan-700 shadow-lg shadow-cyan-900/30">
               <h3 className="text-white text-base font-bold mb-2 flex items-center gap-2">
-                <IoTime className="text-blue-400" size={16} />
+                <IoTime className="text-cyan-400" size={16} />
                 Game Metadata
               </h3>
               <div className="space-y-2">
-                <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
-                  <div className="text-xs text-gray-400 mb-1">Player</div>
+                <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
+                  <div className="text-xs text-cyan-300 mb-1">Player</div>
                   <div className="text-white text-xs font-medium truncate">
                     {metadata?.user.address}
                   </div>
                 </div>
-                <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
-                  <div className="text-xs text-gray-400 mb-1">Score</div>
+                <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
+                  <div className="text-xs text-cyan-300 mb-1">Score</div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.score.toLocaleString()}
                   </div>
                 </div>
-                <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
-                  <div className="text-xs text-gray-400 mb-1">Moves</div>
+                <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
+                  <div className="text-xs text-cyan-300 mb-1">Moves</div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.move}
                   </div>
                 </div>
-                <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
-                  <div className="text-xs text-gray-400 mb-1">Duration</div>
+                <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
+                  <div className="text-xs text-cyan-300 mb-1">Duration</div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.playTime}
                   </div>
                 </div>
-                <div className="bg-gray-800/50 p-2 rounded-lg border border-gray-600">
-                  <div className="text-xs text-gray-400 mb-1">Date</div>
+                <div className="bg-cyan-900/20 p-2 rounded-lg border border-cyan-600/50">
+                  <div className="text-xs text-cyan-300 mb-1">Date</div>
                   <div className="text-white text-xs font-medium">
                     {metadata?.date}
                   </div>

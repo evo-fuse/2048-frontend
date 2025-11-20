@@ -1,4 +1,4 @@
-import { Select, Toast } from "../../../../../components";
+import { Select } from "../../../../../components";
 import { useState, useEffect, useMemo } from "react";
 import { TbMoneybag } from "react-icons/tb";
 import { HiArrowTrendingDown } from "react-icons/hi2";
@@ -9,15 +9,21 @@ import { User } from "../../../../../types";
 import { useNavigate } from "react-router-dom";
 import { PATH, TOKEN } from "../../../../../const";
 import { motion } from "framer-motion";
+import { Images } from "../../../../../assets/images";
 
 export const WithdrawView = () => {
     const [network, setNetwork] = useState<string>("Fuse");
     const [token, setToken] = useState<string>("USDT");
     const [amount, setAmount] = useState<string>("0");
-    const { privateKey, handleUpdateUser, user, setUser, handleWithdrawRequest } = useAuthContext();
+    const { handleUpdateUser, user, setUser, handleWithdrawRequest } = useAuthContext();
     const [withdrawAddress, setWithdrawAddress] = useState<string>(user?.address || "");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const { isOpen, onOpen, onClose } = useOpen(false);
+    const [modalContent, setModalContent] = useState<{ title: string; message: string; type: 'success' | 'error' }>({
+        title: '',
+        message: '',
+        type: 'error'
+    });
     const navigate = useNavigate();
 
     // Pre-fill user's address when user data loads
@@ -68,24 +74,43 @@ export const WithdrawView = () => {
         // Validation
 
         if (!withdrawAddress) {
-            Toast.error("Invalid Address", "Please enter a valid withdrawal address");
+            setModalContent({
+                title: "Invalid Address",
+                message: "Please enter a valid withdrawal address",
+                type: 'error'
+            });
+            onOpen();
             return;
         }
 
         // Basic address validation
         if (!withdrawAddress.startsWith("0x") || withdrawAddress.length !== 42) {
-            Toast.error("Invalid Address", "Please enter a valid Ethereum-compatible address");
+            setModalContent({
+                title: "Invalid Address",
+                message: "Please enter a valid Ethereum-compatible address",
+                type: 'error'
+            });
+            onOpen();
             return;
         }
 
         if (!amount || Number(amount) <= 0) {
+            setModalContent({
+                title: "Invalid Amount",
+                message: "Please enter a valid amount greater than 0",
+                type: 'error'
+            });
             onOpen();
-            Toast.error("Invalid Amount", "Please enter a valid amount greater than 0");
             return;
         }
 
         if (Number(amount) > availableBalance) {
-            Toast.error("Insufficient Balance", `Your available balance is ${availableBalance} ${token}. Please enter a lower amount.`);
+            setModalContent({
+                title: "Insufficient Balance",
+                message: `Your available balance is ${availableBalance} ${token}. Please enter a lower amount.`,
+                type: 'error'
+            });
+            onOpen();
             return;
         }
 
@@ -113,10 +138,12 @@ export const WithdrawView = () => {
 
             if (data) {
                 setUser(data);
-                Toast.success(
-                    "Withdrawal Requested",
-                    `Successfully requested withdrawal of ${amount} ${token}. It will be processed shortly.`
-                );
+                setModalContent({
+                    title: "Withdrawal Requested",
+                    message: `Successfully requested withdrawal of ${amount} ${token}. It will be processed shortly.`,
+                    type: 'success'
+                });
+                onOpen();
                 // Reset form
                 setAmount("0");
                 // Keep user's address in the field
@@ -125,10 +152,19 @@ export const WithdrawView = () => {
             console.error("Withdrawal failed:", error);
 
             if (error?.response?.data?.message) {
-                Toast.error("Withdrawal Failed", error.response.data.message);
+                setModalContent({
+                    title: "Withdrawal Failed",
+                    message: error.response.data.message,
+                    type: 'error'
+                });
             } else {
-                Toast.error("Withdrawal Failed", "An error occurred during the withdrawal. Please try again.");
+                setModalContent({
+                    title: "Withdrawal Failed",
+                    message: "An error occurred during the withdrawal. Please try again.",
+                    type: 'error'
+                });
             }
+            onOpen();
         } finally {
             setIsLoading(false);
         }
@@ -141,17 +177,31 @@ export const WithdrawView = () => {
                 showCloseButton={true}
                 isOpen={isOpen}
                 onClose={onClose}
-                title="Withdraw Crypto"
+                title={modalContent.title}
             >
                 <div className="w-full px-4 pb-4 flex flex-col gap-4">
-                    <p>{privateKey ? "Please enter the withdrawal details" : "Please connect your wallet to withdraw crypto"}</p>
+                    <div className={`p-4 rounded-lg ${modalContent.type === 'success' ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'}`}>
+                        <p className={`${modalContent.type === 'success' ? 'text-green-300' : 'text-red-300'}`}>
+                            {modalContent.message}
+                        </p>
+                    </div>
+                    <button
+                        onClick={onClose}
+                        className={`w-full py-2 px-4 rounded-lg font-semibold transition-all ${modalContent.type === 'success'
+                            ? 'bg-green-500 hover:bg-green-600 text-white'
+                            : 'bg-red-500 hover:bg-red-600 text-white'
+                            }`}
+                    >
+                        OK
+                    </button>
                 </div>
             </Modal>
             <div className="w-full h-full flex flex-col">
                 {/* Header with gradient accent */}
-                <div className="relative flex-shrink-0">
-                    <h2 className="text-2xl font-bold py-4 px-8 border-b border-white/10">
-                        Withdraw Crypto
+                <div className="relative flex-shrink-0 flex items-center justify-start gap-0 w-full border-b border-white/10">
+                    <img src={Images.LOGO} alt="logo" className="w-10 h-10" />
+                    <h2 className="text-2xl font-bold p-4">
+                        Withdraw
                     </h2>
                 </div>
 
@@ -279,12 +329,14 @@ export const WithdrawView = () => {
                         <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
                             Withdrawal Address
                         </label>
-                        <input
-                            className="w-full px-3 py-2 rounded-lg bg-gray-800/80 border border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all text-sm font-mono"
-                            placeholder="0x..."
-                            value={withdrawAddress}
-                            onChange={(e) => setWithdrawAddress(e.target.value)}
-                        />
+                        <div className="relative">
+                            <input
+                                className="w-full px-3 py-2 pr-12 rounded-lg bg-cyan-950/30 border border-cyan-400/30 text-white placeholder-gray-500 transition-all text-sm font-mono"
+                                placeholder="0x..."
+                                value={withdrawAddress}
+                                onChange={(e) => setWithdrawAddress(e.target.value)}
+                            />
+                        </div>
                     </motion.div>
 
                     {/* Withdrawal Amount Input */}
@@ -307,7 +359,7 @@ export const WithdrawView = () => {
                         </div>
                         <div className="relative">
                             <input
-                                className="w-full px-3 py-2 rounded-lg bg-gray-800/80 border border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all text-base"
+                                className="w-full px-3 py-2 rounded-lg bg-cyan-950/30 border border-cyan-400/30 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all text-base"
                                 placeholder="0.00"
                                 value={amount}
                                 onChange={(e) => {
@@ -340,7 +392,7 @@ export const WithdrawView = () => {
                             disabled={isLoading || !withdrawAddress || Number(amount) <= 0 || Number(amount) > availableBalance}
                         >
                             <HiArrowTrendingDown size={20} className="group-hover:scale-110 transition-transform" />
-                            <span className="text-base">{isLoading ? "Processing..." : "Withdraw Now"}</span>
+                            <span className="text-base">{isLoading ? "Processing..." : "Withdraw"}</span>
                         </motion.button>
 
                         <motion.button

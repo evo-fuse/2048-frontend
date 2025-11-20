@@ -9,6 +9,7 @@ import { User } from "../../../../../types";
 import { useNavigate } from "react-router-dom";
 import { PATH, TOKEN } from "../../../../../const";
 import { motion } from "framer-motion";
+import { Images } from "../../../../../assets/images";
 
 export const DepositView = () => {
     const [network, setNetwork] = useState<string>("Fuse");
@@ -98,30 +99,31 @@ export const DepositView = () => {
                 showCloseButton={true}
                 isOpen={isOpen}
                 onClose={onClose}
-                title="Deposit Crypto"
+                title="Deposit"
             >
                 <div className="w-full px-4 pb-4 flex flex-col gap-4">
-                    <p>{privateKey ? "Please enter the amount to deposit" : "Please connect your wallet to deposit crypto"}</p>
+                    <p>{privateKey ? "Please enter the amount to deposit" : "Please connect your wallet to deposit."}</p>
                 </div>
             </Modal>
-            <div className="w-full h-full flex flex-col gap-6">
+            <div className="w-full h-full flex flex-col">
                 {/* Header with gradient accent */}
-                <div className="relative">
-                    <h2 className="text-2xl font-bold py-6 px-8 border-b border-white/10">
-                        Deposit Crypto
+                <div className="relative flex-shrink-0 flex items-center justify-start gap-0 w-full border-b border-white/10">
+                    <img src={Images.LOGO} alt="logo" className="w-10 h-10" />
+                    <h2 className="text-2xl font-bold p-4">
+                        Deposit
                     </h2>
                 </div>
 
-                <div className="px-8 flex flex-col gap-6 h-full">
+                <div className="px-8 flex flex-col gap-4 overflow-y-auto flex-1 py-4">
                     {/* Network & Token Selection */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4"
                     >
-                        <div className="flex flex-col gap-3">
-                            <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
                                 Choose Network
                             </label>
                             <Select
@@ -132,8 +134,8 @@ export const DepositView = () => {
                                 }}
                             />
                         </div>
-                        <div className="flex flex-col gap-3">
-                            <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                        <div className="flex flex-col gap-2">
+                            <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
                                 Choose Token
                             </label>
                             <Select
@@ -151,27 +153,27 @@ export const DepositView = () => {
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
-                        className="bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded-xl p-6"
+                        className="bg-gradient-to-br from-cyan-500/10 to-purple-500/10 border border-cyan-500/30 rounded-xl p-4"
                     >
                         <div className="flex items-center justify-between">
-                            <div className="flex flex-col gap-2">
-                                <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                            <div className="flex flex-col gap-1">
+                                <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
                                     Current Deposit Balance
                                 </label>
                                 <div className="flex items-baseline gap-2">
-                                    <span className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent">
+                                    <span className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent">
                                         {user?.[getUserBalanceKey(network, token)] || 0}
                                     </span>
-                                    <span className="text-xl text-gray-400">{token}</span>
+                                    <span className="text-sm text-gray-400">{token}</span>
                                 </div>
                             </div>
                             <motion.div
                                 initial={{ rotate: -180, opacity: 0 }}
                                 animate={{ rotate: 0, opacity: 1 }}
                                 transition={{ duration: 0.6, delay: 0.4 }}
-                                className="w-16 h-16 bg-cyan-500/20 rounded-full flex items-center justify-center"
+                                className="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center"
                             >
-                                <TbMoneybag className="text-cyan-500" size={32} />
+                                <TbMoneybag className="text-cyan-500" size={24} />
                             </motion.div>
                         </div>
                     </motion.div>
@@ -181,21 +183,21 @@ export const DepositView = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        className="flex flex-col gap-3"
+                        className="flex flex-col gap-2"
                     >
-                        <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                        <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
                             Deposit Amount
                         </label>
                         <div className="relative">
                             <input
-                                className="w-full px-4 py-3 rounded-lg bg-gray-800/80 border border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-all text-lg"
+                                className="w-full px-3 py-2 rounded-lg bg-cyan-950/30 border border-cyan-400/30 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all text-base"
                                 placeholder="0.00"
                                 value={amount}
                                 onChange={(e) => {
                                     setAmount(isNaN(Number(e.target.value)) ? amount : e.target.value);
                                 }}
                             />
-                            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm font-medium">
+                            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium">
                                 {token}
                             </span>
                         </div>
@@ -206,58 +208,44 @@ export const DepositView = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
-                        className="flex flex-col gap-3"
+                        className="flex flex-col gap-2"
                     >
-                        <label className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                        <label className="text-xs font-semibold text-gray-300 uppercase tracking-wider">
                             Deposit Address
                         </label>
-                        <div className="bg-gray-800/60 border border-gray-600 rounded-lg p-4">
+                        <div className="bg-cyan-950/30 border border-cyan-400/30 rounded-lg p-3">
                             <code className="text-sm text-cyan-400 break-all font-mono">
                                 {DEPOSIT_ADDRESS}
                             </code>
                         </div>
                     </motion.div>
 
-                    <div className="flex-1" />
-
                     {/* Action Buttons */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.5 }}
-                        className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4"
+                        className="grid grid-cols-1 md:grid-cols-2 gap-3"
                     >
                         <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="flex items-center justify-center bg-cyan-500 hover:bg-cyan-400 font-bold p-4 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 cursor-none disabled:opacity-50 disabled:cursor-none group"
+                            className="flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 cursor-none disabled:opacity-50 disabled:cursor-none group"
                             onClick={handleDeposit}
                             disabled={isLoading}
-                            style={{ clipPath: "polygon(15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px), 0 15px)" }}
                         >
-                            <div
-                                style={{ clipPath: "polygon(6.4px 0, calc(100% - 6.4px) 0, 100% 6.4px, 100% calc(100% - 6.4px), calc(100% - 6.4px) 100%, 6.4px 100%, 0 calc(100% - 6.4px), 0 6.4px)" }}
-                                className="text-white flex items-center justify-center gap-3 w-full h-full bg-cyan-700 p-4"
-                            >
-                                <TbMoneybag size={24} className="group-hover:scale-110 transition-transform" />
-                                <span className="text-lg">{isLoading ? "Processing..." : "Deposit Now"}</span>
-                            </div>
+                            <TbMoneybag size={20} className="group-hover:scale-110 transition-transform" />
+                            <span className="text-base">{isLoading ? "Processing..." : "Deposit"}</span>
                         </motion.button>
 
                         <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="flex items-center justify-center bg-gray-500 hover:bg-gray-400 font-bold p-4 transition-all duration-300 shadow-lg hover:shadow-gray-500/50 cursor-none disabled:opacity-50 disabled:cursor-none group"
+                            className="flex items-center justify-center gap-2 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-gray-500/30 cursor-none group border border-white/10"
                             onClick={() => navigate(PATH.GAME + PATH.BETTING)}
-                            style={{ clipPath: "polygon(15px 0, calc(100% - 15px) 0, 100% 15px, 100% calc(100% - 15px), calc(100% - 15px) 100%, 15px 100%, 0 calc(100% - 15px), 0 15px)" }}
                         >
-                            <div
-                                style={{ clipPath: "polygon(6.4px 0, calc(100% - 6.4px) 0, 100% 6.4px, 100% calc(100% - 6.4px), calc(100% - 6.4px) 100%, 6.4px 100%, 0 calc(100% - 6.4px), 0 6.4px)" }}
-                                className="text-white flex items-center justify-center gap-3 w-full h-full bg-gray-700 p-4"
-                            >
-                                <LuDices size={24} className="group-hover:rotate-12 transition-transform" />
-                                <span className="text-lg">Go to Play</span>
-                            </div>
+                            <LuDices size={20} className="group-hover:rotate-12 transition-transform" />
+                            <span className="text-base">Go to Play</span>
                         </motion.button>
                     </motion.div>
                 </div>

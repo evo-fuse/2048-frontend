@@ -187,20 +187,20 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 rounded-xl border border-gray-700 shadow-2xl w-full max-w-6xl max-h-[90vh] flex flex-col">
+      <div className="bg-gray-900 rounded-xl border border-cyan-700 shadow-2xl shadow-cyan-900/30 w-full max-w-6xl max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-700">
+        <div className="flex items-center justify-between p-6 border-b border-cyan-700">
           <h2 className="text-2xl font-bold text-white">Explore Online Replays</h2>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white transition-colors p-2"
+            className="text-cyan-400 hover:text-cyan-300 transition-colors p-2"
           >
             <IoClose size={24} />
           </button>
         </div>
 
         {/* Section Tabs */}
-        <div className="flex border-b border-gray-700">
+        <div className="flex border-b border-cyan-700">
           {[
             { key: 'today', label: 'Today\'s Replays', icon: IoCalendar },
             { key: 'maxScores', label: 'Max Scores', icon: IoTrophy },
@@ -210,8 +210,8 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
               key={key}
               onClick={() => setActiveSection(key as SectionType)}
               className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors ${activeSection === key
-                  ? 'text-white border-b-2 border-white bg-gray-800/50'
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800/30'
+                ? 'text-white border-b-2 border-cyan-400 bg-cyan-900/30'
+                : 'text-cyan-300 hover:text-white hover:bg-cyan-900/20'
                 }`}
             >
               <Icon size={16} />
@@ -235,33 +235,33 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
                   <div
                     key={record.uuid}
                     className={`p-4 rounded-lg border transition-colors ${isSelected
-                        ? 'bg-gray-700/70 border-gray-500 cursor-none'
-                        : 'bg-gray-800/50 border-gray-600 hover:border-gray-500 cursor-none'
+                      ? 'bg-cyan-900/40 border-cyan-500 cursor-none'
+                      : 'bg-cyan-900/20 border-cyan-600/50 hover:border-cyan-500 cursor-none'
                       }`}
                     onClick={() => !isSelected && handleRecordSelect(record)}
                   >
                     {isSelected ? (
                       <div className="flex items-center justify-center py-8">
                         <div className="flex flex-col items-center gap-3">
-                          <IoRefresh className="text-white animate-spin" size={32} />
+                          <IoRefresh className="text-cyan-400 animate-spin" size={32} />
                           <span className="text-white text-sm">Loading record...</span>
                         </div>
                       </div>
                     ) : (
-                      <div className="space-y-2 text-sm text-gray-300">
+                      <div className="space-y-2 text-sm text-white">
                         <div className="flex items-center gap-2">
-                          <IoPerson size={20} />
+                          <IoPerson className="text-cyan-400" size={20} />
                           <span className="truncate">{record.user.address}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <IoTrophy size={20} />
+                          <IoTrophy className="text-cyan-400" size={20} />
                           <span>Score: {record.score.toLocaleString()}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                          <IoTime size={20} />
+                          <IoTime className="text-cyan-400" size={20} />
                           <span>{record.playTime}ms • {record.move} moves</span>
                         </div>
-                        <div className="text-gray-400 text-sm">{record.date}</div>
+                        <div className="text-cyan-300 text-sm">{record.date}</div>
                       </div>
                     )}
                   </div>
@@ -276,7 +276,7 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
               <button
                 onClick={handleLoadMore}
                 disabled={loading}
-                className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="bg-cyan-700 hover:bg-cyan-600 text-white px-6 py-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-md hover:shadow-lg hover:shadow-cyan-500/30"
               >
                 {loading ? (
                   'Loading...'
@@ -291,7 +291,7 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
           )}
 
           {/* Pagination Info */}
-          <div className="text-center mt-4 text-gray-400 text-sm">
+          <div className="text-center mt-4 text-cyan-300 text-sm">
             Showing {getCurrentRecords().length} of {getCurrentPagination().total} records
           </div>
         </div>
