@@ -36,7 +36,7 @@ export const TileImageCard: React.FC<TileImageCardProps> = ({
           onClick={() =>
             document.getElementById(`file-input-${tile.value}`)?.click()
           }
-          className="relative w-64 h-64 bg-gray-700/50 border border-cyan-500/30 rounded-md flex items-center justify-center hover:bg-gray-700/70 hover:border-cyan-400/50 transition-colors cursor-pointer"
+          className="relative w-64 h-64 bg-gray-700/50 border border-cyan-500/30 rounded-md flex items-center justify-center hover:bg-gray-700/70 hover:border-cyan-400/50 transition-colors cursor-none"
         >
           {tile.image ? (
             <div className="relative w-full h-full">
@@ -47,17 +47,16 @@ export const TileImageCard: React.FC<TileImageCardProps> = ({
               />
               {numberDisplay.show && (
                 <div
-                  className={`absolute font-bold ${
-                    numberDisplay.position === "center"
+                  className={`absolute font-bold ${numberDisplay.position === "center"
                       ? "inset-0 flex items-center justify-center"
                       : numberDisplay.position === "top-left"
-                      ? "top-2 left-2"
-                      : numberDisplay.position === "top-right"
-                      ? "top-2 right-2"
-                      : numberDisplay.position === "bottom-left"
-                      ? "bottom-2 left-2"
-                      : "bottom-2 right-2"
-                  }`}
+                        ? "top-2 left-2"
+                        : numberDisplay.position === "top-right"
+                          ? "top-2 right-2"
+                          : numberDisplay.position === "bottom-left"
+                            ? "bottom-2 left-2"
+                            : "bottom-2 right-2"
+                    }`}
                   style={{
                     color: numberDisplay.color,
                     fontSize: `${numberDisplay.size}px`,

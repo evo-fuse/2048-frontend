@@ -53,7 +53,7 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                 className="w-full"
               />
             </div>
-            
+
             <div>
               <label className="block text-cyan-100 mb-2">Number Size (px)</label>
               <div className="flex items-center space-x-3">
@@ -79,10 +79,9 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                 <span className="text-cyan-200 text-base">96px</span>
               </div>
               <div className="mt-2 flex justify-center items-center gap-3">
-                <span className="text-cyan-200">{numberDisplay.size}px</span>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <button
-                    className="px-2 py-1 bg-gray-700/60 text-cyan-100 rounded hover:bg-gray-700/80 transition-colors border border-cyan-500/20"
+                    className="w-8 h-8 flex items-center justify-center text-cyan-100 rounded transition-colors border border-transparent hover:border-cyan-500/20"
                     onClick={() =>
                       setNumberDisplay({
                         ...numberDisplay,
@@ -92,8 +91,9 @@ export const ThemeNumberDisplay: React.FC<ThemeNumberDisplayProps> = ({
                   >
                     -
                   </button>
+                  <span className="text-cyan-200">{numberDisplay.size}px</span>
                   <button
-                    className="px-2 py-1 bg-gray-700/60 text-cyan-100 rounded hover:bg-gray-700/80 transition-colors border border-cyan-500/20"
+                    className="w-8 h-8 flex items-center justify-center text-cyan-100 rounded transition-colors border border-transparent hover:border-cyan-500/20"
                     onClick={() =>
                       setNumberDisplay({
                         ...numberDisplay,

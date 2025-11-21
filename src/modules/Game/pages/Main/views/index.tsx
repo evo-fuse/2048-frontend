@@ -225,7 +225,10 @@ export const MainView: FC = () => {
               justifycontent="space-between"
               marginblockstart="s2"
             >
-              <Box className="text-4xl font-bold">EvoFuse 2048</Box>
+              <Box className="text-3xl font-bold gap-2">
+                <img src={Images.LOGO} alt="EvoFuse" className="w-12 h-12" />
+                EvoFuse 2048
+              </Box>
               <Box justifycontent="center">
                 <ScoreBoard total={total} title="score" />
                 <ScoreBoard total={best} title="best" />

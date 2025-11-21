@@ -7,13 +7,15 @@ interface ItemButtonProps {
   onClick: () => void;
   loading?: boolean;
   direction?: "top" | "right" | "left";
+  isActive?: boolean;
 }
 
 export const ItemButton: React.FC<ItemButtonProps> = ({
   item,
   onClick,
   loading,
-  direction = "top"
+  direction = "top",
+  isActive = false
 }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const getExternalClipPath = {
@@ -35,12 +37,16 @@ export const ItemButton: React.FC<ItemButtonProps> = ({
       whileTap={{ scale: 0.98 }}
       transition={{ duration: 0.3 }}
       style={{
-        filter: isHovered ? "drop-shadow(0 0 12px rgba(34, 211, 238, 1))" : "drop-shadow(0 0 12px rgba(34, 211, 238, 0))",
+        filter: isActive 
+          ? "drop-shadow(0 0 16px rgba(34, 211, 238, 1))" 
+          : isHovered 
+            ? "drop-shadow(0 0 12px rgba(34, 211, 238, 1))" 
+            : "drop-shadow(0 0 12px rgba(34, 211, 238, 0))",
       }}
     >
       <motion.button
         className={`relative flex items-center justify-center transition-all duration-200 min-w-20 cursor-none 
-          ${isHovered ? "bg-cyan-600" : "bg-gray-600"}`
+          ${isActive ? "bg-cyan-500" : isHovered ? "bg-cyan-600" : "bg-gray-600"}`
         }
         style={{
           clipPath: getExternalClipPath[direction],
@@ -72,7 +78,7 @@ export const ItemButton: React.FC<ItemButtonProps> = ({
           )}
         </AnimatePresence>
         <div
-          className={`${isHovered ? "bg-cyan-800" : "bg-gray-800"} relative flex items-center gap-2 justify-center transition-all duration-200 cursor-none`}
+          className={`${isActive ? "bg-cyan-700" : isHovered ? "bg-cyan-800" : "bg-gray-800"} relative flex items-center gap-2 justify-center transition-all duration-200 cursor-none`}
           style={{
             clipPath: getInternalClipPath[direction],
             width: 144.6,

@@ -148,14 +148,14 @@ export const ThemesTabPanel: React.FC<ThemesTabPanelProps> = ({
                 transition={{ duration: 0.2 }}
                 style={{ pointerEvents: "auto" }}
               >
-                <div className="min-w-[128px] h-[128px] bg-transparent rounded-lg overflow-hidden flex items-center justify-center relative">
+                <div className="min-w-[128px] h-[128px] bg-transparent rounded-lg flex items-center justify-center relative">
                   <ThemeImage
                     src={theme[2].sm}
                     alt={theme.title}
                     className="w-32 object-cover rounded-lg"
                   />
                   {theme.owned && (
-                    <Ribbon title="Purchased" color="blue" top={8} left={8} />
+                    <Ribbon title="Purchased" color="blue" top={-8} left={-8} />
                   )}
                 </div>
                 <div className="flex flex-col gap-2 flex-1">

@@ -276,9 +276,12 @@ export const GameControls = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={onOpenHelp}
-                className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 border border-purple-500/30 rounded-xl p-4 flex items-center justify-center gap-3 hover:from-purple-500/30 hover:to-pink-500/30 transition-all duration-300 flex-shrink-0"
+                className={`bg-cyan-500/20 border border-cyan-500/30 rounded-xl p-4 flex items-center justify-center gap-3 transition-all duration-300 flex-shrink-0 ${gameState === "playing"
+                    ? "opacity-50 cursor-none"
+                    : "hover:bg-cyan-500/30"
+                    }`}
             >
-                <FaQuestionCircle className="text-purple-400" size={24} />
+                <FaQuestionCircle className="text-cyan-400" size={24} />
                 <span className="text-lg font-bold text-white">Help & Rules</span>
             </motion.button>
 

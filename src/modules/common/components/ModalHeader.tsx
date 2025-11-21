@@ -8,7 +8,7 @@ interface ModalHeaderProps {
 export const ModalHeader: React.FC<ModalHeaderProps> = ({ title, onClose }) => {
   return (
     <div className="bg-gradient-to-b from-[#042035]/95 via-[#020f1c]/95 to-[#01070d]/95 sticky w-full z-30 top-0 rounded-t-2xl">
-      <div className="flex justify-between items-center px-6 py-10 bg-gradient-to-b from-cyan-900/40 to-transparent rounded-t-2xl border-b border-cyan-400/20">
+      <div className="flex justify-between items-center p-6 bg-gradient-to-b from-cyan-900/40 to-transparent rounded-t-2xl border-b border-cyan-400/20">
         <h2 className="text-2xl font-bold text-cyan-50">{title}</h2>
         {onClose && <button
           onClick={onClose}

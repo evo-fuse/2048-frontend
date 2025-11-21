@@ -199,8 +199,8 @@ export const ThemeView = () => {
           ]}
           selectedTab={activeTab}
           setSelectedTab={handleTabChange}
-          className="mb-2 3xs:mb-2.5 xs:mb-3 sm:mb-3.5 md:mb-4 lg:mb-4"
-          tabsContainerClassName="text-white overflow-x-auto flex-nowrap"
+          className="w-full mb-2 3xs:mb-2.5 xs:mb-3 sm:mb-3.5 md:mb-4 lg:mb-4 overflow-hidden"
+          tabsContainerClassName="w-full text-white overflow-hidden flex-nowrap"
         />
 
         {/* Tab Content */}

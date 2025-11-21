@@ -81,7 +81,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       maxWidth="max-w-md"
     >
       <div className="flex flex-col gap-4 p-4">
-        <div className="flex items-center gap-4 bg-gray-800/40 p-4 rounded-lg">
+        <div className="flex items-center gap-4 bg-cyan-900/40 p-4 rounded-lg">
           <div className="min-w-[80px] h-[80px] bg-transparent rounded-lg overflow-hidden flex items-center justify-center">
             <img
               src={theme[2].sm}
@@ -91,30 +91,29 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             />
           </div>
           <div>
-            <h3 className="text-white text-lg font-bold">{theme.title}</h3>
-            <p className="text-white font-bold mt-2">Price: {theme.price}$</p>
+            <h3 className="text-white text-base font-bold">{theme.title}</h3>
+            <p className="text-white font-bold mt-2 text-sm">Price: {theme.price}$</p>
           </div>
         </div>
 
         <div className="mt-2">
-          <h4 className="text-white font-bold mb-2">Select Payment Method</h4>
+          <h4 className="text-white font-bold mb-2 text-sm">Select Payment Method</h4>
           <div className="grid grid-cols-2 gap-2">
             {supportedTokens.map((token) => (
               <div
                 key={token.type}
-                className={`flex items-center gap-6 p-3 rounded-lg border cursor-none transition-all ${
-                  selectedToken === token.type
-                    ? "border-white bg-white/10"
-                    : "border-white/10 hover:border-white/30"
-                }`}
+                className={`flex items-center gap-6 p-3 rounded-lg border cursor-none transition-all ${selectedToken === token.type
+                  ? "border-cyan-500 bg-cyan-500/20"
+                  : "border-cyan-500/20 hover:border-cyan-400/50"
+                  }`}
                 onClick={() => handleTokenSelect(token.type)}
               >
                 <div className="flex-shrink-0">{token.icon}</div>
                 <div className="flex flex-col">
-                  <span className="text-white text-sm font-medium">
+                  <span className="text-white text-xs font-medium">
                     {token.name}
                   </span>
-                  <span className="text-gray-300 text-xs">
+                  <span className="text-cyan-200 text-xs">
                     {isLoadingBalances ? (
                       <FaSpinner className="animate-spin" />
                     ) : (
@@ -126,23 +125,24 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             ))}
           </div>
         </div>
-        {Number(balances[selectedToken]) < 0.01 && (
+        {Number(balances[selectedToken]) < Number(theme?.price || 0) && (
           <span className="text-red-500 text-sm text-center">
             Not enough balance
           </span>
         )}
-        <div className="flex justify-between items-center bg-gray-800/40 p-3 rounded-md mt-2">
-          <span className="text-white font-bold">Total:</span>
-          <span className="text-white font-bold">{theme.price}$</span>
+        <div className="flex justify-between items-center bg-cyan-900/40 p-3 rounded-md mt-2">
+          <span className="text-white font-bold text-sm">Total:</span>
+          <span className="text-white font-bold text-sm">{theme?.price || 0}$</span>
         </div>
 
         <button
-          className="w-full bg-cyan-500/80 hover:bg-cyan-400/80 text-white font-bold py-3 rounded-md transition-colors disabled:bg-cyan-700 disabled:opacity-50 cursor-none"
+          className="w-full bg-cyan-500/30 hover:bg-cyan-500/40 text-white font-bold py-3 rounded-md transition-colors disabled:bg-cyan-900/50 disabled:opacity-50 cursor-none text-sm"
           onClick={handlePurchase}
           disabled={
             isLoading ||
             isLoadingBalances ||
-            Number(balances[selectedToken]) < 0.01
+            !theme ||
+            Number(balances[selectedToken]) < Number(theme?.price || 0)
           }
         >
           {isLoading ? (

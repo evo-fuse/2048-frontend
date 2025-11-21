@@ -36,6 +36,7 @@ export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
             : setCursor(Images.HAMMER);
         }}
         direction="left"
+        isActive={cursor === Images.HAMMER}
       />
       <ItemButton
         item={{
@@ -53,6 +54,7 @@ export const ItemBar: React.FC<ItemBarProps> = ({ handleOpenItemModal }) => {
           }
         }}
         direction="top"
+        isActive={cursor === Images.UPGRADE}
       />
       <ItemButton
         item={{
