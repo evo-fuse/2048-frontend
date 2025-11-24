@@ -2,6 +2,7 @@ import { Select } from "../../../../../components";
 import { useState, useEffect, useMemo } from "react";
 import { TbMoneybag } from "react-icons/tb";
 import { HiArrowTrendingDown } from "react-icons/hi2";
+import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
 import { useAuthContext } from "../../../../../context";
 import Modal from "../../../../../components/Modal";
 import { useOpen } from "../../../../../hooks";
@@ -10,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { PATH, TOKEN } from "../../../../../const";
 import { motion } from "framer-motion";
 import { Images } from "../../../../../assets/images";
+import { formatAddress } from "../../../../../utils/address";
 
 export const WithdrawView = () => {
     const [network, setNetwork] = useState<string>("Fuse");
@@ -18,13 +20,13 @@ export const WithdrawView = () => {
     const { handleUpdateUser, user, setUser, handleWithdrawRequest } = useAuthContext();
     const [withdrawAddress, setWithdrawAddress] = useState<string>(user?.address || "");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { isOpen, onOpen, onClose } = useOpen(false);
-    const [modalContent, setModalContent] = useState<{ title: string; message: string; type: 'success' | 'error' }>({
-        title: '',
-        message: '',
-        type: 'error'
-    });
+    const { onOpen } = useOpen(false);
     const navigate = useNavigate();
+
+    // Modal state
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [modalType, setModalType] = useState<'success' | 'error'>('success');
+    const [modalMessage, setModalMessage] = useState<string>("");
 
     // Pre-fill user's address when user data loads
     useEffect(() => {
@@ -74,43 +76,24 @@ export const WithdrawView = () => {
         // Validation
 
         if (!withdrawAddress) {
-            setModalContent({
-                title: "Invalid Address",
-                message: "Please enter a valid withdrawal address",
-                type: 'error'
-            });
-            onOpen();
+            // Toast.error("Invalid Address", "Please enter a valid withdrawal address");
             return;
         }
 
         // Basic address validation
         if (!withdrawAddress.startsWith("0x") || withdrawAddress.length !== 42) {
-            setModalContent({
-                title: "Invalid Address",
-                message: "Please enter a valid Ethereum-compatible address",
-                type: 'error'
-            });
-            onOpen();
+            // Toast.error("Invalid Address", "Please enter a valid Ethereum-compatible address");
             return;
         }
 
         if (!amount || Number(amount) <= 0) {
-            setModalContent({
-                title: "Invalid Amount",
-                message: "Please enter a valid amount greater than 0",
-                type: 'error'
-            });
             onOpen();
+            // Toast.error("Invalid Amount", "Please enter a valid amount greater than 0");
             return;
         }
 
         if (Number(amount) > availableBalance) {
-            setModalContent({
-                title: "Insufficient Balance",
-                message: `Your available balance is ${availableBalance} ${token}. Please enter a lower amount.`,
-                type: 'error'
-            });
-            onOpen();
+            // Toast.error("Insufficient Balance", `Your available balance is ${availableBalance} ${token}. Please enter a lower amount.`);
             return;
         }
 
@@ -138,33 +121,21 @@ export const WithdrawView = () => {
 
             if (data) {
                 setUser(data);
-                setModalContent({
-                    title: "Withdrawal Requested",
-                    message: `Successfully requested withdrawal of ${amount} ${token}. It will be processed shortly.`,
-                    type: 'success'
-                });
-                onOpen();
-                // Reset form
-                setAmount("0");
-                // Keep user's address in the field
+                setModalType('success');
+                setModalMessage(`Successfully withdraw ${amount} ${token} to ${formatAddress(withdrawAddress)}`);
+                setShowModal(true);
             }
         } catch (error: any) {
             console.error("Withdrawal failed:", error);
 
+            // Show error modal
+            setModalType('error');
             if (error?.response?.data?.message) {
-                setModalContent({
-                    title: "Withdrawal Failed",
-                    message: error.response.data.message,
-                    type: 'error'
-                });
+                setModalMessage(error.response.data.message);
             } else {
-                setModalContent({
-                    title: "Withdrawal Failed",
-                    message: "An error occurred during the withdrawal. Please try again.",
-                    type: 'error'
-                });
+                setModalMessage("An error occurred during the withdrawal. Please try again.");
             }
-            onOpen();
+            setShowModal(true);
         } finally {
             setIsLoading(false);
         }
@@ -172,30 +143,6 @@ export const WithdrawView = () => {
 
     return (
         <div className="w-full h-full text-white flex gap-4">
-            <Modal
-                closeOnOutsideClick={true}
-                showCloseButton={true}
-                isOpen={isOpen}
-                onClose={onClose}
-                title={modalContent.title}
-            >
-                <div className="w-full px-4 pb-4 flex flex-col gap-4">
-                    <div className={`p-4 rounded-lg ${modalContent.type === 'success' ? 'bg-green-500/10 border border-green-500/30' : 'bg-red-500/10 border border-red-500/30'}`}>
-                        <p className={`${modalContent.type === 'success' ? 'text-green-300' : 'text-red-300'}`}>
-                            {modalContent.message}
-                        </p>
-                    </div>
-                    <button
-                        onClick={onClose}
-                        className={`w-full py-2 px-4 rounded-lg font-semibold transition-all ${modalContent.type === 'success'
-                            ? 'bg-green-500 hover:bg-green-600 text-white'
-                            : 'bg-red-500 hover:bg-red-600 text-white'
-                            }`}
-                    >
-                        OK
-                    </button>
-                </div>
-            </Modal>
             <div className="w-full h-full flex flex-col">
                 {/* Header with gradient accent */}
                 <div className="relative flex-shrink-0 flex items-center justify-start gap-0 w-full border-b border-white/10">
@@ -363,7 +310,7 @@ export const WithdrawView = () => {
                                 placeholder="0.00"
                                 value={amount}
                                 onChange={(e) => {
-                                    setAmount(isNaN(Number(e.target.value)) ? amount : e.target.value);
+                                    setAmount(isNaN(parseFloat(e.target.value)) ? amount : e.target.value);
                                 }}
                             />
                             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs font-medium">
@@ -392,7 +339,7 @@ export const WithdrawView = () => {
                             disabled={isLoading || !withdrawAddress || Number(amount) <= 0 || Number(amount) > availableBalance}
                         >
                             <HiArrowTrendingDown size={20} className="group-hover:scale-110 transition-transform" />
-                            <span className="text-base">{isLoading ? "Processing..." : "Withdraw"}</span>
+                            <span className="text-base">{isLoading ? "Processing..." : "Withdraw Now"}</span>
                         </motion.button>
 
                         <motion.button
@@ -407,6 +354,62 @@ export const WithdrawView = () => {
                     </motion.div>
                 </div>
             </div>
+
+            {/* Withdrawal Result Modal */}
+            <Modal
+                isOpen={showModal}
+                onClose={() => {
+                    setShowModal(false);
+                    if (modalType === 'success') {
+                        setAmount("0");
+                    }
+                }}
+                title={modalType === 'success' ? "Withdrawal Successful" : "Withdrawal Failed"}
+                maxWidth="max-w-md"
+            >
+                <div className="flex flex-col items-center gap-4 p-4">
+                    <div className={`flex items-center justify-center w-16 h-16 rounded-full ${modalType === 'success'
+                        ? 'bg-cyan-500/20'
+                        : 'bg-red-500/20'
+                        }`}>
+                        {modalType === 'success' ? (
+                            <FaCheckCircle className="text-cyan-400 text-4xl" />
+                        ) : (
+                            <FaTimesCircle className="text-red-400 text-4xl" />
+                        )}
+                    </div>
+
+                    <p className="text-white text-center text-base leading-relaxed">
+                        {modalMessage}
+                    </p>
+
+                    {modalType === 'success' && (
+                        <div className="w-full bg-gradient-to-br from-cyan-500/5 to-emerald-500/5 backdrop-blur-sm rounded-lg p-4 border border-cyan-500/20">
+                            <div className="text-sm text-gray-300 space-y-1">
+                                <p className="text-cyan-400 font-semibold">Transaction Details:</p>
+                                <p><span className="text-gray-400">Network:</span> {network}</p>
+                                <p><span className="text-gray-400">Token:</span> {token}</p>
+                                <p><span className="text-gray-400">Amount:</span> {amount}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    <button
+                        onClick={() => {
+                            setShowModal(false);
+                            if (modalType === 'success') {
+                                setAmount("0");
+                            }
+                        }}
+                        className={`w-full font-bold py-3 rounded-md transition-colors cursor-none mt-2 ${modalType === 'success'
+                            ? 'bg-cyan-500/80 hover:bg-cyan-400/80 text-white'
+                            : 'bg-red-500/80 hover:bg-red-400/80 text-white'
+                            }`}
+                    >
+                        {modalType === 'success' ? 'Close' : 'Try Again'}
+                    </button>
+                </div>
+            </Modal>
         </div>
     );
 };

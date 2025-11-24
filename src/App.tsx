@@ -28,7 +28,7 @@ declare global {
 // Main application content
 const AppContent = () => {
   useEffect(() => {
-    window.electron.clearCache();
+    // window.electron.clearCache();
   }, []);
 
   return (
