@@ -36,12 +36,12 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
 
   // API call for search endpoint
   const fetchSearchRecords = useCallback(async (
-    startDate?: string, 
-    endDate?: string, 
+    startDate?: string,
+    endDate?: string,
     sortBy?: string,
     sortOrder?: string,
     myRecordsOnly?: boolean,
-    limit = 10, 
+    limit = 10,
     offset = 0
   ): Promise<RecordsSearchResponse> => {
     try {
@@ -49,13 +49,13 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
         limit,
         offset
       };
-      
+
       if (startDate) params.startDate = startDate;
       if (endDate) params.endDate = endDate;
       if (sortBy) params.sortBy = sortBy;
       if (sortOrder) params.sortOrder = sortOrder;
       if (myRecordsOnly !== undefined) params.myRecordsOnly = myRecordsOnly.toString();
-      
+
       const response = await searchRecords(params);
       return response;
     } catch (error) {
@@ -279,11 +279,10 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
                 <button
                   key={key}
                   onClick={() => setActiveSection(key as SectionType)}
-                  className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200 ${
-                    activeSection === key
+                  className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200 ${activeSection === key
                       ? 'text-cyan-50 border-b-2 border-cyan-400 bg-cyan-900/40'
                       : 'text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-900/20'
-                  }`}
+                    }`}
                 >
                   <Icon size={16} />
                   {label}
@@ -311,11 +310,10 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
                           initial={{ opacity: 0, y: 20 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3 }}
-                          className={`p-4 rounded-lg border transition-all duration-200 ${
-                            isSelected
-                              ? 'bg-cyan-900/40 border-cyan-400/50 cursor-not-allowed shadow-lg shadow-cyan-500/20'
+                          className={`p-4 rounded-lg border transition-all duration-200 ${isSelected
+                              ? 'bg-cyan-900/40 border-cyan-400/50 cursor-none shadow-lg shadow-cyan-500/20'
                               : 'bg-gradient-to-br from-[#042035]/80 to-[#020f1c]/80 border-cyan-400/20 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 cursor-pointer'
-                          }`}
+                            }`}
                           onClick={() => !isSelected && handleRecordSelect(record)}
                         >
                           {isSelected ? (

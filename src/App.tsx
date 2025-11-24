@@ -6,11 +6,9 @@ import { PATH } from "./const";
 import { CustomCursor } from "./components";
 import {
   ImageLoadProvider,
-  useImageLoad,
 } from "./context";
 import { ToastContainer } from "react-toastify";
-import { MdDownload } from "react-icons/md";
-import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 // Define the electronAPI interface
 declare global {
@@ -27,49 +25,28 @@ declare global {
   }
 }
 
-// Loading component to show while images are loading
-const LoadingScreen = () => {
-  return (
-    <div className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-gray-950">
-      <MdDownload color="white" size={96} className="animate-bounce" />
-      <span className="text-white text-2xl font-bold">Preparing Assets...</span>
-      <div className="w-96 h-2 bg-white rounded-full mt-4 relative overflow-hidden">
-        <motion.div
-          className="absolute left-0 top-0 h-full bg-gray-500 rounded-full"
-          style={{ width: "25%" }}
-          initial={{ x: -96 }}
-          animate={{ x: 384 }}
-          transition={{ duration: 1, repeat: Infinity }}
-        />
-      </div>
-    </div>
-  );
-};
-
 // Main application content
 const AppContent = () => {
-  const { loading } = useImageLoad();
+  useEffect(() => {
+    window.electron.clearCache();
+  }, []);
 
   return (
     <>
       <CustomCursor />
-      {loading ? (
-        <LoadingScreen />
-      ) : (
-        <BrowserRouter>
-          <Routes>
-            <Route path={PATH.HOME} element={<LandingPage />} />
-            <Route
-              path={PATH.GAME + PATH.ASTERISK}
-              element={<GamePage />}
-            />
-            <Route
-              path={PATH.WALLET_CREATION + PATH.ASTERISK}
-              element={<WalletPage />}
-            />
-          </Routes>
-        </BrowserRouter>
-      )}
+      <BrowserRouter>
+        <Routes>
+          <Route path={PATH.HOME} element={<LandingPage />} />
+          <Route
+            path={PATH.GAME + PATH.ASTERISK}
+            element={<GamePage />}
+          />
+          <Route
+            path={PATH.WALLET_CREATION + PATH.ASTERISK}
+            element={<WalletPage />}
+          />
+        </Routes>
+      </BrowserRouter>
       <ToastContainer
         autoClose={4500}
         theme="dark"

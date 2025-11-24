@@ -127,12 +127,8 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               <label htmlFor="scale-input" className="text-cyan-200">Scale: </label>
               <input
                 id="scale-input"
-                type="number"
-                step="0.1"
-                min="0.1"
-                max="5"
                 value={scale}
-                onChange={(e) => setScale(Number(e.target.value))}
+                onChange={(e) => setScale(Number(isNaN(Number(e.target.value)) ? scale : Number(e.target.value)))}
                 className="bg-gray-700/50 border border-cyan-500/30 rounded-md p-1 w-20 text-white focus:border-cyan-400/50 focus:outline-none"
               />
             </div>
@@ -140,13 +136,12 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               <label htmlFor="rotate-input" className="text-cyan-200">Rotate: </label>
               <input
                 id="rotate-input"
-                type="number"
                 value={rotate}
                 onChange={(e) =>
                   setRotate(
                     Math.min(
                       180,
-                      Math.max(-180, Number(e.target.value))
+                      Math.max(-180, Number(isNaN(Number(e.target.value)) ? rotate : Number(e.target.value)))
                     )
                   )
                 }

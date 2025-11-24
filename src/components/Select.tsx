@@ -65,7 +65,7 @@ export const Select: React.FC<SelectProps> = ({
     >
       <div
         onClick={toggleDropdown}
-        className={`border border-cyan-400/30 cursor-none flex items-center justify-between px-2 py-2 bg-cyan-950/30 rounded-lg min-w-48 relative z-20 transition-all ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-cyan-900/40'
+        className={`border border-cyan-400/30 cursor-none flex items-center justify-between px-2 py-2 bg-cyan-950/30 rounded-lg min-w-48 relative z-20 transition-all ${disabled ? 'opacity-50 cursor-none' : 'hover:bg-cyan-900/40'
           }`}
       >
         <span className={`text-white ${!selectedOption ? 'text-cyan-300/40' : ''}`}>

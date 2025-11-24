@@ -24,9 +24,11 @@ import RUGBY from "./images/sports/rugby.png";
 import TABLETENNIS from "./images/sports/tabletennis.png";
 import TENNIS from "./images/sports/tennis.png";
 import VOLLEYBALL from "./images/sports/volleyball.png";
-import BLOCKBINGO from "./images/sports/sport_betting.jpg"
+import BLOCKBINGO from "./images/sports/sport_betting.jpg";
+import BG_LOADING from "./images/background_loading.jpg";
 
 export const Images = {
+  BG_LOADING,
   TILE_2_SM: "https://i.ibb.co/PzjpB3XT/2.png",
   TILE_2_LG: "https://i.ibb.co/C5qWgH20/2.png",
   TILE_4_SM: "https://i.ibb.co/Qj9Bg6sm/4.png",

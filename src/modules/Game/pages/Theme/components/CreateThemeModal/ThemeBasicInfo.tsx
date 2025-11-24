@@ -61,11 +61,18 @@ export const ThemeBasicInfo: React.FC<ThemeBasicInfoProps> = ({
       {visibility === "premium" && (
         <FormSection label="Price (USD)">
           <input
-            type="number"
-            min="1"
-            step="0.01"
             value={price}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (value === "") {
+                setPrice(0);
+              } else {
+                const parsed = parseFloat(value);
+                if (!isNaN(parsed)) {
+                  setPrice(parsed);
+                }
+              }
+            }}
             className="w-full bg-gray-700/50 text-white border border-cyan-500/30 rounded-md p-2 focus:border-cyan-400/50 focus:outline-none"
             placeholder="Enter price"
           />

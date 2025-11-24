@@ -32,6 +32,7 @@ export const PrivateRoute = () => {
         console.log("existence", existence);
         if (existence) {
           const walletAddress = await handleGetWalletAddress();
+          console.log("walletAddress", walletAddress);
           localStorage.setItem("token", walletAddress);
           const userData = await handleUser(walletAddress);
           setUser({ ...userData });

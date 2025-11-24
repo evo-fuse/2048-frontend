@@ -57,7 +57,7 @@ const WalletConnect: React.FC<WalletConnectProps> = ({
           {error && <div className="text-red-400 text-sm">{error}</div>}
           <button
             type="submit"
-            className="w-full h-10 rounded-md bg-cyan-600 hover:bg-cyan-500 px-3 py-1 text-white disabled:opacity-50 disabled:hover:bg-cyan-600 disabled:cursor-not-allowed transition-all shadow-lg shadow-cyan-500/30 border border-cyan-400/30 font-medium cursor-none"
+            className="w-full h-10 rounded-md bg-cyan-600 hover:bg-cyan-500 px-3 py-1 text-white disabled:opacity-50 disabled:hover:bg-cyan-600 disabled:cursor-none transition-all shadow-lg shadow-cyan-500/30 border border-cyan-400/30 font-medium cursor-none"
           >
             Unlock
           </button>
