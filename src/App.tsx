@@ -7,7 +7,6 @@ import { CustomCursor } from "./components";
 import {
   ImageLoadProvider,
 } from "./context";
-import { ToastContainer } from "react-toastify";
 import { useEffect } from "react";
 
 // Define the electronAPI interface
@@ -47,19 +46,6 @@ const AppContent = () => {
           />
         </Routes>
       </BrowserRouter>
-      <ToastContainer
-        autoClose={4500}
-        theme="dark"
-        position="bottom-right"
-        icon={false}
-        toastStyle={{
-          backgroundColor: "#00000066",
-          color: "#fff",
-          cursor: "none",
-          width: "360px",
-        }}
-        closeOnClick
-      />
     </>
   );
 };

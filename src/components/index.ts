@@ -7,4 +7,3 @@ export * from "./Tab";
 export * from "./Modal";
 export * from "./PasswordInput";
 export * from "./Ribbon";
-export * from "./toast";

@@ -5,14 +5,17 @@ import {
   Web3Provider,
   AuthProvider,
   RecordProvider,
+  NotificationProvider,
 } from "./context";
 
 createRoot(document.getElementById("root")!).render(
   <RecordProvider>
     <AuthProvider>
-      <Web3Provider>
-        <App />
-      </Web3Provider>
+      <NotificationProvider>
+        <Web3Provider>
+          <App />
+        </Web3Provider>
+      </NotificationProvider>
     </AuthProvider>
   </RecordProvider>
 );

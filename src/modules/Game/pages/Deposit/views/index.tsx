@@ -1,4 +1,4 @@
-import { Select, Toast } from "../../../../../components";
+import { Select } from "../../../../../components";
 import { useState } from "react";
 import { TbMoneybag } from "react-icons/tb";
 import { LuDices } from "react-icons/lu";
@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import { PATH, TOKEN } from "../../../../../const";
 import { motion } from "framer-motion";
 import { Images } from "../../../../../assets/images";
+
+export const MIN_DEPOSIT_AMOUNT = 5;
 
 export const DepositView = () => {
     const [network, setNetwork] = useState<string>("Fuse");
@@ -51,13 +53,16 @@ export const DepositView = () => {
         // Validation
         if (!privateKey) {
             onOpen();
-            Toast.error("Wallet Not Connected", "Please connect your wallet to deposit crypto");
             return;
         }
 
         if (!amount || Number(amount) <= 0) {
             onOpen();
-            Toast.error("Invalid Amount", "Please enter a valid amount greater than 0");
+            return;
+        }
+
+        if (Number(amount) < MIN_DEPOSIT_AMOUNT) {
+            onOpen();
             return;
         }
 
@@ -84,10 +89,6 @@ export const DepositView = () => {
             }
         } catch (error: any) {
             console.error("Deposit failed:", error);
-            // Only show error toast if transferTokens didn't already show one
-            if (!error?.message?.includes("not supported") && !error?.message?.includes("insufficient funds")) {
-                Toast.error("Deposit Failed", "An error occurred during the deposit. Please try again.");
-            }
         } finally {
             setIsLoading(false);
         }
@@ -201,6 +202,14 @@ export const DepositView = () => {
                                 {token}
                             </span>
                         </div>
+                        <p className="text-xs text-gray-400 italic">
+                            Minimum deposit: ${MIN_DEPOSIT_AMOUNT}
+                        </p>
+                        {amount && Number(amount) > 0 && Number(amount) < MIN_DEPOSIT_AMOUNT && (
+                            <p className="text-red-400 text-xs">
+                                Amount must be greater than or equal to ${MIN_DEPOSIT_AMOUNT}
+                            </p>
+                        )}
                     </motion.div>
 
                     {/* Deposit Address */}

@@ -3,9 +3,8 @@ import { useState, useEffect, useMemo } from "react";
 import { TbMoneybag } from "react-icons/tb";
 import { HiArrowTrendingDown } from "react-icons/hi2";
 import { FaCheckCircle, FaTimesCircle } from "react-icons/fa";
-import { useAuthContext } from "../../../../../context";
+import { useAuthContext, useNotification } from "../../../../../context";
 import Modal from "../../../../../components/Modal";
-import { useOpen } from "../../../../../hooks";
 import { User } from "../../../../../types";
 import { useNavigate } from "react-router-dom";
 import { PATH, TOKEN } from "../../../../../const";
@@ -18,9 +17,9 @@ export const WithdrawView = () => {
     const [token, setToken] = useState<string>("USDT");
     const [amount, setAmount] = useState<string>("0");
     const { handleUpdateUser, user, setUser, handleWithdrawRequest } = useAuthContext();
+    const notification = useNotification();
     const [withdrawAddress, setWithdrawAddress] = useState<string>(user?.address || "");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const { onOpen } = useOpen(false);
     const navigate = useNavigate();
 
     // Modal state
@@ -76,24 +75,23 @@ export const WithdrawView = () => {
         // Validation
 
         if (!withdrawAddress) {
-            // Toast.error("Invalid Address", "Please enter a valid withdrawal address");
+            notification.error("Invalid Address", "Please enter a valid withdrawal address");
             return;
         }
 
         // Basic address validation
         if (!withdrawAddress.startsWith("0x") || withdrawAddress.length !== 42) {
-            // Toast.error("Invalid Address", "Please enter a valid Ethereum-compatible address");
+            notification.error("Invalid Address", "Please enter a valid Ethereum-compatible address");
             return;
         }
 
         if (!amount || Number(amount) <= 0) {
-            onOpen();
-            // Toast.error("Invalid Amount", "Please enter a valid amount greater than 0");
+            notification.error("Invalid Amount", "Please enter a valid amount greater than 0");
             return;
         }
 
         if (Number(amount) > availableBalance) {
-            // Toast.error("Insufficient Balance", `Your available balance is ${availableBalance} ${token}. Please enter a lower amount.`);
+            notification.error("Insufficient Balance", `Your available balance is ${availableBalance} ${token}. Please enter a lower amount.`);
             return;
         }
 

@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { User } from "../../../../../types";
-import { Toast } from "../../../../../components";
 import { GameState, SPORTS_BALLS, MULTIPLIER_2_HORIZONTAL, MULTIPLIER_3_HORIZONTAL, MULTIPLIER_3_DIAGONAL, DIVIDE_THRESHOLD } from "../constants/balls";
-import { useAuthContext } from "../../../../../context";
+import { useAuthContext, useNotification } from "../../../../../context";
 
 export const useGameLogic = (user: User | null, network: string, currency: string, depositAmount: string) => {
     const { handleUpdateUser, handleUser, setUser } = useAuthContext();
+    const notification = useNotification();
     const [gameState, setGameState] = useState<GameState>("idle");
 
     // Initialize grid with random tiles
@@ -217,7 +217,7 @@ export const useGameLogic = (user: User | null, network: string, currency: strin
                         const refreshedUser = await handleUser(user.address);
                         setUser({ ...refreshedUser, address: user.address });
                     } catch (error) {
-                        Toast.error("Update Failed", "Failed to update balance on server. Please contact support.");
+                        notification.error("Update Failed", "Failed to update balance on server. Please contact support.");
                     }
                 }
             }, 2000);

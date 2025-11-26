@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthContext } from "../../../../../../context/AuthContext";
 import { useWeb3Context } from "../../../../../../context/Web3Context";
-import { Toast } from "../../../../../../components";
+import { useNotification } from "../../../../../../context/NotificationContext";
 import { FaSpinner, FaTimes, FaRedo } from "react-icons/fa";
 import { GameStatus } from "../../hooks/useGameState";
 import { useGameContext } from "../../../../context/GameContext";
@@ -26,6 +26,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
 }) => {
   const { user, handleRequestRewarding, handleUpdateUser } = useAuthContext();
   const { setItemUsage, setFireworksState } = useGameContext();
+  const notification = useNotification();
   const [animate, setAnimate] = useState(false);
   const click = useRef<boolean>(false);
   const estimatedReward: number =
@@ -59,7 +60,7 @@ const RewardModal: React.FC<RewardModalProps> = ({
         await getBalance();
       }
     } catch (error) {
-      Toast.error("Error requesting reward");
+      notification.error("Error requesting reward");
     } finally {
       setLoading(false);
       setFireworksState(false);

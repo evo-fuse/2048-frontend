@@ -5,12 +5,12 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { Toast } from "../components";
 import { Web3, Web3BaseWalletAccount } from "web3";
 import { TOKEN_CONTRACT_INFO, REWARD_CONTRACT_INFO } from "../contracts";
 import { CONFIG, TOKEN } from "../const";
 import { createWeb3Instance } from "../utils/web3config";
 import { useAuthContext } from "./AuthContext";
+import { useNotification } from "./NotificationContext";
 
 interface Web3ContextType {
   web3: Web3;
@@ -53,6 +53,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const { user, privateKey } = useAuthContext();
+  const notification = useNotification();
   const [account, setAccount] = useState<Web3BaseWalletAccount | null>(null);
   const [userBalance, setUserBalance] = useState<bigint | number>(0);
   const web3: Web3 = createWeb3Instance(CONFIG.FUSE_PROVIDER_URL);
@@ -250,7 +251,7 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
       if (error.message.includes("reason string")) {
         const reasonMatch = error.message.match(/reason string: '(.+)'/);
         if (reasonMatch && reasonMatch[1]) {
-          Toast.error("Transaction reverted", reasonMatch[1]);
+          notification.error("Transaction reverted", reasonMatch[1]);
           return;
         }
       }
@@ -263,24 +264,24 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
           toAddress,
           amount
         );
-        Toast.error(
+        notification.error(
           "Transaction reverted",
           reason || "Check if the contract has transfer restrictions."
         );
       } catch {
-        Toast.error(
+        notification.error(
           "Transaction reverted",
           "Check if the contract has transfer restrictions."
         );
       }
     } else if (error.message.includes("insufficient funds")) {
-      Toast.error("Payment Failed", "Can't pay gas. Native token is not enough.");
+      notification.error("Payment Failed", "Can't pay gas. Native token is not enough.");
     } else if (error.message.includes("nonce too low")) {
-      Toast.error("Payment Failed", "Transaction nonce issue. Try again.");
+      notification.error("Payment Failed", "Transaction nonce issue. Try again.");
     } else if (error.message.includes("gas limit")) {
-      Toast.error("Payment Failed", "Gas limit issue. Try with higher gas.");
+      notification.error("Payment Failed", "Gas limit issue. Try with higher gas.");
     } else {
-      Toast.error("Payment failed", error.message || "Unknown error");
+      notification.error("Payment failed", error.message || "Unknown error");
     }
   };
 
@@ -395,9 +396,9 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
       console.log("Transaction failed:", error.message?.toString() || error);
 
       if (error.message?.includes("not supported")) {
-        Toast.error("Token not supported", error.message);
+        notification.error("Token not supported", error.message);
       } else {
-        Toast.error("Payment failed", error.message || "Unknown error");
+        notification.error("Payment failed", error.message || "Unknown error");
       }
 
       throw error;
@@ -447,12 +448,12 @@ export const Web3Provider: React.FC<{ children: ReactNode }> = ({
       } catch (error: any) {
         console.error("Transaction failed:", error);
         if (error.message.includes("cannot pay gas")) {
-          Toast.error(
+          notification.error(
             "Payment failed",
             "Fuse is not enough. Please buy some Fuse to confirm the transaction."
           );
         } else {
-          Toast.error("Payment failed", error.message || "Unknown error");
+          notification.error("Payment failed", error.message || "Unknown error");
         }
         throw error;
       }
