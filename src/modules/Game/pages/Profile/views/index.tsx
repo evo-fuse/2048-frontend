@@ -38,7 +38,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ title, icon, children, 
 
 export const ProfileView: React.FC = () => {
   const { user } = useAuthContext();
-  const { getCreatedThemes } = useGameContext();
+  const { createdThemes, getCreatedThemes } = useGameContext();
   const { userBalance, getBalance } = useWeb3Context();
   const [screenSize, setScreenSize] = useState<ScreenSize>(getScreenSize(window.innerWidth));
 
@@ -178,19 +178,11 @@ export const ProfileView: React.FC = () => {
             Latest Created Themes
           </div>
           <div className={`w-full flex flex-wrap ${styles.themeGap} ${isMobile ? '' : 'overflow-y-auto overflow-x-hidden'} pb-2 ${isMobile ? '' : 'flex-1 min-h-0'}`}>
-            {/* {createdThemes.map((theme, index) => (
+            {createdThemes.map((theme, index) => (
               <img
                 key={`${theme.uuid}-${index}`}
                 src={theme[2].sm}
                 alt={theme.title}
-                className={`${styles.themeSize} object-cover rounded-md`}
-              />
-            ))} */}
-            {new Array(10).fill(0).map((_, index) => (
-              <img
-                key={`theme-${index}`}
-                src={`https://i.ibb.co/23YwLh4m/1.png`}
-                alt={`Theme ${index}`}
                 className={`${styles.themeSize} object-cover rounded-md`}
               />
             ))}
