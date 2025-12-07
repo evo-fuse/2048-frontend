@@ -15,7 +15,7 @@ export const CreateThemeButton: React.FC<CreateThemeButtonProps> = ({ onClick })
       </span>
     </div>
     <span className="text-white/80 hover:text-white transition-colors">
-      Create your own
+      Upload Theme
     </span>
   </div>
 ); 

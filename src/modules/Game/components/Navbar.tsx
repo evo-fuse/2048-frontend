@@ -5,6 +5,7 @@ import {
   IoColorPaletteOutline,
   IoGameControllerOutline,
 } from "react-icons/io5";
+import { PiMagicWand } from "react-icons/pi";
 import { LuDices } from "react-icons/lu";
 import { IconType } from "react-icons";
 import { PATH } from "../../../const";
@@ -51,6 +52,11 @@ const navItems = [
     label: "Theme",
     path: `${PATH.GAME}${PATH.THEME}`,
   },
+  {
+    Icon: PiMagicWand,
+    label: "AI Theme Generator",
+    path: `${PATH.GAME}${PATH.AI_THEME_GENERATOR}`,
+  },
 ];
 
 interface NavbarItemProps {
@@ -90,7 +96,7 @@ const NavbarItem: React.FC<NavbarItemProps> = ({
           >
             <div className="absolute left-[80px] top-[27.2px] -rotate-[60deg] w-16 border-t-2 border-white"></div>
             <div className="absolute left-32 w-6 border-t-2 border-white"></div>
-            <div className="absolute text-white left-40 -top-[12px] bg-gray-800 px-2 py-1 rounded-md border border-white">
+            <div className="absolute text-white left-40 -top-[12px] bg-gray-800 px-2 py-1 rounded-md border border-white text-nowrap">
               {label}
             </div>
           </motion.div>
@@ -219,9 +225,9 @@ export const Navbar: React.FC = () => {
 
   return (
     <div className="max-w-80 w-full flex flex-col items-center justify-start py-8 gap-4 relative z-20">
-      <div className="flex flex-col w-full gap-8 items-center">
+      <div className="flex flex-col w-full gap-8 items-center justify-center">
         <WalletConnectButton />
-        <div className="flex gap-4 relative max-w-60">
+        <div className="flex gap-4 relative max-w-60 h-[546.8px]">
           <div className="top-[64px] flex flex-col gap-4 relative left-28">
             {navItems.map(({ Icon, label, path }, idx) => (
               idx % 2 === 1 && <NavbarItem

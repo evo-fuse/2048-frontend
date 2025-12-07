@@ -25,3 +25,4 @@ export const WITHDRAW = "/withdraw";
 export const BETTING = "/betting";
 export const BLOCK_BINGO = "/block-bingo";
 export const ANIMAL_BINGO = "/animal-bingo";
+export const AI_THEME_GENERATOR = "/ai-theme-generator";

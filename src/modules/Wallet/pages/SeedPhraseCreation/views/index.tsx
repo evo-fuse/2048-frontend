@@ -55,7 +55,7 @@ export const SeedPhraseCreationView: React.FC = () => {
 
         <div
           onClick={onClick}
-          className="flex w-full justify-end items-center gap-2 text-cyan-300/80 hover:text-cyan-200 transition-colors cursor-pointer"
+          className="flex w-full justify-end items-center gap-2 text-cyan-300/80 hover:text-cyan-200 transition-colors cursor-none"
         >
           {content}
         </div>

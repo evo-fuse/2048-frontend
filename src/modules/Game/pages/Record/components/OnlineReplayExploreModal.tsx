@@ -280,8 +280,8 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
                   key={key}
                   onClick={() => setActiveSection(key as SectionType)}
                   className={`flex items-center gap-2 px-6 py-4 text-sm font-medium transition-all duration-200 ${activeSection === key
-                      ? 'text-cyan-50 border-b-2 border-cyan-400 bg-cyan-900/40'
-                      : 'text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-900/20'
+                    ? 'text-cyan-50 border-b-2 border-cyan-400 bg-cyan-900/40'
+                    : 'text-cyan-300/70 hover:text-cyan-100 hover:bg-cyan-900/20'
                     }`}
                 >
                   <Icon size={16} />
@@ -311,8 +311,8 @@ export const OnlineReplayExploreModal: React.FC<OnlineReplayExploreModalProps> =
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.3 }}
                           className={`p-4 rounded-lg border transition-all duration-200 ${isSelected
-                              ? 'bg-cyan-900/40 border-cyan-400/50 cursor-none shadow-lg shadow-cyan-500/20'
-                              : 'bg-gradient-to-br from-[#042035]/80 to-[#020f1c]/80 border-cyan-400/20 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 cursor-pointer'
+                            ? 'bg-cyan-900/40 border-cyan-400/50 cursor-none shadow-lg shadow-cyan-500/20'
+                            : 'bg-gradient-to-br from-[#042035]/80 to-[#020f1c]/80 border-cyan-400/20 hover:border-cyan-400/50 hover:shadow-lg hover:shadow-cyan-500/20 cursor-none'
                             }`}
                           onClick={() => !isSelected && handleRecordSelect(record)}
                         >

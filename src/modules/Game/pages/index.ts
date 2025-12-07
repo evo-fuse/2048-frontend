@@ -8,3 +8,4 @@ export * from "./Deposit";
 export * from "./Betting";
 export * from "./BlockBingo";
 export * from "./Withdraw";
+export * from "./AITheme";

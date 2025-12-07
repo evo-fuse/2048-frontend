@@ -10,6 +10,7 @@ import {
   BettingPage,
   BlockBingoPage,
   WithdrawPage,
+  AIThemePage,
 } from "./pages";
 import { PATH } from "../../const";
 import { GameProvider } from "./context/GameContext";
@@ -25,6 +26,7 @@ export const GamePage = () => {
           <Route path={PATH.WALLET} element={<WalletPage />} />
           <Route path={PATH.SHOP} element={<ShopPage />} />
           <Route path={PATH.THEME} element={<ThemePage />} />
+          <Route path={PATH.AI_THEME_GENERATOR} element={<AIThemePage />} />
           <Route path={PATH.RECORD} element={<RecordPage />} />
           <Route path={PATH.DEPOSIT} element={<DepositPage />} />
           <Route path={PATH.WITHDRAW} element={<WithdrawPage />} />

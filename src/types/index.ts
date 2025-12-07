@@ -19,6 +19,7 @@ export type User = {
   polusdc: string;
   fuseusdt: string;
   fuseusdc: string;
+  ATCredits: number;
 };
 
 export type TToken = {
@@ -59,11 +60,11 @@ export type Theme = {
   price?: number;
   numberDisplay: boolean;
   position:
-    | "center"
-    | "top-left"
-    | "bottom-right"
-    | "top-right"
-    | "bottom-left";
+  | "center"
+  | "top-left"
+  | "bottom-right"
+  | "top-right"
+  | "bottom-left";
   numberColor: string;
   numberSize: number;
   owned: boolean;
