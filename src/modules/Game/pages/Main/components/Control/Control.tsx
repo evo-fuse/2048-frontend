@@ -49,7 +49,7 @@ const Control: FC<ControlProps> = ({
           fontSize={12}
           fontWeight="bold"
           texttransform="uppercase"
-          color="cyan"
+          color="white"
           style={{
             textShadow: '0 0 8px rgba(34, 211, 238, 0.5)',
             transition: 'all 0.2s ease',
