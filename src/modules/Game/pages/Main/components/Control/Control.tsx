@@ -1,12 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { MAX_SCALE, MIN_SCALE } from "../../utils/constants";
-import Box from "../Box";
 import Text from "../Text";
 import { useAuthContext, useRecordContext } from "../../../../../../context";
 import { ControlButton } from "./ControlButton";
 import { IoStop, IoPlay } from "react-icons/io5";
 import { Tile } from "../../hooks/useGameBoard";
-import { IoRefreshOutline } from "react-icons/io5";
+import { FaRedo } from "react-icons/fa";
 
 export interface ControlProps {
   rows: number;
@@ -25,6 +24,8 @@ const Control: FC<ControlProps> = ({
   const { user } = useAuthContext();
   const { recording, setRecording, onRecordOpen, activity, setActivity } =
     useRecordContext();
+  const [hoverTitle, setHoverTitle] = useState<string>("Control");
+
   const handleRecordClick = () => {
     setRecording(!recording);
     if (recording) {
@@ -39,60 +40,112 @@ const Control: FC<ControlProps> = ({
       ]);
     }
   };
+
   return (
-    <Box inlinesize="100%" justifycontent="space-between">
-      <div className="flex items-center gap-2">
-        <button
-          className="bg-gray-800/40 hover:bg-gray-300/20 transition border border-white/10 rounded-lg p-2 flex items-center gap-2"
-          onClick={onReset}
+    <div className="flex flex-col gap-1 backdrop-blur-sm rounded-lg p-2 box-border items-center justify-center">
+      {/* Title */}
+      <div className="text-center">
+        <Text
+          fontSize={12}
+          fontWeight="bold"
+          texttransform="uppercase"
+          color="cyan"
+          style={{
+            textShadow: '0 0 8px rgba(34, 211, 238, 0.5)',
+            transition: 'all 0.2s ease',
+          }}
         >
-          <IoRefreshOutline />
-          <Text fontSize={16} texttransform="capitalize">
-            new game
-          </Text>
-        </button>
+          {hoverTitle}
+        </Text>
+      </div>
+
+      {/* Buttons Container */}
+      <div className="flex flex-row items-center justify-center gap-1.5">
+        {/* New Game Button */}
         <button
-          className="bg-gray-800/40 hover:bg-gray-300/20 transition border border-white/10 rounded-lg p-2"
+          className={`
+            group relative
+            bg-gradient-to-br from-cyan-600/50 to-cyan-700/50
+            hover:from-cyan-500/70 hover:to-cyan-600/70
+            active:from-cyan-400/80 active:to-cyan-500/80
+            transition-all duration-200
+            border border-cyan-400/60 hover:border-cyan-300/80
+            rounded-lg
+            flex items-center justify-center
+            p-1.5
+            w-7 h-7
+            shadow-md hover:shadow-lg hover:shadow-cyan-500/20
+            backdrop-blur-sm
+          `}
+          onClick={onReset}
+          onMouseEnter={() => setHoverTitle("New Game")}
+          onMouseLeave={() => setHoverTitle("Control")}
+        >
+          <FaRedo className="text-white text-sm transition-transform duration-200 group-hover:rotate-180" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+        </button>
+
+        {/* Record Button */}
+        <button
+          className={`
+            group relative
+            bg-gradient-to-br from-cyan-600/50 to-cyan-700/50
+            hover:from-cyan-500/70 hover:to-cyan-600/70
+            active:from-cyan-400/80 active:to-cyan-500/80
+            transition-all duration-200
+            border border-cyan-400/60 hover:border-cyan-300/80
+            rounded-lg
+            flex items-center justify-center
+            p-1.5
+            w-7 h-7
+            shadow-md hover:shadow-lg hover:shadow-cyan-500/20
+            backdrop-blur-sm
+          `}
           onClick={handleRecordClick}
+          onMouseEnter={() => setHoverTitle(recording ? "Stop Recording" : "Start Recording")}
+          onMouseLeave={() => setHoverTitle("Control")}
         >
           {recording ? (
-            <label className="text-red-500 flex items-center gap-2">
-              <IoStop />
-              Recording...
-            </label>
+            <IoStop className="text-red-400 text-sm" />
           ) : (
-            <label className="text-green-500 flex items-center gap-2">
-              <IoPlay />
-              Record
-            </label>
+            <IoPlay className="text-green-400 text-sm" />
           )}
+          <div className="absolute inset-0 bg-gradient-to-br from-white/0 to-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
         </button>
-      </div>
-      <Box>
-        <Box margininlineend="s6" flexdirection="column">
-          <Text texttransform="uppercase" fontSize={13} color="white">
-            Grid
+
+        {/* Minus Button */}
+        <ControlButton
+          value="-"
+          onClick={() => onChangeGrid(-1)}
+          disabled={cols === MIN_SCALE}
+          onMouseEnter={() => setHoverTitle("Shrink board")}
+          onMouseLeave={() => setHoverTitle("Control")}
+        />
+
+        {/* Board Size Display */}
+        <div className="min-w-[20px] text-center">
+          <Text
+            fontSize={18}
+            fontWeight="bold"
+            color="white"
+            style={{
+              textShadow: '0 0 6px rgba(34, 211, 238, 0.5)',
+            }}
+          >
+            {cols}
           </Text>
-          <Box padding="s2">
-            <ControlButton
-              value="-"
-              onClick={() => { onChangeGrid(-1); }}
-              disabled={cols === MIN_SCALE}
-            />
-            <Box margininline="s3">
-              <Text fontSize={16} color="white">
-                {cols}
-              </Text>
-            </Box>
-            <ControlButton
-              value="+"
-              onClick={() => { onChangeGrid(1); }}
-              disabled={cols === MAX_SCALE || cols === user?.cols || !user}
-            />
-          </Box>
-        </Box>
-      </Box>
-    </Box>
+        </div>
+
+        {/* Plus Button */}
+        <ControlButton
+          value="+"
+          onClick={() => onChangeGrid(1)}
+          disabled={cols === MAX_SCALE || cols === user?.cols || !user}
+          onMouseEnter={() => setHoverTitle("Expand board")}
+          onMouseLeave={() => setHoverTitle("Control")}
+        />
+      </div>
+    </div>
   );
 };
 

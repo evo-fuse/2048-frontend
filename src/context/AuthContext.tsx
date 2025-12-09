@@ -35,6 +35,7 @@ type AuthContextType = {
     amount: number;
     toAddress: string;
   }) => Promise<any>;
+  handleUploadAvatar: (file: File) => Promise<any>;
   exist: boolean;
   setExist: (exist: boolean) => void;
 };
@@ -186,6 +187,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return data;
   };
 
+  const handleUploadAvatar = async (file: File) => {
+    const formData = new FormData();
+    formData.append('avatar', file);
+    
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/avatar`, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': localStorage.getItem('token') || '',
+      },
+    });
+    
+    const data = await response.json();
+    
+    // Update user state with new avatar
+    if (data.user && user) {
+      setUser({ ...user, avatar: data.user.avatar });
+    }
+    
+    return data;
+  };
+
   useEffect(() => {
     handleExistWallet().then((exist) => {
       if (exist) {
@@ -219,6 +242,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     handleDisconnectWallet,
     handleCreateTheme,
     handleWithdrawRequest,
+    handleUploadAvatar,
     exist,
     setExist,
   };

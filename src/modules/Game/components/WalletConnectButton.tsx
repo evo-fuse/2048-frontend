@@ -1,4 +1,4 @@
-import { FaUnlock, FaLock, FaPlus } from "react-icons/fa";
+import { FaLock, FaUnlock, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../context";
 import { useGameContext } from "../context/GameContext";
@@ -9,7 +9,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export const WalletConnectButton: React.FC = () => {
-  const { privateKey, handleDisconnectWallet, exist } = useAuthContext();
+  const { privateKey, handleDisconnectWallet, exist, user } = useAuthContext();
   const { onOpenWalletConnect } = useGameContext();
   const navigate = useNavigate();
   const [isHover, setIsHover] = useState(false);
@@ -73,8 +73,20 @@ export const WalletConnectButton: React.FC = () => {
         >
           <Hex width={88} className="bg-gray-800 flex items-center justify-center">
             <Hex width={80} className={`${privateKey || isHover ? "bg-cyan-500/75" : "bg-white/30"} flex items-center justify-center transition-all`}>
-              <Hex width={72} className="bg-gray-800 flex items-center justify-center">
-                {privateKey ? <FaUnlock color="white" size={24} /> : exist ? <FaLock color="white" size={24} /> : <FaPlus color="white" size={24} />}
+              <Hex width={72} className="bg-gray-800 flex items-center justify-center overflow-hidden">
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt="User Avatar"
+                    className={`w-20 h-20 object-cover ${privateKey ? "" : "grayscale"}`}
+                  />
+                ) : privateKey ? (
+                  <FaUnlock color="white" size={24} />
+                ) : exist ? (
+                  <FaLock color="white" size={24} />
+                ) : (
+                  <FaPlus color="white" size={24} />
+                )}
               </Hex>
             </Hex>
           </Hex>

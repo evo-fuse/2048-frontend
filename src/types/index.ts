@@ -20,6 +20,9 @@ export type User = {
   fuseusdt: string;
   fuseusdc: string;
   ATCredits: number;
+  avatar?: string;
+  name?: string;
+  email?: string;
 };
 
 export type TToken = {
