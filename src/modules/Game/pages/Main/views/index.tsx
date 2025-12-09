@@ -104,10 +104,11 @@ const GamePlayTip: FC = () => {
     <AnimatePresence mode="wait">
       <motion.span
         key={currentTipIndex}
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: 0.3 }}
+        initial={{ y: 40 }}
+        animate={{ y: 0 }}
+        exit={{ y: -40 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        style={{ display: "inline-block" }}
       >
         {tips[currentTipIndex]}
       </motion.span>
@@ -515,11 +516,10 @@ export const MainView: FC = () => {
               marginblockend="s3"
             >
               <div className="relative w-full max-w-2xl">
-                <div className="bg-gradient-to-r from-cyan-500/20 via-cyan-400/20 to-cyan-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-lg px-4 py-2.5 shadow-lg">
+                <div className="bg-gradient-to-r from-cyan-500/20 via-cyan-400/20 to-cyan-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-lg px-4 py-2.5 shadow-lg overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 via-cyan-300/10 to-cyan-400/10 rounded-lg blur-sm"></div>
-                  <div className="relative flex items-center justify-center">
+                  <div className="relative flex items-center justify-center overflow-hidden">
                     <p className="text-cyan-200 text-xs sm:text-sm text-center font-medium leading-relaxed">
-                      <span className="text-cyan-300 font-semibold">💡 Tip: </span>
                       <GamePlayTip />
                     </p>
                   </div>
